@@ -2,11 +2,11 @@
 	import copy from "$data/copy.json";
 	import raw from "$data/copy.json?raw";
 	import CMS from "$components/helpers/CMS.svelte";
-	import Test from "$components/demo/Demo.MicroCMSTest.svelte";
+	import ArcViz from "$components/ArcViz.svelte";
 	import Footer from "$components/Footer.svelte";
 
 	const { body } = copy;
-	const components = { Test };
+	const components = { ArcViz };
 </script>
 
 <article>
@@ -19,7 +19,11 @@
 
 <style>
 	article {
-		margin: 0 auto;
-		max-width: 800px;
+		padding: 2rem;
+	}
+
+	:global(p, h2, h3) {
+		max-width: 700px;
+		margin: 16px auto;
 	}
 </style>
