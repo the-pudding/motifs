@@ -1,7 +1,11 @@
 <script>
+	import Html from "$components/ArcViz/Html.svelte";
 	import { scaleLinear } from "d3-scale";
+	import { getContext } from "svelte";
+	import _ from "lodash";
 
-	let { motifs = [], tracks = [], alternate = false } = $props();
+	let { id, motifs = [], tracks = [], alternate = false } = $props();
+	const playing = getContext("playing");
 
 	const getFullTimestamp = (trackName, timestamp) => {
 		const track = tracks.find((t) => t.name === trackName);
@@ -11,11 +15,6 @@
 			.reduce((total, track) => total + track.duration, 0);
 		return trackStart + timestamp;
 	};
-
-	const totalMusicalDuration = tracks.reduce(
-		(total, track) => total + track.duration,
-		0
-	);
 
 	const colorPalette = [
 		"#e6194b",
@@ -78,14 +77,18 @@
 
 	const height = 300;
 	const curvature = 0.35;
-	const firstSongOfAct2 = tracks.find((d) => d.name.includes("2-01")).name;
+	const midpoint = tracks.find((d) => d.name.includes("2-01")).name;
+	const totalMusicalDuration = tracks.reduce(
+		(total, track) => total + track.duration,
+		0
+	);
 
-	const midY = $derived(height / 2);
+	const midY = $derived(height * 0.8);
 	let width = $state();
 	let xScale = $derived(
 		scaleLinear().domain([0, totalMusicalDuration]).range([0, width])
 	);
-	let pointsByMotif = $derived(
+	let motifPoints = $derived(
 		motifs.reduce((acc, motif) => {
 			const pts = motif.regions
 				? motif.regions
@@ -101,7 +104,7 @@
 		}, {})
 	);
 	let pointsReady = $derived(
-		Object.values(pointsByMotif).every((points) =>
+		Object.values(motifPoints).every((points) =>
 			points.every((p) => p.x && p.y)
 		)
 	);
@@ -110,7 +113,8 @@
 		const dx = Math.max(0, p2.x - p1.x);
 		if (dx === 0) return "";
 
-		const h = Math.min(80, dx * curvature);
+		const maxHeight = height * 0.9;
+		const h = Math.min(maxHeight, dx * curvature);
 		const dir = alternate ? (i % 2 === 0 ? -1 : 1) : -1;
 
 		const cx = (p1.x + p2.x) / 2;
@@ -126,33 +130,52 @@
 	bind:clientWidth={width}
 >
 	<svg>
-		<line x1="0" y1="50%" x2="100%" y2="50%" stroke="black" />
+		<line x1="0" y1={midY} x2="100%" y2={midY} stroke="black" />
 		<line
-			x1={xScale(getFullTimestamp(firstSongOfAct2, 0))}
-			y1="20%"
-			x2={xScale(getFullTimestamp(firstSongOfAct2, 0))}
-			y2="80%"
+			x1={xScale(getFullTimestamp(midpoint, 0))}
+			y1="0%"
+			x2={xScale(getFullTimestamp(midpoint, 0))}
+			y2="100%"
 			stroke="var(--color-gray-500)"
 			stroke-width="1"
 			stroke-dasharray="4"
 		/>
+		<text
+			class="act-label"
+			x={xScale(getFullTimestamp(midpoint, 0)) + 10}
+			y={midY + 10}>Act 2 {"->"}</text
+		>
+		<text
+			class="act-label"
+			x={xScale(getFullTimestamp(midpoint, 0)) - 10}
+			y={midY + 10}
+			>{"<-"} Act 1
+		</text>
 
 		{#if pointsReady}
-			{#each Object.entries(pointsByMotif) as [name, points]}
-				{#each points as p}
+			{#each Object.entries(motifPoints) as [name, points]}
+				{#each points as p, i}
+					{@const motifId = `${_.kebabCase(name)}-${i}`}
+					{@const active =
+						playing.chartId !== undefined &&
+						playing.chartId === id &&
+						playing.motifId === motifId}
+					{@const faded =
+						playing.chartId !== undefined &&
+						playing.chartId === id &&
+						!playing.motifId.includes(_.kebabCase(name))}
 					<circle
+						class:active
+						class:faded
 						cx={p.x}
 						cy={p.y}
 						r="4"
 						fill={motifColors[name]}
-						stroke="var(--color-gray-500)"
-						stroke-width="1"
 					/>
-				{/each}
 
-				{#each points as p, i (i)}
 					{#if i < points.length - 1}
 						<path
+							class:faded
 							d={arcPath(points[i], points[i + 1], i)}
 							fill="none"
 							stroke={motifColors[name]}
@@ -164,15 +187,46 @@
 			{/each}
 		{/if}
 	</svg>
+
+	<Html {id} {motifPoints} {motifColors} {midY} />
 </div>
 
 <style>
 	.chart-container {
 		width: 100%;
+		position: relative;
 	}
 
 	svg {
 		height: 100%;
 		width: 100%;
+	}
+
+	text.act-label {
+		alignment-baseline: before-edge;
+		text-anchor: start;
+		font-size: 12px;
+		fill: var(--color-gray-800);
+		font-family: var(--mono);
+	}
+
+	text.act-label:nth-of-type(2) {
+		text-anchor: end;
+	}
+
+	circle {
+		transition:
+			r 0.2s ease-in-out,
+			opacity 0.2s ease-in-out;
+	}
+
+	circle.active {
+		r: 8;
+		stroke-width: 2px;
+		stroke: var(--color-gray-800);
+	}
+
+	.faded {
+		opacity: 0.1;
 	}
 </style>

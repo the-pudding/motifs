@@ -1,5 +1,5 @@
 <script>
-	import Viz from "$components/ArcViz.Viz.svelte";
+	import Chart from "$components/ArcViz/Chart.svelte";
 	import hamiltonMotifs from "$data/motifs/hamilton-motifs.json";
 	import lesMisMotifs from "$data/motifs/lesmis-motifs.json";
 	import wickedMotifs from "$data/motifs/wicked-motifs.json";
@@ -7,7 +7,7 @@
 	import lesMisTracks from "$data/tracks/lesmis-tracks.json";
 	import wickedTracks from "$data/tracks/wicked-tracks.json";
 
-	let { id } = $props();
+	let { id, title } = $props();
 
 	const dataMap = {
 		unlimited: {
@@ -26,12 +26,21 @@
 </script>
 
 <figure {id} class="arc-viz">
-	<Viz motifs={dataMap[id].motifs} tracks={dataMap[id].tracks} />
+	<h3>{title}</h3>
+	<Chart {id} motifs={dataMap[id].motifs} tracks={dataMap[id].tracks} />
 </figure>
 
 <style>
-	.arc-viz {
-		max-width: 1200px;
-		margin: 0 auto;
+	figure {
+		background: var(--color-gray-100);
+		max-width: 1000px;
+		margin: 3rem auto;
+		padding: 1rem 2rem;
+	}
+
+	h3 {
+		text-transform: uppercase;
+		font-weight: bold;
+		font-size: 20px;
 	}
 </style>

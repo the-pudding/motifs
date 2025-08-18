@@ -3,16 +3,20 @@
 	import raw from "$data/copy.json?raw";
 	import CMS from "$components/helpers/CMS.svelte";
 	import PlayableText from "$components/PlayableText.svelte";
-	import ArcViz from "$components/ArcViz.svelte";
+	import ArcViz from "$components/ArcViz/ArcViz.svelte";
 	import Footer from "$components/Footer.svelte";
-	import { onMount, mount } from "svelte";
+	import { onMount, mount, setContext } from "svelte";
 
 	const { body } = copy;
 	const components = { ArcViz };
 
+	let playing = $state({});
+	$inspect({ playing });
+
+	setContext("playing", playing);
+
 	onMount(() => {
 		const playable = document.querySelectorAll("span.playable");
-		console.log({ playable });
 
 		playable.forEach((el) => {
 			const text = el.innerText;
@@ -31,16 +35,16 @@
 	<CMS {components} {body} />
 </article>
 
-<!-- <svelte:boundary onerror={(e) => console.error(e)}>
+<svelte:boundary onerror={(e) => console.error(e)}>
 	<Footer recirc={true} />
-</svelte:boundary> -->
+</svelte:boundary>
 
 <style>
 	article {
 		padding: 2rem;
 	}
 
-	:global(p, h2, h3) {
+	:global(p, h2) {
 		max-width: 700px;
 		margin: 16px auto;
 	}
