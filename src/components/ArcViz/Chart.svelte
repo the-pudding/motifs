@@ -1,6 +1,7 @@
 <script>
 	import Html from "$components/ArcViz/Html.svelte";
 	import { scaleLinear } from "d3-scale";
+	import { timeFormat } from "d3-time-format";
 	import { getContext } from "svelte";
 	import _ from "lodash";
 
@@ -82,6 +83,14 @@
 		(total, track) => total + track.duration,
 		0
 	);
+	const timeFormatter = (sec) => {
+		const h = Math.floor(sec / 3600);
+		const m = Math.floor((sec % 3600) / 60);
+		const parts = [];
+		if (h > 0) parts.push(`${h}h`);
+		if (m > 0) parts.push(`${m}m`);
+		return parts.join("") || "0m";
+	};
 
 	const midY = $derived(height * 0.8);
 	let width = $state();
@@ -147,10 +156,19 @@
 				y={midY + 10}>Act 2 {"->"}</text
 			>
 			<text
-				class="act-label"
+				class="act-label anchor-end"
 				x={xScale(getFullTimestamp(midpoint, 0)) - 10}
 				y={midY + 10}
 				>{"<-"} Act 1
+			</text>
+
+			<text class="time-label" x={xScale(0)} y={midY + 10}>0h0m</text>
+			<text
+				class="time-label anchor-end"
+				x={xScale(totalMusicalDuration)}
+				y={midY + 10}
+			>
+				{timeFormatter(totalMusicalDuration)}
 			</text>
 
 			{#if pointsReady}
@@ -204,15 +222,23 @@
 		width: 100%;
 	}
 
+	text {
+		font-family: var(--mono);
+		font-size: 12px;
+		fill: var(--color-gray-800);
+	}
+
 	text.act-label {
 		alignment-baseline: before-edge;
 		text-anchor: start;
-		font-size: 12px;
-		fill: var(--color-gray-800);
-		font-family: var(--mono);
 	}
 
-	text.act-label:nth-of-type(2) {
+	text.time-label {
+		text-anchor: start;
+		alignment-baseline: before-edge;
+	}
+
+	text.anchor-end {
 		text-anchor: end;
 	}
 
