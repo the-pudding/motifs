@@ -1,6 +1,5 @@
 <script>
 	import copy from "$data/copy.json";
-	import raw from "$data/copy.json?raw";
 	import CMS from "$components/helpers/CMS.svelte";
 	import PlayableText from "$components/PlayableText.svelte";
 	import ArcViz from "$components/ArcViz/ArcViz.svelte";
@@ -10,10 +9,9 @@
 	const { body } = copy;
 	const components = { ArcViz };
 
-	let playing = $state({});
-	$inspect({ playing });
+	let sound = $state({});
 
-	setContext("playing", playing);
+	setContext("sound", sound);
 
 	onMount(() => {
 		const playable = document.querySelectorAll("span.playable");
@@ -23,7 +21,7 @@
 			const id = el.dataset.id;
 			el.innerText = "";
 
-			const newComponent = mount(PlayableText, {
+			mount(PlayableText, {
 				target: el,
 				props: { id, text }
 			});

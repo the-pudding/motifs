@@ -1,19 +1,35 @@
 <script>
 	import Play from "$components/ArcViz/Play.svelte";
+	import { getContext } from "svelte";
+	import _ from "lodash";
 
 	let { id, motifPoints, motifColors, midY } = $props();
+	const sound = getContext("sound");
+
+	const onClick = () => {
+		sound.chartId = undefined;
+		sound.motifId = undefined;
+		sound.motifI = undefined;
+		sound.active = false;
+	};
 </script>
 
-<div class="html-layer">
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div class="html-layer" onclick={onClick}>
 	{#each Object.keys(motifPoints) as motifName}
-		{@const firstOccurence = motifPoints[motifName][0]}
+		{@const i =
+			sound.chartId === id && sound.motifId === _.kebabCase(motifName)
+				? sound.motifI
+				: 0}
+		{@const left = motifPoints[motifName][i].x}
 		<Play
-			chartId={id}
 			top={`${midY}px`}
-			left={`${firstOccurence.x}px`}
-			{motifName}
+			left={`${left}px`}
 			color={motifColors[motifName]}
-			i={0}
+			chartId={id}
+			{motifName}
+			srcs={Array(motifPoints[motifName].length).fill("assets/audio/test.mp3")}
 		/>
 	{/each}
 </div>

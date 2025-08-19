@@ -5,7 +5,7 @@
 	import _ from "lodash";
 
 	let { id, motifs = [], tracks = [], alternate = false } = $props();
-	const playing = getContext("playing");
+	const sound = getContext("sound");
 
 	const getFullTimestamp = (trackName, timestamp) => {
 		const track = tracks.find((t) => t.name === trackName);
@@ -129,66 +129,68 @@
 	style:height={`${height}px`}
 	bind:clientWidth={width}
 >
-	<svg>
-		<line x1="0" y1={midY} x2="100%" y2={midY} stroke="black" />
-		<line
-			x1={xScale(getFullTimestamp(midpoint, 0))}
-			y1="0%"
-			x2={xScale(getFullTimestamp(midpoint, 0))}
-			y2="100%"
-			stroke="var(--color-gray-500)"
-			stroke-width="1"
-			stroke-dasharray="4"
-		/>
-		<text
-			class="act-label"
-			x={xScale(getFullTimestamp(midpoint, 0)) + 10}
-			y={midY + 10}>Act 2 {"->"}</text
-		>
-		<text
-			class="act-label"
-			x={xScale(getFullTimestamp(midpoint, 0)) - 10}
-			y={midY + 10}
-			>{"<-"} Act 1
-		</text>
+	{#if width}
+		<svg>
+			<line x1="0" y1={midY} x2="100%" y2={midY} stroke="black" />
+			<line
+				x1={xScale(getFullTimestamp(midpoint, 0))}
+				y1="0%"
+				x2={xScale(getFullTimestamp(midpoint, 0))}
+				y2="100%"
+				stroke="var(--color-gray-500)"
+				stroke-width="1"
+				stroke-dasharray="4"
+			/>
+			<text
+				class="act-label"
+				x={xScale(getFullTimestamp(midpoint, 0)) + 10}
+				y={midY + 10}>Act 2 {"->"}</text
+			>
+			<text
+				class="act-label"
+				x={xScale(getFullTimestamp(midpoint, 0)) - 10}
+				y={midY + 10}
+				>{"<-"} Act 1
+			</text>
 
-		{#if pointsReady}
-			{#each Object.entries(motifPoints) as [name, points]}
-				{#each points as p, i}
-					{@const motifId = `${_.kebabCase(name)}-${i}`}
-					{@const active =
-						playing.chartId !== undefined &&
-						playing.chartId === id &&
-						playing.motifId === motifId}
-					{@const faded =
-						playing.chartId !== undefined &&
-						playing.chartId === id &&
-						!playing.motifId.includes(_.kebabCase(name))}
-					<circle
-						class:active
-						class:faded
-						cx={p.x}
-						cy={p.y}
-						r="4"
-						fill={motifColors[name]}
-					/>
-
-					{#if i < points.length - 1}
-						<path
+			{#if pointsReady}
+				{#each Object.entries(motifPoints) as [name, points]}
+					{#each points as p, i}
+						{@const motifId = `${_.kebabCase(name)}-${i}`}
+						{@const active =
+							sound.chartId !== undefined &&
+							sound.chartId === id &&
+							sound.motifId === motifId}
+						{@const faded =
+							sound.chartId !== undefined &&
+							sound.chartId === id &&
+							!sound.motifId.includes(_.kebabCase(name))}
+						<circle
+							class:active
 							class:faded
-							d={arcPath(points[i], points[i + 1], i)}
-							fill="none"
-							stroke={motifColors[name]}
-							stroke-width="1"
-							vector-effect="non-scaling-stroke"
+							cx={p.x}
+							cy={p.y}
+							r="4"
+							fill={motifColors[name]}
 						/>
-					{/if}
-				{/each}
-			{/each}
-		{/if}
-	</svg>
 
-	<Html {id} {motifPoints} {motifColors} {midY} />
+						{#if i < points.length - 1}
+							<path
+								class:faded
+								d={arcPath(points[i], points[i + 1], i)}
+								fill="none"
+								stroke={motifColors[name]}
+								stroke-width="1"
+								vector-effect="non-scaling-stroke"
+							/>
+						{/if}
+					{/each}
+				{/each}
+			{/if}
+		</svg>
+
+		<Html {id} {motifPoints} {motifColors} {midY} />
+	{/if}
 </div>
 
 <style>

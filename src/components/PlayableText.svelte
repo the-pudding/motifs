@@ -6,7 +6,10 @@
 
 <button>
 	{text}
-	<div class="play-pause" style:background-image={`url(assets/svg/play.svg)`} />
+	<div
+		class="play-pause"
+		style:background-image={`url(assets/svg/play-circle.svg)`}
+	/>
 </button>
 
 <style>
