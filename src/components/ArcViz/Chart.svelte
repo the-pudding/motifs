@@ -5,7 +5,14 @@
 	import { getContext } from "svelte";
 	import _ from "lodash";
 
-	let { id, motifs = [], tracks = [], alternate = false } = $props();
+	let {
+		id,
+		musical,
+		motifs = [],
+		tracks = [],
+		alternate = false,
+		interactive
+	} = $props();
 	const sound = getContext("sound");
 
 	const getFullTimestamp = (trackName, timestamp) => {
@@ -207,7 +214,9 @@
 			{/if}
 		</svg>
 
-		<Html {id} {motifPoints} {motifColors} {motifs} {midY} />
+		{#if interactive}
+			<Html {id} {musical} {motifPoints} {motifColors} {motifs} {midY} />
+		{/if}
 	{/if}
 </div>
 

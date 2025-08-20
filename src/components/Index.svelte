@@ -44,6 +44,15 @@
 
 	:global(p, h2) {
 		max-width: 700px;
+	}
+
+	:global(p) {
 		margin: 16px auto;
+	}
+
+	:global(h2) {
+		font-size: 28px;
+		font-weight: bold;
+		margin: 3rem auto;
 	}
 </style>

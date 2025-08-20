@@ -1,15 +1,16 @@
 <script>
 	import Chart from "$components/ArcViz/Chart.svelte";
-	import hamiltonMotifs from "$data/motifs/hamilton-motifs.json";
+	import les from "$data/motifs/hamilton-motifs.json";
 	import lesMisMotifs from "$data/motifs/lesmis-motifs.json";
 	import wickedMotifs from "$data/motifs/wicked-motifs.json";
+	import hamiltonMotifs from "$data/motifs/hamilton-motifs.json";
 	import hamiltonTracks from "$data/tracks/hamilton-tracks.json";
 	import lesMisTracks from "$data/tracks/lesmis-tracks.json";
 	import wickedTracks from "$data/tracks/wicked-tracks.json";
 	import { getContext } from "svelte";
 	import _ from "lodash";
 
-	let { id, title } = $props();
+	let { id, title, musical, interactive = true } = $props();
 	const sound = getContext("sound");
 
 	let currentTrack = $derived(
@@ -54,21 +55,39 @@
 			motifs: sortMotifRegions(wickedMotifs),
 			tracks: wickedTracks
 		},
-		"les-mis": {
+		lesmis: {
 			motifs: sortMotifRegions(lesMisMotifs),
 			tracks: lesMisTracks
 		},
 		hamilton: {
 			motifs: sortMotifRegions(hamiltonMotifs),
 			tracks: hamiltonTracks
+		},
+		"character-motif": {
+			motifs: sortMotifRegions(
+				lesMisMotifs.filter((d) => d.name === "jvj 1" || d.name === "jvj 2")
+			),
+			tracks: lesMisTracks
+		},
+		"character-switch": {
+			motifs: sortMotifRegions(
+				wickedMotifs.filter((d) => d.name === "i'm not that girl")
+			),
+			tracks: wickedTracks
 		}
 	};
 </script>
 
 <figure {id} class="arc-viz">
 	<h3>{title}</h3>
-	<h4>Now playing: {currentTrack}</h4>
-	<Chart {id} motifs={dataMap[id].motifs} tracks={dataMap[id].tracks} />
+	<h4 class:visible={currentTrack}>Now playing: {currentTrack}</h4>
+	<Chart
+		{id}
+		{musical}
+		motifs={dataMap[id].motifs}
+		tracks={dataMap[id].tracks}
+		interactive={interactive === true}
+	/>
 </figure>
 
 <style>
@@ -88,5 +107,10 @@
 	h4 {
 		font-size: 14px;
 		font-family: var(--mono);
+		visibility: hidden;
+	}
+
+	h4.visible {
+		visibility: visible;
 	}
 </style>
