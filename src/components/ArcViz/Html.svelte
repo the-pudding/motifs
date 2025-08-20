@@ -28,7 +28,7 @@
 			.regions.map((r) => ({
 				start: r.start,
 				end: r.end,
-				src: `assets/audio/${id === "unlimited" || id === "wicked" ? "wicked" : "lesmis"}/${r["track-name"]}.mp3`
+				src: `assets/audio/${id === "unlimited" || id === "wicked" ? "wicked" : id === "hamilton" ? "hamilton" : "lesmis"}/${r["track-name"]}.mp3`
 			}))}
 		<Play
 			top={`${midY}px`}

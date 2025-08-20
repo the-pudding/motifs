@@ -57,6 +57,10 @@
 		"les-mis": {
 			motifs: sortMotifRegions(lesMisMotifs),
 			tracks: lesMisTracks
+		},
+		hamilton: {
+			motifs: sortMotifRegions(hamiltonMotifs),
+			tracks: hamiltonTracks
 		}
 	};
 </script>
