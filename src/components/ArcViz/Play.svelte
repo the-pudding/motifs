@@ -6,21 +6,24 @@
 	import { getContext } from "svelte";
 	import _ from "lodash";
 
-	let { top, left, color, motifName, chartId, srcs } = $props();
+	let { top, left, color, motifName, chartId, tracks } = $props();
 	const sound = getContext("sound");
 
 	const stroke = 4;
 	const size = 48;
 
 	let audioEl;
-	let isPlaying = $state(false);
-	let isActive = $state(false);
+	let mePlaying = $state(false);
+	let meActive = $state(false);
+	let start = $state(0);
 	let duration = $state(0);
 	let currentTime = $state(0);
 	let motifI = $state(0);
 
-	let label = $derived(isPlaying ? "Pause" : "Play");
-	let progress = $derived(currentTime && duration ? currentTime / duration : 0);
+	let label = $derived(mePlaying ? "Pause" : "Play");
+	let progress = $derived(
+		currentTime && duration ? (currentTime - start) / duration : 0
+	);
 	let r = $derived(size / 2 - stroke / 2);
 	let circumference = $derived(2 * Math.PI * r);
 	let dashoffset = $derived(
@@ -30,35 +33,67 @@
 	const loadTrack = async (i) => {
 		if (!audioEl) return;
 
-		if (srcs[i]) {
-			audioEl.src = srcs[i];
-			await audioEl.load();
-		} else {
-			console.warn(`No audio source found for index ${i}`);
+		const nextSrc = tracks[i]?.src;
+		if (!nextSrc) return;
+
+		const normalizedNext = encodeURI(
+			new URL(nextSrc, window.location.href).href
+		);
+		const normalizedCurrent = encodeURI(audioEl.currentSrc || audioEl.src);
+
+		if (normalizedNext === normalizedCurrent) {
+			return;
 		}
+
+		audioEl.src = nextSrc;
+		await audioEl.load();
 	};
 
-	// TODO: when you re-click play after a motif is done, it doesn't play again
+	const playTrack = (i) => {
+		start = tracks[i].start;
+		duration = tracks[i].end - tracks[i].start;
+
+		audioEl.currentTime = tracks[i].start;
+		audioEl.play();
+		audioEl.onended = () => {
+			mePlaying = false;
+			sound.isPlaying = false;
+			audioEl.currentTime = 0;
+		};
+		const onTimeUpdate = () => {
+			if (motifI !== i) audioEl.removeEventListener("timeupdate", onTimeUpdate);
+			else if (audioEl.currentTime >= tracks[i].end - 0.02) {
+				console.log("pause, ended", i);
+				audioEl.pause();
+				audioEl.removeEventListener("timeupdate", onTimeUpdate);
+			}
+		};
+
+		audioEl.addEventListener("timeupdate", onTimeUpdate);
+	};
+
 	const onClick = (e, motifName) => {
 		if (!audioEl) return;
 
 		e.stopPropagation();
 
-		if (isPlaying) {
+		if (mePlaying) {
 			sound.chartId = undefined;
 			sound.motifId = undefined;
 			sound.motifI = undefined;
+			sound.isPlaying = false;
 		} else {
 			sound.chartId = chartId;
 			sound.motifId = _.kebabCase(motifName);
 			sound.motifI = motifI;
+			sound.isPlaying = true;
 		}
 	};
 
 	const next = (e) => {
 		e.stopPropagation();
 
-		if (sound.motifI < srcs.length - 1) {
+		if (sound.motifI < tracks.length - 1) {
 			sound.motifI = sound.motifI + 1;
 		} else {
 			sound.motifI = 0;
@@ -71,7 +106,7 @@
 		if (sound.motifI > 0) {
 			sound.motifI = sound.motifI - 1;
 		} else {
-			sound.motifI = srcs.length - 1;
+			sound.motifI = tracks.length - 1;
 		}
 	};
 
@@ -82,33 +117,28 @@
 			// It's my time!
 			sound.chartId === chartId &&
 			sound.motifId === _.kebabCase(motifName) &&
-			!isActive &&
-			!isPlaying
+			sound.isPlaying &&
+			!mePlaying
 		) {
 			await loadTrack(sound.motifI);
 
-			isPlaying = true;
-			isActive = true;
+			mePlaying = true;
+			meActive = true;
 
-			audioEl.currentTime = 0;
-			audioEl.play();
-			audioEl.onended = () => {
-				isPlaying = false;
-				audioEl.currentTime = 0;
-			};
+			playTrack(sound.motifI);
 		} else if (
 			// Step aside!
-			(isActive || isPlaying) &&
-			(sound.chartId !== chartId || sound.motifId !== _.kebabCase(motifName))
+			(sound.chartId !== chartId || sound.motifId !== _.kebabCase(motifName)) &&
+			(meActive || mePlaying)
 		) {
-			isPlaying = false;
-			isActive = false;
+			mePlaying = false;
+			meActive = false;
 
 			audioEl.pause();
 			audioEl.currentTime = 0;
 		} else if (
 			// Change track
-			isActive &&
+			meActive &&
 			sound.chartId === chartId &&
 			sound.motifId === _.kebabCase(motifName) &&
 			sound.motifI !== motifI
@@ -119,14 +149,9 @@
 			await loadTrack(sound.motifI);
 
 			motifI = sound.motifI;
-			isPlaying = true;
+			mePlaying = true;
 
-			audioEl.currentTime = 0;
-			audioEl.play();
-			audioEl.onended = () => {
-				isPlaying = false;
-				audioEl.currentTime = 0;
-			};
+			playTrack(sound.motifI);
 		}
 	});
 </script>
@@ -134,10 +159,10 @@
 <button
 	type="button"
 	class="pp"
-	class:active={isActive}
+	class:active={meActive}
 	class:faded={sound.chartId === chartId &&
 		sound.motifId !== _.kebabCase(motifName)}
-	aria-pressed={isPlaying}
+	aria-pressed={mePlaying}
 	aria-label={label}
 	aria-describedby="pp-progress"
 	onclick={(e) => onClick(e, motifName)}
@@ -175,11 +200,17 @@
 	</svg>
 
 	<span class="pp-face" aria-hidden="true">
-		{@html isPlaying ? pauseSvg : playSvg}
+		{@html mePlaying ? pauseSvg : playSvg}
 	</span>
 </button>
 
-<div class="controls" style:top style:left class:visible={isActive}>
+<div
+	class="controls"
+	style:top
+	style:left
+	style={`--color: ${color}`}
+	class:visible={meActive}
+>
 	<button type="button" class="advance" onclick={prev}>
 		{@html prevSvg}
 	</button>
@@ -188,7 +219,7 @@
 	</button>
 </div>
 
-<audio bind:this={audioEl} bind:duration bind:currentTime preload="none" />
+<audio bind:this={audioEl} bind:currentTime preload="none" />
 
 <style>
 	.pp {
@@ -251,6 +282,10 @@
 	:global(.pp-face svg path, .pp-face svg rect:not(.bg)) {
 		fill: var(--color);
 		stroke: none;
+	}
+
+	:global(.advance svg polyline) {
+		stroke: var(--color);
 	}
 
 	.controls {

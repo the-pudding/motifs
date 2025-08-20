@@ -207,7 +207,7 @@
 			{/if}
 		</svg>
 
-		<Html {id} {motifPoints} {motifColors} {midY} />
+		<Html {id} {motifPoints} {motifColors} {motifs} {midY} />
 	{/if}
 </div>
 

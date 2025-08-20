@@ -3,14 +3,14 @@
 	import { getContext } from "svelte";
 	import _ from "lodash";
 
-	let { id, motifPoints, motifColors, midY } = $props();
+	let { id, motifs, motifPoints, motifColors, midY } = $props();
 	const sound = getContext("sound");
 
 	const onClick = () => {
 		sound.chartId = undefined;
 		sound.motifId = undefined;
 		sound.motifI = undefined;
-		sound.active = false;
+		sound.isPlaying = false;
 	};
 </script>
 
@@ -23,13 +23,20 @@
 				? sound.motifI
 				: 0}
 		{@const left = motifPoints[motifName][i].x}
+		{@const tracks = motifs
+			.find((m) => m.name === motifName)
+			.regions.map((r) => ({
+				start: r.start,
+				end: r.end,
+				src: `assets/audio/${id === "unlimited" || id === "wicked" ? "wicked" : "lesmis"}/${r["track-name"]}.mp3`
+			}))}
 		<Play
 			top={`${midY}px`}
 			left={`${left}px`}
 			color={motifColors[motifName]}
 			chartId={id}
 			{motifName}
-			srcs={Array(motifPoints[motifName].length).fill("assets/audio/test.mp3")}
+			{tracks}
 		/>
 	{/each}
 </div>

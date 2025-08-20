@@ -9,17 +9,42 @@
 
 	let { id, title } = $props();
 
+	const sortMotifRegions = (motifs) => {
+		const parseTrackName = (trackName) => {
+			const match = trackName.match(/^(\d+)-(\d+)/);
+			if (!match) return { act: Infinity, song: Infinity };
+			return {
+				act: parseInt(match[1], 10),
+				song: parseInt(match[2], 10)
+			};
+		};
+
+		return motifs.map((motif) => {
+			const sortedRegions = [...motif.regions].sort((a, b) => {
+				const A = parseTrackName(a["track-name"]);
+				const B = parseTrackName(b["track-name"]);
+				if (A.act !== B.act) return A.act - B.act;
+				if (A.song !== B.song) return A.song - B.song;
+				return a["track-name"].localeCompare(b["track-name"]);
+			});
+
+			return { ...motif, regions: sortedRegions };
+		});
+	};
+
 	const dataMap = {
 		unlimited: {
-			motifs: wickedMotifs.filter((d) => d.name === "unlimited"),
+			motifs: sortMotifRegions(
+				wickedMotifs.filter((d) => d.name === "unlimited")
+			),
 			tracks: wickedTracks
 		},
 		wicked: {
-			motifs: wickedMotifs,
+			motifs: sortMotifRegions(wickedMotifs),
 			tracks: wickedTracks
 		},
 		"les-mis": {
-			motifs: lesMisMotifs,
+			motifs: sortMotifRegions(lesMisMotifs),
 			tracks: lesMisTracks
 		}
 	};
