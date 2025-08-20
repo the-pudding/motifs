@@ -6,7 +6,7 @@
 	import { getContext } from "svelte";
 	import _ from "lodash";
 
-	let { top, left, color, motifName, chartId, tracks } = $props();
+	let { top, left, color, motifName, emoji, chartId, tracks } = $props();
 	const sound = getContext("sound");
 
 	const stroke = 4;
@@ -156,80 +156,108 @@
 	});
 </script>
 
-<button
-	type="button"
-	class="pp"
+<div
+	class="play-container"
+	style:top
+	style:left
 	class:active={meActive}
 	class:faded={sound.chartId === chartId &&
 		sound.motifId !== _.kebabCase(motifName)}
-	aria-pressed={mePlaying}
-	aria-label={label}
-	aria-describedby="pp-progress"
-	onclick={(e) => onClick(e, motifName)}
-	style:top
-	style:left
-	style={`--size:${size}px; --stroke:${stroke}px; --color: ${color}`}
 >
-	<svg
-		class="pp-ring"
-		width={size}
-		height={size}
-		viewBox={`0 0 ${size} ${size}`}
-		role="img"
-		aria-hidden="true"
+	<div class="motif" class:visible={meActive}>{emoji} {motifName}</div>
+	<button
+		type="button"
+		class="pp"
+		aria-pressed={mePlaying}
+		aria-label={label}
+		aria-describedby="pp-progress"
+		onclick={(e) => onClick(e, motifName)}
+		style={`--size:${size}px; --stroke:${stroke}px; --color: ${color}`}
 	>
-		<circle
-			cx={size / 2}
-			cy={size / 2}
-			{r}
-			class="pp-track"
-			stroke-width={stroke}
-			fill="none"
-		/>
-		<circle
-			cx={size / 2}
-			cy={size / 2}
-			{r}
-			class="pp-progress"
-			stroke-width={stroke}
-			stroke-dasharray={circumference}
-			stroke-dashoffset={dashoffset}
-			stroke-linecap="round"
-			fill="none"
-		/>
-	</svg>
+		<svg
+			class="pp-ring"
+			width={size}
+			height={size}
+			viewBox={`0 0 ${size} ${size}`}
+			role="img"
+			aria-hidden="true"
+		>
+			<circle
+				cx={size / 2}
+				cy={size / 2}
+				{r}
+				class="pp-track"
+				stroke-width={stroke}
+				fill="none"
+			/>
+			<circle
+				cx={size / 2}
+				cy={size / 2}
+				{r}
+				class="pp-progress"
+				stroke-width={stroke}
+				stroke-dasharray={circumference}
+				stroke-dashoffset={dashoffset}
+				stroke-linecap="round"
+				fill="none"
+			/>
+		</svg>
 
-	<span class="pp-face" aria-hidden="true">
-		{@html mePlaying ? pauseSvg : playSvg}
-	</span>
-</button>
+		<span class="pp-face" aria-hidden="true">
+			{@html mePlaying ? pauseSvg : playSvg}
+		</span>
+	</button>
 
-<div
-	class="controls"
-	style:top
-	style:left
-	style={`--color: ${color}`}
-	class:visible={meActive}
->
-	<button type="button" class="advance" onclick={prev}>
-		{@html prevSvg}
-	</button>
-	<button type="button" class="advance" onclick={next}>
-		{@html nextSvg}
-	</button>
+	<div class="controls" style={`--color: ${color}`} class:visible={meActive}>
+		<button type="button" class="advance" onclick={prev}>
+			{@html prevSvg}
+		</button>
+		<button type="button" class="advance" onclick={next}>
+			{@html nextSvg}
+		</button>
+	</div>
 </div>
 
 <audio bind:this={audioEl} bind:currentTime preload="none" />
 
 <style>
-	.pp {
+	.play-container {
 		position: absolute;
+		transform: translate(-50%, calc(-100% - 1rem));
+		transition:
+			opacity 0.2s ease-in-out,
+			transform 0.2s ease-in-out;
+	}
+
+	.play-container.active {
+		z-index: 100000;
+	}
+
+	.play-container.faded {
+		opacity: 0.3;
+	}
+
+	.motif {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translate(-50%, -100%);
+		white-space: nowrap;
+		opacity: 0;
+		transition: opacity 0.2s ease-in-out;
+		font-family: var(--mono);
+	}
+
+	.motif.visible {
+		opacity: 1;
+	}
+
+	.pp {
 		inline-size: var(--size);
 		block-size: var(--size);
 		border: 0;
 		border-radius: 50%;
 		padding: 0;
-		transform: translate(-50%, calc(-100% - 1rem));
 		background: var(--color-gray-100);
 		cursor: pointer;
 		display: flex;
@@ -242,16 +270,8 @@
 	}
 
 	.pp:hover {
-		transform: translate(-50%, calc(-100% - 1.25rem));
+		transform: translate(0, -0.25rem);
 		z-index: 100000;
-	}
-
-	.pp.active {
-		z-index: 100000;
-	}
-
-	.pp.faded {
-		opacity: 0.3;
 	}
 
 	.pp-ring {
@@ -291,8 +311,9 @@
 	.controls {
 		position: absolute;
 		display: flex;
-		transform: translate(-50%, 0);
 		visibility: hidden;
+		left: 50%;
+		transform: translate(-50%, 50%);
 	}
 
 	.controls.visible {

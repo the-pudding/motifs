@@ -36,6 +36,7 @@
 			color={motifColors[motifName]}
 			chartId={id}
 			{motifName}
+			emoji={motifs.find((m) => m.name === motifName)?.emoji}
 			{tracks}
 		/>
 	{/each}

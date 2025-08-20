@@ -6,8 +6,19 @@
 	import hamiltonTracks from "$data/tracks/hamilton-tracks.json";
 	import lesMisTracks from "$data/tracks/lesmis-tracks.json";
 	import wickedTracks from "$data/tracks/wicked-tracks.json";
+	import { getContext } from "svelte";
+	import _ from "lodash";
 
 	let { id, title } = $props();
+	const sound = getContext("sound");
+
+	let currentTrack = $derived(
+		sound.isPlaying && sound.chartId && sound.motifId
+			? dataMap[sound.chartId].motifs.find(
+					(m) => _.kebabCase(m.name) === sound.motifId
+				).regions[sound.motifI]["track-name"]
+			: undefined
+	);
 
 	const sortMotifRegions = (motifs) => {
 		const parseTrackName = (trackName) => {
@@ -52,6 +63,7 @@
 
 <figure {id} class="arc-viz">
 	<h3>{title}</h3>
+	<h4>Now playing: {currentTrack}</h4>
 	<Chart {id} motifs={dataMap[id].motifs} tracks={dataMap[id].tracks} />
 </figure>
 
@@ -67,5 +79,10 @@
 		text-transform: uppercase;
 		font-weight: bold;
 		font-size: 20px;
+	}
+
+	h4 {
+		font-size: 14px;
+		font-family: var(--mono);
 	}
 </style>
