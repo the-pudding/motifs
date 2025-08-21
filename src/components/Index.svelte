@@ -3,11 +3,12 @@
 	import CMS from "$components/helpers/CMS.svelte";
 	import PlayableText from "$components/PlayableText.svelte";
 	import ArcViz from "$components/ArcViz/ArcViz.svelte";
+	import TrackViz from "$components/TrackViz/TrackViz.svelte";
 	import Footer from "$components/Footer.svelte";
 	import { onMount, mount, setContext } from "svelte";
 
 	const { body } = copy;
-	const components = { ArcViz };
+	const components = { ArcViz, TrackViz };
 
 	let sound = $state({});
 

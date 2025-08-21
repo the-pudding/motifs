@@ -1,5 +1,5 @@
 <script>
-	import Chart from "$components/ArcViz/Chart.svelte";
+	import Chart from "$components/TrackViz/Chart.svelte";
 	import lesMisMotifs from "$data/motifs/lesmis-motifs.json";
 	import wickedMotifs from "$data/motifs/wicked-motifs.json";
 	import hamiltonMotifs from "$data/motifs/hamilton-motifs.json";
@@ -44,89 +44,45 @@
 	};
 
 	const dataMap = {
-		unlimited: {
-			motifs: sortMotifRegions(
-				wickedMotifs.filter((d) => d.name === "unlimited")
-			),
-			tracks: wickedTracks
-		},
-		wicked: {
-			motifs: sortMotifRegions(wickedMotifs),
-			tracks: wickedTracks
-		},
-		lesmis: {
-			motifs: sortMotifRegions(lesMisMotifs),
-			tracks: lesMisTracks
-		},
-		hamilton: {
-			motifs: sortMotifRegions(hamiltonMotifs),
-			tracks: hamiltonTracks
-		},
+		// unlimited: {
+		// 	motifs: sortMotifRegions(
+		// 		wickedMotifs.filter((d) => d.name === "unlimited")
+		// 	),
+		// 	tracks: wickedTracks
+		// },
+		// wicked: {
+		// 	motifs: sortMotifRegions(wickedMotifs),
+		// 	tracks: wickedTracks
+		// },
+		// lesmis: {
+		// 	motifs: sortMotifRegions(lesMisMotifs),
+		// 	tracks: lesMisTracks
+		// },
+		// hamilton: {
+		// 	motifs: sortMotifRegions(hamiltonMotifs),
+		// 	tracks: hamiltonTracks
+		// },
 		"character-motif": {
 			motifs: sortMotifRegions(
 				lesMisMotifs.filter(
 					(d) =>
 						d.name === "jvj 1" ||
 						d.name === "jvj 2" ||
+						d.name === "eponine 1" ||
+						d.name === "eponine 2" ||
 						d.name === "thenardier waltz" ||
 						d.name === "cosette" ||
+						d.name === "cosette 2" ||
 						d.name === "little people"
 				)
 			),
 			tracks: lesMisTracks
 		},
-		"character-motif-hamilton": {
+		"character-switch": {
 			motifs: sortMotifRegions(
-				hamiltonMotifs.filter(
-					(d) =>
-						d.name === "alexander hamilton" ||
-						d.name === "angelica" ||
-						d.name === "eliza" ||
-						d.name === "schuyler sisters" ||
-						d.name === "phillip rap"
-				)
+				wickedMotifs.filter((d) => d.name === "i'm not that girl")
 			),
-			tracks: hamiltonTracks
-		},
-		idea: {
-			motifs: sortMotifRegions(
-				lesMisMotifs.filter(
-					(d) =>
-						d.name === "anguish" ||
-						d.name === "god on high" ||
-						d.name === "drink with me" ||
-						d.name === "look down"
-				)
-			),
-			tracks: lesMisTracks
-		},
-		"idea-ab": {
-			motifs: sortMotifRegions(
-				lesMisMotifs.filter(
-					(d) => d.name === "police 1" || d.name === "police 2"
-				)
-			),
-			tracks: lesMisTracks
-		},
-		"new-emotion": {
-			motifs: sortMotifRegions(
-				lesMisMotifs.filter(
-					(d) =>
-						d.name === "friendship" ||
-						d.name === "little people" ||
-						d.name === "lovely ladies" ||
-						d.name === "rain"
-				)
-			),
-			tracks: lesMisTracks
-		},
-		"new-emotion-hamilton": {
-			motifs: sortMotifRegions(
-				hamiltonMotifs.filter(
-					(d) => d.name === "counting" || d.name === "i imagine death"
-				)
-			),
-			tracks: hamiltonTracks
+			tracks: wickedTracks
 		}
 	};
 </script>
@@ -139,7 +95,6 @@
 		{musical}
 		motifs={dataMap[id].motifs}
 		tracks={dataMap[id].tracks}
-		interactive={interactive === true}
 	/>
 </figure>
 
