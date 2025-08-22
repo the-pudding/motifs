@@ -206,6 +206,7 @@
 	figure {
 		background: var(--color-gray-100);
 		max-width: 1000px;
+		margin: 0 auto;
 		padding: 1rem 2rem;
 	}
 
