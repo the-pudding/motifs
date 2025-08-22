@@ -13,5 +13,5 @@
 	<code>
 		<pre>{raw.replace(/\t/g, " ")}</pre>
 	</code>
-	<CMS {components} {body} />
+	<!-- <CMS {components} {body} /> -->
 </section>
