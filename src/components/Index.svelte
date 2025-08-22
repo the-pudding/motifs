@@ -3,12 +3,13 @@
 	import CMS from "$components/helpers/CMS.svelte";
 	import PlayableText from "$components/PlayableText.svelte";
 	import ArcViz from "$components/ArcViz/ArcViz.svelte";
-	import TrackViz from "$components/TrackViz/TrackViz.svelte";
+	import Explore from "$components/Explore/Explore.svelte";
 	import Footer from "$components/Footer.svelte";
 	import { onMount, mount, setContext } from "svelte";
+	import CollapsibleSection from "$components/CollapsibleSection.svelte";
 
 	const { body } = copy;
-	const components = { ArcViz, TrackViz };
+	const components = { ArcViz, CollapsibleSection, Explore };
 
 	let sound = $state({});
 
@@ -43,17 +44,11 @@
 		padding: 2rem;
 	}
 
-	:global(p, h2) {
+	:global(p) {
 		max-width: 700px;
 	}
 
 	:global(p) {
 		margin: 16px auto;
-	}
-
-	:global(h2) {
-		font-size: 28px;
-		font-weight: bold;
-		margin: 3rem auto;
 	}
 </style>

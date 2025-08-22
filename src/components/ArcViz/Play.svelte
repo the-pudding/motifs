@@ -63,7 +63,6 @@
 		const onTimeUpdate = () => {
 			if (motifI !== i) audioEl.removeEventListener("timeupdate", onTimeUpdate);
 			else if (audioEl.currentTime >= tracks[i].end - 0.02) {
-				console.log("pause, ended", i);
 				audioEl.pause();
 				audioEl.removeEventListener("timeupdate", onTimeUpdate);
 			}

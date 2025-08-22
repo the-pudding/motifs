@@ -24,7 +24,7 @@
 		return trackStart + timestamp;
 	};
 
-	const colorPalette = [
+	const colorPalette = _.shuffle([
 		"#e6194b",
 		"#3cb44b",
 		"#ffe119",
@@ -75,7 +75,7 @@
 		"#b8860b",
 		"#c71585",
 		"#6a5acd"
-	];
+	]);
 	const motifColors = $derived(
 		motifs.reduce((acc, motif, i) => {
 			acc[motif.name] = colorPalette[i % colorPalette.length];
@@ -85,10 +85,9 @@
 
 	const height = 300;
 	const curvature = 0.35;
-	const midpoint = tracks.find((d) => d.name.includes("2-01")).name;
-	const totalMusicalDuration = tracks.reduce(
-		(total, track) => total + track.duration,
-		0
+	const midpoint = $derived(tracks.find((d) => d.name.includes("2-01")).name);
+	const totalMusicalDuration = $derived(
+		tracks.reduce((total, track) => total + track.duration, 0)
 	);
 	const timeFormatter = (sec) => {
 		const h = Math.floor(sec / 3600);

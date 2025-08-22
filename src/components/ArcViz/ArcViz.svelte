@@ -13,7 +13,7 @@
 	const sound = getContext("sound");
 
 	let currentTrack = $derived(
-		sound.isPlaying && sound.chartId && sound.motifId
+		sound.isPlaying && sound.chartId && sound.chartId === id && sound.motifId
 			? dataMap[sound.chartId].motifs.find(
 					(m) => _.kebabCase(m.name) === sound.motifId
 				).regions[sound.motifI]["track-name"]
@@ -31,19 +31,40 @@
 		};
 
 		return motifs.map((motif) => {
-			const sortedRegions = [...motif.regions].sort((a, b) => {
+			// 1) Keep only one region per track-name: the one with the lowest start
+			const byTrack = new Map();
+			for (const r of motif.regions) {
+				const key = r["track-name"];
+				const prev = byTrack.get(key);
+				if (
+					!prev ||
+					Number(r.start) < Number(prev.start) ||
+					(Number(r.start) === Number(prev.start) &&
+						Number(r.end) < Number(prev.end))
+				) {
+					byTrack.set(key, r);
+				}
+			}
+
+			const filtered = Array.from(byTrack.values());
+
+			// 2) Sort by act, then song, then track-name
+			const sortedRegions = filtered.sort((a, b) => {
 				const A = parseTrackName(a["track-name"]);
 				const B = parseTrackName(b["track-name"]);
 				if (A.act !== B.act) return A.act - B.act;
 				if (A.song !== B.song) return A.song - B.song;
-				return a["track-name"].localeCompare(b["track-name"]);
+				if (a["track-name"] !== b["track-name"]) {
+					return a["track-name"].localeCompare(b["track-name"]);
+				}
+				return Number(a.start) - Number(b.start);
 			});
 
 			return { ...motif, regions: sortedRegions };
 		});
 	};
 
-	const dataMap = {
+	const dataMap = $derived({
 		unlimited: {
 			motifs: sortMotifRegions(
 				wickedMotifs.filter((d) => d.name === "unlimited")
@@ -127,12 +148,50 @@
 				)
 			),
 			tracks: hamiltonTracks
+		},
+		nonstop: {
+			motifs: sortMotifRegions(
+				hamiltonMotifs.filter((d) =>
+					d.regions.some((r) => r["track-name"] === "1-23 Non-Stop")
+				)
+			).map((d) => ({
+				...d,
+				regions: d.regions.filter((r) => r["track-name"].startsWith("1"))
+			})),
+			tracks: hamiltonTracks
+		},
+		"one-day-more": {
+			motifs: sortMotifRegions(
+				lesMisMotifs
+					.filter((d) =>
+						d.regions.some((r) => r["track-name"] === "1-23 One Day More")
+					)
+					.map((d) => ({
+						...d,
+						regions: d.regions.filter((r) => r["track-name"].startsWith("1"))
+					}))
+			),
+			tracks: lesMisTracks
+		},
+		explore: {
+			motifs:
+				musical === "hamilton"
+					? sortMotifRegions(hamiltonMotifs)
+					: musical === "wicked"
+						? sortMotifRegions(wickedMotifs)
+						: sortMotifRegions(lesMisMotifs),
+			tracks:
+				musical === "hamilton"
+					? hamiltonTracks
+					: musical === "wicked"
+						? wickedTracks
+						: lesMisTracks
 		}
-	};
+	});
 </script>
 
 <figure {id} class="arc-viz">
-	<h3>{title}</h3>
+	{#if title}<h3>{title}</h3>{/if}
 	<h4 class:visible={currentTrack}>Now playing: {currentTrack}</h4>
 	<Chart
 		{id}
@@ -147,7 +206,6 @@
 	figure {
 		background: var(--color-gray-100);
 		max-width: 1000px;
-		margin: 3rem auto;
 		padding: 1rem 2rem;
 	}
 
