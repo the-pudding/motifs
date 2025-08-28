@@ -146,13 +146,19 @@
 >
 	{#if width}
 		<svg>
-			<line x1="0" y1={midY} x2="100%" y2={midY} stroke="black" />
+			<line
+				x1="0"
+				y1={midY}
+				x2="100%"
+				y2={midY}
+				stroke="var(--color-gray-400)"
+			/>
 			<line
 				x1={xScale(getFullTimestamp(midpoint, 0))}
 				y1="0%"
 				x2={xScale(getFullTimestamp(midpoint, 0))}
 				y2="100%"
-				stroke="var(--color-gray-500)"
+				stroke="var(--color-gray-400)"
 				stroke-width="1"
 				stroke-dasharray="4"
 			/>
@@ -233,7 +239,7 @@
 	text {
 		font-family: var(--mono);
 		font-size: 12px;
-		fill: var(--color-gray-800);
+		fill: var(--color-gray-100);
 	}
 
 	text.act-label {
@@ -258,8 +264,6 @@
 
 	circle.active {
 		r: 8;
-		stroke-width: 2px;
-		stroke: var(--color-gray-800);
 	}
 
 	.faded {

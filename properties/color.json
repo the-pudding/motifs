@@ -39,20 +39,8 @@
 		"gray-1000": {
 			"value": "rgb(25, 25, 25)"
 		},
-		"purple": {
-			"value": "#a239ca"
-		},
-		"blue": {
-			"value": "#4717f6"
-		},
-		"green": {
-			"value": "#34a29e"
-		},
-		"red": {
-			"value": "#ff533d"
-		},
-		"yellow": {
-			"value": "#e5e338"
+		"playbill-yellow": {
+			"value": "#FDE300"
 		}
 	}
 }

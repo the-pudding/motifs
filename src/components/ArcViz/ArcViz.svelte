@@ -9,10 +9,10 @@
 	import { getContext } from "svelte";
 	import _ from "lodash";
 
-	let { id, title, musical, interactive = true } = $props();
+	let { id, title, musical, note, interactive = true } = $props();
 	const sound = getContext("sound");
 
-	let currentTrack = $derived(
+	let currentTrackName = $derived(
 		sound.isPlaying && sound.chartId && sound.chartId === id && sound.motifId
 			? dataMap[sound.chartId].motifs.find(
 					(m) => _.kebabCase(m.name) === sound.motifId
@@ -192,7 +192,7 @@
 
 <figure {id} class="arc-viz">
 	{#if title}<h3>{title}</h3>{/if}
-	<h4 class:visible={currentTrack}>Now playing: {currentTrack}</h4>
+	<!-- <h4 class:visible={currentTrack}>Now playing: {currentTrack}</h4> -->
 	<Chart
 		{id}
 		{musical}
@@ -200,13 +200,23 @@
 		tracks={dataMap[id].tracks}
 		interactive={interactive === true}
 	/>
+
+	{#if note}
+		<div class="border" class:visible={sound.chartId === id}>
+			<div class="note">
+				🎧 <strong>Listen for:</strong>
+				{@html note}
+			</div>
+		</div>
+	{/if}
 </figure>
 
 <style>
 	figure {
-		background: var(--color-gray-100);
+		position: relative;
+		background: var(--color-gray-800);
 		max-width: 1000px;
-		margin: 0 auto;
+		margin: 3rem auto;
 		padding: 1rem 2rem;
 	}
 
@@ -224,5 +234,28 @@
 
 	h4.visible {
 		visibility: visible;
+	}
+
+	.border {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		padding: 2px;
+		max-width: 40%;
+		background: var(--color-white);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.border.visible {
+		opacity: 1;
+	}
+
+	.note {
+		background: var(--color-playbill-yellow);
+		color: var(--color-bg);
+		padding: 1rem;
+		font-size: var(--14px);
+		border: 1px solid var(--color-bg);
 	}
 </style>

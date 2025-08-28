@@ -18,7 +18,7 @@
 		display: inline-flex;
 		align-items: center;
 		font-family: var(--sans);
-		background: var(--color-fg);
+		background: var(--color-gray-100);
 		color: var(--color-bg);
 		text-transform: uppercase;
 		font-weight: bold;
@@ -31,7 +31,7 @@
 	}
 
 	button:hover {
-		background: var(--color-gray-700);
+		background: var(--color-gray-300);
 		transform: translateY(-1px);
 		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
 	}

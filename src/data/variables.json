@@ -22,11 +22,7 @@
     "gray-800": "rgb(55, 55, 55)",
     "gray-900": "rgb(38, 38, 38)",
     "gray-1000": "rgb(25, 25, 25)",
-    "purple": "#a239ca",
-    "blue": "#4717f6",
-    "green": "#34a29e",
-    "red": "#ff533d",
-    "yellow": "#e5e338"
+    "playbill-yellow": "#FDE300"
   },
   "": {
     "12px": "0.75rem",

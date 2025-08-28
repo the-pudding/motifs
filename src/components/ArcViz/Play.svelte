@@ -30,6 +30,16 @@
 		circumference - Math.max(0, Math.min(1, progress)) * circumference
 	);
 
+	let trackName = $derived(
+		tracks[sound.motifI]?.src
+			?.split("/")
+			.pop()
+			.replace(/^\d+-\d+/, "")
+			.replace(/\.mp3$/, "")
+			.replace(/_/g, " ")
+			.replace(/ /, "")
+	);
+
 	const loadTrack = async (i) => {
 		if (!audioEl) return;
 
@@ -163,55 +173,67 @@
 	class:faded={sound.chartId === chartId &&
 		sound.motifId !== _.kebabCase(motifName)}
 >
-	<div class="motif" class:visible={meActive}>{emoji} {motifName}</div>
-	<button
-		type="button"
-		class="pp"
-		aria-pressed={mePlaying}
-		aria-label={label}
-		aria-describedby="pp-progress"
-		onclick={(e) => onClick(e, motifName)}
-		style={`--size:${size}px; --stroke:${stroke}px; --color: ${color}`}
-	>
-		<svg
-			class="pp-ring"
-			width={size}
-			height={size}
-			viewBox={`0 0 ${size} ${size}`}
-			role="img"
-			aria-hidden="true"
+	<!-- <div class="motif" class:visible={meActive}>{emoji} {motifName}</div> -->
+	<div class="song-name" class:visible={meActive}>{trackName}</div>
+	<div class="controls" style={`--color: ${color}`}>
+		<button
+			type="button"
+			class="advance"
+			class:visible={meActive}
+			onclick={prev}
 		>
-			<circle
-				cx={size / 2}
-				cy={size / 2}
-				{r}
-				class="pp-track"
-				stroke-width={stroke}
-				fill="none"
-			/>
-			<circle
-				cx={size / 2}
-				cy={size / 2}
-				{r}
-				class="pp-progress"
-				stroke-width={stroke}
-				stroke-dasharray={circumference}
-				stroke-dashoffset={dashoffset}
-				stroke-linecap="round"
-				fill="none"
-			/>
-		</svg>
-
-		<span class="pp-face" aria-hidden="true">
-			{@html mePlaying ? pauseSvg : playSvg}
-		</span>
-	</button>
-
-	<div class="controls" style={`--color: ${color}`} class:visible={meActive}>
-		<button type="button" class="advance" onclick={prev}>
 			{@html prevSvg}
 		</button>
-		<button type="button" class="advance" onclick={next}>
+
+		<button
+			type="button"
+			class="pp"
+			aria-pressed={mePlaying}
+			aria-label={label}
+			aria-describedby="pp-progress"
+			onclick={(e) => onClick(e, motifName)}
+			style={`--size:${size}px; --stroke:${stroke}px; --color: ${color}`}
+		>
+			<svg
+				class="pp-ring"
+				width={size}
+				height={size}
+				viewBox={`0 0 ${size} ${size}`}
+				role="img"
+				aria-hidden="true"
+			>
+				<circle
+					cx={size / 2}
+					cy={size / 2}
+					{r}
+					class="pp-track"
+					stroke-width={stroke}
+					fill="none"
+				/>
+				<circle
+					cx={size / 2}
+					cy={size / 2}
+					{r}
+					class="pp-progress"
+					stroke-width={stroke}
+					stroke-dasharray={circumference}
+					stroke-dashoffset={dashoffset}
+					stroke-linecap="round"
+					fill="none"
+				/>
+			</svg>
+
+			<span class="pp-face" aria-hidden="true">
+				{@html mePlaying ? pauseSvg : playSvg}
+			</span>
+		</button>
+
+		<button
+			type="button"
+			class="advance"
+			class:visible={meActive}
+			onclick={next}
+		>
 			{@html nextSvg}
 		</button>
 	</div>
@@ -236,18 +258,18 @@
 		opacity: 0.3;
 	}
 
-	.motif {
+	.song-name {
 		position: absolute;
-		top: 0;
+		top: 100%;
 		left: 50%;
-		transform: translate(-50%, -100%);
+		transform: translate(-50%, 100%);
 		white-space: nowrap;
 		opacity: 0;
 		transition: opacity 0.2s ease-in-out;
 		font-family: var(--mono);
 	}
 
-	.motif.visible {
+	.song-name.visible {
 		opacity: 1;
 	}
 
@@ -257,18 +279,20 @@
 		border: 0;
 		border-radius: 50%;
 		padding: 0;
-		background: var(--color-gray-100);
+		background: var(--color-gray-800);
 		cursor: pointer;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		touch-action: manipulation;
+		transform: translate(0, 0rem);
 		transition:
 			opacity 0.2s ease-in-out,
 			transform 0.2s ease-in-out;
 	}
 
-	.pp:hover {
+	.pp:hover,
+	button.advance:hover {
 		transform: translate(0, -0.25rem);
 		z-index: 100000;
 	}
@@ -279,7 +303,7 @@
 	}
 
 	.pp-track {
-		stroke: var(--color-gray-400);
+		stroke: var(--color-gray-100);
 	}
 
 	.pp-progress {
@@ -293,7 +317,7 @@
 		inline-size: calc(var(--size) - (var(--stroke) * 6));
 		block-size: calc(var(--size) - (var(--stroke) * 6));
 		border-radius: 50%;
-		background: var(--color-gray-100);
+		background: var(--color-gray-800);
 		display: grid;
 		place-items: center;
 	}
@@ -308,15 +332,8 @@
 	}
 
 	.controls {
-		position: absolute;
 		display: flex;
-		visibility: hidden;
-		left: 50%;
-		transform: translate(-50%, 50%);
-	}
-
-	.controls.visible {
-		visibility: visible;
+		align-items: center;
 	}
 
 	button.advance {
@@ -324,5 +341,11 @@
 		height: 44px;
 		width: 44px;
 		display: flex;
+		visibility: hidden;
+		transition: transform 0.2s ease-in-out;
+	}
+
+	button.advance.visible {
+		visibility: visible;
 	}
 </style>
