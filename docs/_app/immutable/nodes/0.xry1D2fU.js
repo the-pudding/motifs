@@ -1,32 +1,4 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	
-		<link href="../../_app/immutable/assets/0.DGbndiaz.css" rel="stylesheet">
-		<link rel="modulepreload" href="../../_app/immutable/entry/start.DZV6_8sJ.js">
-		<link rel="modulepreload" href="../../_app/immutable/chunks/ilw0JkqF.js">
-		<link rel="modulepreload" href="../../_app/immutable/chunks/Dm69FHPd.js">
-		<link rel="modulepreload" href="../../_app/immutable/chunks/B_3QiwoS.js">
-		<link rel="modulepreload" href="../../_app/immutable/chunks/B-GmcNmB.js">
-		<link rel="modulepreload" href="../../_app/immutable/chunks/PIFbo9v5.js">
-		<link rel="modulepreload" href="../../_app/immutable/chunks/C-4_n-1t.js">
-		<link rel="modulepreload" href="../../_app/immutable/entry/app.C_W_2V7m.js">
-		<link rel="modulepreload" href="../../_app/immutable/chunks/CWj6FrbW.js">
-		<link rel="modulepreload" href="../../_app/immutable/chunks/BTltanFg.js">
-		<link rel="modulepreload" href="../../_app/immutable/chunks/zQ0qfE62.js">
-		<link rel="modulepreload" href="../../_app/immutable/chunks/zQXT61Mj.js">
-		<link rel="modulepreload" href="../../_app/immutable/nodes/0.xry1D2fU.js">
-		<link rel="modulepreload" href="../../_app/immutable/chunks/Cs8sz_kF.js">
-		<link rel="modulepreload" href="../../_app/immutable/nodes/6.DUcV82Gi.js">
-</head>
-
-<body>
-	<a href="#content" class="skip-to-main">Skip to main content</a>
-	<div><!--[--><!--[--><!----><header class="svelte-19ddz12"><div class="border svelte-19ddz12"><div class="wordmark svelte-19ddz12"><a href="https://pudding.cool" aria-label="The Pudding" target="_self" class="svelte-19ddz12"><!----><svg width="324" height="43" viewBox="0 0 324 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+import"../chunks/CWj6FrbW.js";import{Z as C,_ as o,a0 as i,a1 as r,av as L,aq as n,ar as h,R as p}from"../chunks/B_3QiwoS.js";import{s as v}from"../chunks/PIFbo9v5.js";import{h as H}from"../chunks/Cs8sz_kF.js";const c=!0,V="always",b=Object.freeze(Object.defineProperty({__proto__:null,prerender:c,trailingSlash:V},Symbol.toStringTag,{value:"Module"})),f=`<svg width="324" height="43" viewBox="0 0 324 43" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_37_17)">
 <path d="M14.2724 16.6446L13.0526 18.1669V21.0339H15.982V18.1669C15.982 17.9989 14.7574 16.9856 14.7622 16.6446H20.1311L18.5368 18.1669L18.5512 25.6105C18.6184 25.9658 19.6461 26.6862 19.9775 26.9791C20.0591 27.0511 20.208 26.9695 20.1311 27.2576H14.7622C14.7334 26.883 15.982 25.8314 15.982 25.7353V22.3833H13.0526V25.7353C13.0526 25.8314 14.2964 26.9263 14.2724 27.2576H8.90345C8.82662 26.9695 8.97549 27.0511 9.05713 26.9791C9.48933 26.5997 9.91193 26.2107 10.3729 25.865L10.4978 18.1669L8.90345 16.6446H14.2724Z" fill="black"/>
 <path d="M29.1497 16.6446V19.939L27.3825 17.8644H24.7605V20.8514C25.9466 21.615 26.4845 20.2751 27.3201 19.6941V23.9633C26.4029 23.3582 26.1339 21.7206 24.7605 22.561V25.8554L24.943 26.0379H27.3825L29.3947 23.5983V27.2576H20.6113C20.9667 26.5997 22.2249 26.1147 22.3257 25.3751L22.3161 18.2966L20.7314 16.6494H29.1449L29.1497 16.6446Z" fill="black"/>
@@ -45,30 +17,4 @@
 </clipPath>
 </defs>
 </svg>
-<!----></a> <div class="presents svelte-19ddz12">Presents</div></div></div></header><!----> <main id="content"><!----><!----><!----></main><!----><!--]--> <!--[!--><!--]--><!--]-->
-			
-			<script>
-				{
-					__sveltekit_1iwy4jj = {
-						base: new URL("../..", location).pathname.slice(0, -1)
-					};
-
-					const element = document.currentScript.parentElement;
-
-					Promise.all([
-						import("../../_app/immutable/entry/start.DZV6_8sJ.js"),
-						import("../../_app/immutable/entry/app.C_W_2V7m.js")
-					]).then(([kit, app]) => {
-						kit.start(app, element, {
-							node_ids: [0, 6],
-							data: [null,null],
-							form: null,
-							error: null
-						});
-					});
-				}
-			</script>
-		</div>
-</body>
-
-</html>
+`;var m=C('<header class="svelte-19ddz12"><div class="border svelte-19ddz12"><div class="wordmark svelte-19ddz12"><a href="https://pudding.cool" aria-label="The Pudding" target="_self" class="svelte-19ddz12"><!></a> <div class="presents svelte-19ddz12">Presents</div></div></div></header>');function g(d){var a=m(),l=i(a),t=i(l),e=i(t),s=i(e);H(s,()=>f),r(e),L(2),r(t),r(l),r(a),o(d,a)}var _=C('<!> <main id="content"><!></main>',1);function D(d,a){var l=_(),t=n(l);g(t);var e=h(t,2),s=i(e);v(s,()=>a.children??p),r(e),o(d,l)}export{D as component,b as universal};
