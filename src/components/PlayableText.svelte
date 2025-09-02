@@ -19,7 +19,7 @@
 
 	const onClick = (e) => {
 		e.stopPropagation();
-		if (!audio.ready || !audio.src) return;
+		if (!audio.ready || !src) return;
 
 		if (audio.src === `assets/audio/${src}`) {
 			audio.pauseAndClear();

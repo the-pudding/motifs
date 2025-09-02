@@ -41,10 +41,18 @@
 
 	.nav {
 		display: flex;
-		justify-content: space-between;
-		max-width: 700px;
 		margin: 0 auto;
 		margin-bottom: 3rem;
+		position: sticky;
+		top: 0;
+		background: linear-gradient(
+			to bottom,
+			rgb(37 34 34 / 100%) 60%,
+			rgb(37 34 34 / 0%) 100%
+		);
+		padding: 3rem 0;
+		z-index: 10000;
+		justify-content: space-evenly;
 	}
 
 	.section-name {
