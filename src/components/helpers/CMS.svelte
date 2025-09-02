@@ -15,7 +15,7 @@
 			{#each content as { type, value }}
 				{@const C = components[type]}
 				{@const isString = typeof value === "string"}
-				{#if type === "CollapsibleSection"}
+				{#if type === "Carousel"}
 					<C {...value} {components} />
 				{:else if C}
 					<C {...value} />

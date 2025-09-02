@@ -9,9 +9,13 @@
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
 
-	let { id, title, musical, note, interactive = true } = $props();
+	let { id, title, musical, notes, interactive = true } = $props();
 
 	const audio = audioApi();
+
+	let note = $derived(
+		notes && audio.motifData ? notes[audio.motifData.motifId] : null
+	);
 
 	const sortMotifRegions = (motifs) => {
 		const parseTrackName = (trackName) => {

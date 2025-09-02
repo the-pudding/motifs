@@ -3,7 +3,7 @@
 	import { audioApi } from "$runes/audio.svelte.js";
 
 	let { id, src, text } = $props();
-	
+
 	const audio = audioApi();
 	let smooth;
 	onMount(() => {
@@ -17,8 +17,9 @@
 		return audio.duration ? (time / audio.duration) * 100 : 0;
 	});
 
-	const onClick = () => {
-		if (!audio.ready) return;
+	const onClick = (e) => {
+		e.stopPropagation();
+		if (!audio.ready || !audio.src) return;
 
 		if (audio.src === `assets/audio/${src}`) {
 			audio.pauseAndClear();

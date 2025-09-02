@@ -1,11 +1,20 @@
 <script>
 	import PlayableText from "$components/PlayableText.svelte";
 	import pianoSvg from "$svg/piano.svg";
+	import { audioApi } from "$runes/audio.svelte.js";
+
+	const audio = audioApi();
 
 	let timestamps = {
 		unlimited: [2.249, 2.831, 3.622, 3.892],
 		rainbow: [0.788, 2.043, 3.373, 4.326, 4.565, 4.812, 5.501]
 	};
+
+	// $effect(() => {
+	// 	if (audio.src.includes("-piano.mp3")) {
+	// 		const ts = timestamps[audio.src.replace("-piano.mp3", "")];
+	// 	}
+	// });
 </script>
 
 <figure id="piano">

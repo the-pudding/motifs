@@ -6,15 +6,19 @@
 	import ArcViz from "$components/ArcViz/ArcViz.svelte";
 	import Explore from "$components/Explore/Explore.svelte";
 	import Footer from "$components/Footer.svelte";
+	import Carousel from "$components/Carousel.svelte";
 	import { onMount, mount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
-	import CollapsibleSection from "$components/CollapsibleSection.svelte";
 
 	const { body } = copy;
-	const components = { Piano, ArcViz, CollapsibleSection, Explore };
+	const components = { Piano, ArcViz, Carousel, Explore };
 
 	const audio = audioApi();
 	let audioEl;
+
+	const onClick = () => {
+		audio.pauseAndClear();
+	};
 
 	onMount(() => {
 		audio.setup(audioEl);
@@ -36,7 +40,7 @@
 	onDestroy(() => audio.destroy());
 </script>
 
-<article>
+<article onclick={onClick}>
 	<CMS {components} {body} />
 </article>
 
@@ -51,11 +55,13 @@
 		padding: 2rem;
 	}
 
-	:global(p) {
+	:global(p, h2) {
 		max-width: 700px;
+		margin: 16px auto;
 	}
 
-	:global(p) {
-		margin: 16px auto;
+	:global(h2) {
+		font-weight: bold;
+		font-size: var(--32px);
 	}
 </style>
