@@ -1,0 +1,175 @@
+let audioManager;
+
+export function audioApi() {
+	if (audioManager) return audioManager;
+
+	let el = $state(null); // single <audio> element
+	let src = $state(null); // audio file source
+	let trackName = $state(null); // track name
+	let currentTime = $state(0); // playback time in seconds
+	let smoothTime = $state(0); // more updates for animations (only when requested)
+	let duration = $state(0); // duration in seconds
+	let figureId = $state(null); // associated figure ID
+	let motifData = $state(null); // associated motif data (for ArcViz)
+
+	let rafId = null;
+	let smoothRefCount = 0;
+
+	const onMeta = () => {
+		duration = el?.duration || 0;
+
+		if (motifData && motifData.start) {
+			el.currentTime = motifData.start;
+			currentTime = el.currentTime || 0;
+		}
+	};
+	const onTime = () => {
+		currentTime = el?.currentTime || 0;
+
+		if (motifData && motifData.end && currentTime >= motifData.end) {
+			pauseAndClear();
+		}
+	};
+
+	const tick = () => {
+		if (el) smoothTime = el.currentTime || 0;
+		rafId = requestAnimationFrame(tick);
+	};
+
+	const startTicker = () => {
+		if (rafId == null) rafId = requestAnimationFrame(tick);
+	};
+
+	const stopTicker = () => {
+		if (rafId != null) {
+			cancelAnimationFrame(rafId);
+			rafId = null;
+		}
+	};
+
+	const subscribeSmooth = () => {
+		smoothRefCount++;
+		if (smoothRefCount === 1) startTicker();
+		return () => {
+			smoothRefCount = Math.max(0, smoothRefCount - 1);
+			if (smoothRefCount === 0) stopTicker();
+		};
+	};
+
+	const attach = () => {
+		if (!el) return;
+		el.addEventListener("timeupdate", onTime);
+		el.addEventListener("loadedmetadata", onMeta);
+	};
+
+	const detach = () => {
+		if (!el) return;
+		el.removeEventListener("timeupdate", onTime);
+		el.removeEventListener("loadedmetadata", onMeta);
+	};
+
+	const setup = (node) => {
+		if (el === node) return;
+		detach();
+		el = node || null;
+		attach();
+	};
+
+	const load = (newSrc, { figure, motif } = {}) => {
+		src = newSrc;
+		trackName = newSrc
+			?.split("/")
+			.pop()
+			.replace(/_/g, " ")
+			.replace(/^\d+-\d+ /, "")
+			.replace(/\.mp3$/, "");
+		figureId = figure ?? null;
+		motifData = motif ?? null;
+		el.src = newSrc;
+		el.load();
+	};
+
+	const play = () => {
+		el.play();
+		el.onended = clear;
+	};
+
+	const pause = () => {
+		el.pause();
+	};
+
+	const clear = () => {
+		src = null;
+		el.src = "";
+		duration = 0;
+		trackName = null;
+		figureId = null;
+		motifData = null;
+	};
+
+	const pauseAndClear = () => {
+		el.pause();
+		clear();
+	};
+
+	const seek = (t) => {
+		const d = el.duration || t;
+		el.currentTime = Math.max(0, Math.min(t, d));
+		currentTime = el.currentTime;
+	};
+
+	const destroy = () => {
+		detach();
+		el = null;
+	};
+
+	audioManager = {
+		setup,
+		destroy,
+		load,
+		subscribeSmooth,
+		play,
+		pause,
+		pauseAndClear,
+		seek,
+
+		get ready() {
+			return !!el;
+		},
+		get src() {
+			return src;
+		},
+		set src(v) {
+			src = v;
+		},
+		get trackName() {
+			return trackName;
+		},
+		set trackName(v) {
+			trackName = v;
+		},
+		get currentTime() {
+			return currentTime;
+		},
+		get smoothTime() {
+			return smoothTime;
+		},
+		get duration() {
+			return duration;
+		},
+		get figureId() {
+			return figureId;
+		},
+		set figureId(v) {
+			figureId = v;
+		},
+		get motifData() {
+			return motifData;
+		},
+		set motifData(v) {
+			motifData = v;
+		}
+	};
+
+	return audioManager;
+}

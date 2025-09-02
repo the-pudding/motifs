@@ -1,9 +1,8 @@
 <script>
 	import Html from "$components/ArcViz/Html.svelte";
 	import { scaleLinear } from "d3-scale";
-	import { timeFormat } from "d3-time-format";
-	import { getContext } from "svelte";
 	import _ from "lodash";
+	import { audioApi } from "$runes/audio.svelte.js";
 
 	let {
 		id,
@@ -13,7 +12,8 @@
 		alternate = false,
 		interactive
 	} = $props();
-	const sound = getContext("sound");
+
+	const audio = audioApi();
 
 	const getFullTimestamp = (trackName, timestamp) => {
 		const track = tracks.find((t) => t.name === trackName);
@@ -164,19 +164,27 @@
 			/>
 			<text
 				class="act-label"
+				class:faded={audio.figureId && audio.figureId === id}
 				x={xScale(getFullTimestamp(midpoint, 0)) + 10}
 				y={midY + 10}>Act 2 {"->"}</text
 			>
 			<text
 				class="act-label anchor-end"
+				class:faded={audio.figureId && audio.figureId === id}
 				x={xScale(getFullTimestamp(midpoint, 0)) - 10}
 				y={midY + 10}
 				>{"<-"} Act 1
 			</text>
 
-			<text class="time-label" x={xScale(0)} y={midY + 10}>0h0m</text>
+			<text
+				class="time-label"
+				class:faded={audio.figureId && audio.figureId === id}
+				x={xScale(0)}
+				y={midY + 10}>0h0m</text
+			>
 			<text
 				class="time-label anchor-end"
+				class:faded={audio.figureId && audio.figureId === id}
 				x={xScale(totalMusicalDuration)}
 				y={midY + 10}
 			>
@@ -188,13 +196,13 @@
 					{#each points as p, i}
 						{@const motifId = `${_.kebabCase(name)}-${i}`}
 						{@const active =
-							sound.chartId !== undefined &&
-							sound.chartId === id &&
-							sound.motifId === motifId}
+							audio.figureId &&
+							audio.figureId === id &&
+							audio.motifData.motifId === motifId}
 						{@const faded =
-							sound.chartId !== undefined &&
-							sound.chartId === id &&
-							!sound.motifId.includes(_.kebabCase(name))}
+							audio.figureId !== undefined &&
+							audio.figureId === id &&
+							!audio.motifData.motifId.includes(_.kebabCase(name))}
 						<circle
 							class:active
 							class:faded
@@ -268,5 +276,9 @@
 
 	.faded {
 		opacity: 0.1;
+	}
+
+	text.faded {
+		opacity: 0.3;
 	}
 </style>

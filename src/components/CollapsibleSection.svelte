@@ -47,7 +47,7 @@
 
 	summary {
 		padding: 0.5rem 1rem;
-		background: var(--color-gray-200);
+		background: var(--color-gray-800);
 	}
 
 	summary:hover {

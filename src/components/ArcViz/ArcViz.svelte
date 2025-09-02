@@ -6,19 +6,12 @@
 	import hamiltonTracks from "$data/tracks/hamilton-tracks.json";
 	import lesMisTracks from "$data/tracks/lesmis-tracks.json";
 	import wickedTracks from "$data/tracks/wicked-tracks.json";
-	import { getContext } from "svelte";
 	import _ from "lodash";
+	import { audioApi } from "$runes/audio.svelte.js";
 
 	let { id, title, musical, note, interactive = true } = $props();
-	const sound = getContext("sound");
 
-	let currentTrackName = $derived(
-		sound.isPlaying && sound.chartId && sound.chartId === id && sound.motifId
-			? dataMap[sound.chartId].motifs.find(
-					(m) => _.kebabCase(m.name) === sound.motifId
-				).regions[sound.motifI]["track-name"]
-			: undefined
-	);
+	const audio = audioApi();
 
 	const sortMotifRegions = (motifs) => {
 		const parseTrackName = (trackName) => {
@@ -192,7 +185,6 @@
 
 <figure {id} class="arc-viz">
 	{#if title}<h3>{title}</h3>{/if}
-	<!-- <h4 class:visible={currentTrack}>Now playing: {currentTrack}</h4> -->
 	<Chart
 		{id}
 		{musical}
@@ -202,7 +194,7 @@
 	/>
 
 	{#if note}
-		<div class="border" class:visible={sound.chartId === id}>
+		<div class="border" class:visible={audio.figureId === id}>
 			<div class="note">
 				🎧 <strong>Listen for:</strong>
 				{@html note}

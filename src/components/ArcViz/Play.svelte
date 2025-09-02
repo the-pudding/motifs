@@ -3,26 +3,36 @@
 	import pauseSvg from "$svg/pause.svg";
 	import prevSvg from "$svg/prev.svg";
 	import nextSvg from "$svg/next.svg";
-	import { getContext } from "svelte";
 	import _ from "lodash";
+	import { onMount, onDestroy } from "svelte";
+	import { audioApi } from "$runes/audio.svelte.js";
 
-	let { top, left, color, motifName, emoji, chartId, tracks } = $props();
-	const sound = getContext("sound");
+	let { tracks, top, left, color, chartId, motifId } = $props();
+
+	const audio = audioApi();
+	let smooth;
+	onMount(() => {
+		smooth = audio.subscribeSmooth();
+	});
+	onDestroy(() => smooth?.());
 
 	const stroke = 4;
 	const size = 48;
 
-	let audioEl;
-	let mePlaying = $state(false);
-	let meActive = $state(false);
-	let start = $state(0);
-	let duration = $state(0);
-	let currentTime = $state(0);
-	let motifI = $state(0);
-
+	let i = $state(0);
+	let src = $derived(tracks[i]?.src || "");
+	let start = $derived(tracks[i]?.start || 0);
+	let duration = $derived(tracks[i] ? tracks[i].end - tracks[i].start : 0);
+	let mePlaying = $derived(
+		audio.figureId === chartId &&
+			audio.src === src &&
+			audio.motifData.motifId === motifId
+	);
 	let label = $derived(mePlaying ? "Pause" : "Play");
 	let progress = $derived(
-		currentTime && duration ? (currentTime - start) / duration : 0
+		duration && mePlaying
+			? ((audio.smoothTime || audio.currentTime) - start) / duration
+			: 0
 	);
 	let r = $derived(size / 2 - stroke / 2);
 	let circumference = $derived(2 * Math.PI * r);
@@ -30,156 +40,81 @@
 		circumference - Math.max(0, Math.min(1, progress)) * circumference
 	);
 
-	let trackName = $derived(
-		tracks[sound.motifI]?.src
-			?.split("/")
-			.pop()
-			.replace(/^\d+-\d+/, "")
-			.replace(/\.mp3$/, "")
-			.replace(/_/g, " ")
-			.replace(/ /, "")
-	);
-
-	const loadTrack = async (i) => {
-		if (!audioEl) return;
-
-		const nextSrc = tracks[i]?.src;
-		if (!nextSrc) return;
-
-		const normalizedNext = encodeURI(
-			new URL(nextSrc, window.location.href).href
-		);
-		const normalizedCurrent = encodeURI(audioEl.currentSrc || audioEl.src);
-
-		if (normalizedNext === normalizedCurrent) {
-			return;
-		}
-
-		audioEl.src = nextSrc;
-		await audioEl.load();
-	};
-
-	const playTrack = (i) => {
-		start = tracks[i].start;
-		duration = tracks[i].end - tracks[i].start;
-
-		audioEl.currentTime = tracks[i].start;
-		audioEl.play();
-		audioEl.onended = () => {
-			mePlaying = false;
-			sound.isPlaying = false;
-			audioEl.currentTime = 0;
-		};
-		const onTimeUpdate = () => {
-			if (motifI !== i) audioEl.removeEventListener("timeupdate", onTimeUpdate);
-			else if (audioEl.currentTime >= tracks[i].end - 0.02) {
-				audioEl.pause();
-				audioEl.removeEventListener("timeupdate", onTimeUpdate);
-			}
-		};
-
-		audioEl.addEventListener("timeupdate", onTimeUpdate);
-	};
-
-	const onClick = (e, motifName) => {
-		if (!audioEl) return;
-
+	const onClick = (e) => {
 		e.stopPropagation();
 
 		if (mePlaying) {
-			sound.chartId = undefined;
-			sound.motifId = undefined;
-			sound.motifI = undefined;
-			sound.isPlaying = false;
+			audio.pauseAndClear();
 		} else {
-			sound.chartId = chartId;
-			sound.motifId = _.kebabCase(motifName);
-			sound.motifI = motifI;
-			sound.isPlaying = true;
+			audio.load(src, {
+				figure: chartId,
+				motif: {
+					start,
+					end: start + duration,
+					motifId: motifId,
+					motifI: i
+				}
+			});
+			audio.play();
 		}
 	};
 
 	const next = (e) => {
 		e.stopPropagation();
 
-		if (sound.motifI < tracks.length - 1) {
-			sound.motifI = sound.motifI + 1;
+		if (audio.motifData.motifI < tracks.length - 1) {
+			i += 1;
 		} else {
-			sound.motifI = 0;
+			i = 0;
 		}
+
+		audio.load(src, {
+			figure: chartId,
+			motif: {
+				start,
+				end: start + duration,
+				motifId: motifId,
+				motifI: i
+			}
+		});
+		audio.play();
 	};
 
 	const prev = (e) => {
 		e.stopPropagation();
 
-		if (sound.motifI > 0) {
-			sound.motifI = sound.motifI - 1;
+		if (audio.motifData.motifI > 0) {
+			i -= 1;
 		} else {
-			sound.motifI = tracks.length - 1;
+			i = tracks.length - 1;
 		}
+
+		audio.load(src, {
+			figure: chartId,
+			motif: {
+				start,
+				end: start + duration,
+				motifId: motifId,
+				motifI: i
+			}
+		});
+		audio.play();
 	};
-
-	$effect(async () => {
-		if (!audioEl) return;
-
-		if (
-			// It's my time!
-			sound.chartId === chartId &&
-			sound.motifId === _.kebabCase(motifName) &&
-			sound.isPlaying &&
-			!mePlaying
-		) {
-			await loadTrack(sound.motifI);
-
-			mePlaying = true;
-			meActive = true;
-
-			playTrack(sound.motifI);
-		} else if (
-			// Step aside!
-			(sound.chartId !== chartId || sound.motifId !== _.kebabCase(motifName)) &&
-			(meActive || mePlaying)
-		) {
-			mePlaying = false;
-			meActive = false;
-
-			audioEl.pause();
-			audioEl.currentTime = 0;
-		} else if (
-			// Change track
-			meActive &&
-			sound.chartId === chartId &&
-			sound.motifId === _.kebabCase(motifName) &&
-			sound.motifI !== motifI
-		) {
-			audioEl.pause();
-			audioEl.currentTime = 0;
-
-			await loadTrack(sound.motifI);
-
-			motifI = sound.motifI;
-			mePlaying = true;
-
-			playTrack(sound.motifI);
-		}
-	});
 </script>
 
 <div
 	class="play-container"
 	style:top
 	style:left
-	class:active={meActive}
-	class:faded={sound.chartId === chartId &&
-		sound.motifId !== _.kebabCase(motifName)}
+	style:active={mePlaying}
+	class:faded={audio.figureId === chartId && !mePlaying}
 >
-	<!-- <div class="motif" class:visible={meActive}>{emoji} {motifName}</div> -->
-	<div class="song-name" class:visible={meActive}>{trackName}</div>
+	<div class="song-name" class:visible={mePlaying}>{audio.trackName}</div>
 	<div class="controls" style={`--color: ${color}`}>
 		<button
 			type="button"
 			class="advance"
-			class:visible={meActive}
+			class:visible={mePlaying}
 			onclick={prev}
 		>
 			{@html prevSvg}
@@ -191,7 +126,7 @@
 			aria-pressed={mePlaying}
 			aria-label={label}
 			aria-describedby="pp-progress"
-			onclick={(e) => onClick(e, motifName)}
+			onclick={onClick}
 			style={`--size:${size}px; --stroke:${stroke}px; --color: ${color}`}
 		>
 			<svg
@@ -231,7 +166,7 @@
 		<button
 			type="button"
 			class="advance"
-			class:visible={meActive}
+			class:visible={mePlaying}
 			onclick={next}
 		>
 			{@html nextSvg}
@@ -239,11 +174,10 @@
 	</div>
 </div>
 
-<audio bind:this={audioEl} bind:currentTime preload="none" />
-
 <style>
 	.play-container {
 		position: absolute;
+		pointer-events: none;
 		transform: translate(-50%, calc(-100% - 1rem));
 		transition:
 			opacity 0.2s ease-in-out,
@@ -255,7 +189,7 @@
 	}
 
 	.play-container.faded {
-		opacity: 0.3;
+		opacity: 0.1;
 	}
 
 	.song-name {
@@ -286,9 +220,14 @@
 		justify-content: center;
 		touch-action: manipulation;
 		transform: translate(0, 0rem);
+		pointer-events: auto;
 		transition:
 			opacity 0.2s ease-in-out,
 			transform 0.2s ease-in-out;
+	}
+
+	.faded .pp {
+		pointer-events: none;
 	}
 
 	.pp:hover,
@@ -310,7 +249,6 @@
 		stroke: var(--color);
 		transform: rotate(-90deg);
 		transform-origin: 50% 50%;
-		transition: stroke-dashoffset 160ms linear;
 	}
 
 	.pp-face {
@@ -334,6 +272,7 @@
 	.controls {
 		display: flex;
 		align-items: center;
+		pointer-events: none;
 	}
 
 	button.advance {
@@ -342,10 +281,12 @@
 		width: 44px;
 		display: flex;
 		visibility: hidden;
+		pointer-events: none;
 		transition: transform 0.2s ease-in-out;
 	}
 
 	button.advance.visible {
+		pointer-events: auto;
 		visibility: visible;
 	}
 </style>
