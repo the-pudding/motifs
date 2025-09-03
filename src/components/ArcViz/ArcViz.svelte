@@ -86,9 +86,8 @@
 					(d) =>
 						d.name === "jvj 1" ||
 						d.name === "jvj 2" ||
-						d.name === "thenardier waltz" ||
-						d.name === "cosette" ||
-						d.name === "little people"
+						d.name === "master of the house" ||
+						d.name === "cosette"
 				)
 			),
 			tracks: lesMisTracks
@@ -200,8 +199,7 @@
 	{#if note}
 		<div class="border" class:visible={audio.figureId === id}>
 			<div class="note">
-				🎧 <strong>Listen for:</strong>
-				{@html note}
+				🎧 {@html note}
 			</div>
 		</div>
 	{/if}

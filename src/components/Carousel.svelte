@@ -1,7 +1,26 @@
 <script>
+	import PlayableText from "$components/PlayableText.svelte";
+	import { mount } from "svelte";
+
 	let { sections, components } = $props();
 
 	let selectedSection = $state(0);
+
+	const addPlayable = () => {
+		const playable = document.querySelectorAll("span.playable");
+
+		playable.forEach((el, i) => {
+			const text = el.innerText;
+			const src = el.dataset.src;
+			el.innerText = "";
+
+			mount(PlayableText, {
+				target: el,
+				props: { id: `playable-${i}`, src, text }
+			});
+		});
+	};
+	$effect(() => addPlayable(selectedSection));
 </script>
 
 <div class="carousel">

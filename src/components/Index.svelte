@@ -5,13 +5,14 @@
 	import Piano from "$components/Piano.svelte";
 	import ArcViz from "$components/ArcViz/ArcViz.svelte";
 	import Explore from "$components/Explore/Explore.svelte";
+	import Image from "$components/Image.svelte";
 	import Footer from "$components/Footer.svelte";
 	import Carousel from "$components/Carousel.svelte";
 	import { onMount, mount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 
 	const { body } = copy;
-	const components = { Piano, ArcViz, Carousel, Explore };
+	const components = { Piano, ArcViz, Carousel, Explore, Image };
 
 	const audio = audioApi();
 	let audioEl;
