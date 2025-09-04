@@ -220,16 +220,6 @@
 		font-size: 20px;
 	}
 
-	h4 {
-		font-size: 14px;
-		font-family: var(--mono);
-		visibility: hidden;
-	}
-
-	h4.visible {
-		visibility: visible;
-	}
-
 	.border {
 		position: absolute;
 		top: 1rem;

@@ -200,7 +200,7 @@
 		white-space: nowrap;
 		opacity: 0;
 		transition: opacity 0.2s ease-in-out;
-		font-family: var(--mono);
+		font-weight: bold;
 	}
 
 	.song-name.visible {

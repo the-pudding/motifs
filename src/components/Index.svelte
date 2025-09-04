@@ -61,6 +61,11 @@
 		margin: 16px auto;
 	}
 
+	:global(p) {
+		line-height: 1.6;
+		font-size: var(--16px);
+	}
+
 	:global(h2) {
 		font-weight: bold;
 		font-size: var(--32px);

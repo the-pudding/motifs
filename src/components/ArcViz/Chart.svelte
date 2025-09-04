@@ -277,8 +277,4 @@
 	.faded {
 		opacity: 0.1;
 	}
-
-	text.faded {
-		opacity: 0.3;
-	}
 </style>
