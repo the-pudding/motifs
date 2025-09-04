@@ -1,5 +1,6 @@
 <script>
 	import Chart from "$components/ArcViz/Chart.svelte";
+	import Motifs from "$components/ArcViz/Motifs.svelte";
 	import lesMisMotifs from "$data/motifs/lesmis-motifs.json";
 	import wickedMotifs from "$data/motifs/wicked-motifs.json";
 	import hamiltonMotifs from "$data/motifs/hamilton-motifs.json";
@@ -187,21 +188,25 @@
 </script>
 
 <figure {id} class="arc-viz">
-	{#if title}<h3>{title}</h3>{/if}
-	<Chart
-		{id}
-		{musical}
-		motifs={dataMap[id].motifs}
-		tracks={dataMap[id].tracks}
-		interactive={interactive === true}
-	/>
-
 	{#if note}
 		<div class="border" class:visible={audio.figureId === id}>
 			<div class="note">
 				🎧 {@html note}
 			</div>
 		</div>
+	{/if}
+
+	{#if title}<h3>{title}</h3>{/if}
+	<Chart
+		{id}
+		{musical}
+		motifs={dataMap[id].motifs}
+		tracks={dataMap[id].tracks}
+		interactive={interactive === true && id !== "explore"}
+	/>
+
+	{#if id === "explore"}
+		<Motifs motifs={dataMap[id].motifs} {musical} />
 	{/if}
 </figure>
 
