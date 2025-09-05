@@ -2,6 +2,7 @@
 	import _ from "lodash";
 	import { onMount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
+	import copy from "$data/copy.json";
 
 	let { motifs, musical } = $props();
 	const audio = audioApi();
@@ -61,6 +62,8 @@
 </script>
 
 <div class="motifs">
+	<div style="margin-bottom: 1rem">Instructions Tk</div>
+
 	{#each motifs as motif}
 		{@const selected = selectedMotif && selectedMotif === motif.name}
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
