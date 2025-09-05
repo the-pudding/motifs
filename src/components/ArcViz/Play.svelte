@@ -7,7 +7,7 @@
 	import { onMount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 
-	let { tracks, top, left, color, chartId, motifId } = $props();
+	let { tracks, top, left, color, chartId, motifId, emoji } = $props();
 
 	const audio = audioApi();
 	let smooth;
@@ -110,6 +110,11 @@
 	class:faded={audio.figureId === chartId && !mePlaying}
 >
 	<div class="song-name" class:visible={mePlaying}>{audio.trackName}</div>
+
+	<div class="motif-name">
+		{_.startCase(motifId).toLowerCase()}
+		{emoji}
+	</div>
 	<div class="controls" style={`--color: ${color}`}>
 		<button
 			type="button"
@@ -207,6 +212,18 @@
 		opacity: 1;
 	}
 
+	.motif-name {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translate(-40%, calc(-100% - 6px));
+		white-space: nowrap;
+		font-family: var(--mono);
+		font-size: var(--14px);
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+	}
+
 	.pp {
 		inline-size: var(--size);
 		block-size: var(--size);
@@ -266,7 +283,7 @@
 	}
 
 	:global(.advance svg polyline) {
-		stroke: var(--color);
+		stroke: var(--color-white);
 	}
 
 	.controls {

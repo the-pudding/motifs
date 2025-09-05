@@ -35,6 +35,6 @@
 
 <style>
 	section {
-		margin: 3rem auto;
+		margin: 5rem auto;
 	}
 </style>

@@ -1,6 +1,7 @@
 <script>
 	import copy from "$data/copy.json";
 	import CMS from "$components/helpers/CMS.svelte";
+	import Headline from "$components/Headline.svelte";
 	import PlayableText from "$components/PlayableText.svelte";
 	import Piano from "$components/Piano.svelte";
 	import ArcViz from "$components/ArcViz/ArcViz.svelte";
@@ -12,7 +13,7 @@
 	import { audioApi } from "$runes/audio.svelte.js";
 
 	const { body } = copy;
-	const components = { Piano, ArcViz, Carousel, Explore, Image };
+	const components = { Headline, Piano, ArcViz, Carousel, Explore, Image };
 
 	const audio = audioApi();
 	let audioEl;
@@ -69,6 +70,18 @@
 	:global(h2) {
 		font-weight: bold;
 		font-size: var(--32px);
+	}
+
+	:global(h4) {
+		font-weight: bold;
+		font-size: var(--28px);
+		max-width: 700px;
+		margin: 2rem auto;
+	}
+
+	:global(span.note) {
+		font-size: var(--14px);
+		color: var(--color-gray-300);
 	}
 
 	:global(section#explore) {

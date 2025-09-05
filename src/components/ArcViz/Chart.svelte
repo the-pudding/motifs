@@ -11,7 +11,6 @@
 		tracks = [],
 		alternate = false,
 		useYAxis = id !== "unlimited" &&
-			id !== "wicked" &&
 			id !== "lesmis" &&
 			id !== "hamilton" &&
 			id !== "explore",
@@ -90,7 +89,9 @@
 
 	const padding = { top: 40, right: 10, bottom: 0, left: 10 };
 	let svgWidth = $state();
-	const svgHeight = 300;
+	const svgHeight = useYAxis
+		? Math.max(300, Math.min(motifs.length * 80, 700))
+		: 300;
 	let width = $derived(svgWidth - padding.left - padding.right);
 	let height = $derived(svgHeight - padding.top - padding.bottom);
 
@@ -111,7 +112,7 @@
 	let xScale = $derived(
 		scaleLinear().domain([0, totalMusicalDuration]).range([0, width])
 	);
-	const midY = $derived(height * 0.8);
+	const midY = $derived(height * 0.9);
 	let yScale = $derived(
 		useYAxis
 			? scaleLinear()
@@ -145,7 +146,7 @@
 		const dx = Math.max(0, p2.x - p1.x);
 		if (dx === 0) return "";
 
-		const maxHeight = height * 0.9;
+		const maxHeight = useYAxis ? height * 0.5 : height * 0.9;
 		const h = Math.min(maxHeight, dx * curvature);
 		const dir = alternate ? (i % 2 === 0 ? -1 : 1) : -1;
 
@@ -179,6 +180,7 @@
 					stroke="var(--color-gray-400)"
 					stroke-width="1"
 					stroke-dasharray="4"
+					class:faded={audio.figureId && audio.figureId === id}
 				/>
 				<text
 					class="act-label"

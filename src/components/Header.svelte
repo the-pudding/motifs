@@ -1,9 +1,17 @@
 <script>
 	// shadow, plain, line, bubble
-	import wordmark from "$svg/pudding-playbill.svg";
+	import wordmark from "$svg/wordmark-bubble.svg";
 </script>
 
 <header>
+	<div class="wordmark">
+		<a href="https://pudding.cool" aria-label="The Pudding" target="_self"
+			>{@html wordmark}</a
+		>
+	</div>
+</header>
+
+<!-- <header>
 	<div class="border">
 		<div class="wordmark">
 			<a href="https://pudding.cool" aria-label="The Pudding" target="_self"
@@ -12,10 +20,27 @@
 			<div class="presents">Presents</div>
 		</div>
 	</div>
-</header>
+</header> -->
 
 <style>
-	header {
+	.wordmark {
+		max-width: 14em;
+		margin: 0 auto;
+		padding: 32px 0;
+		transform: rotate(-4deg);
+	}
+
+	.wordmark a {
+		border: none;
+		display: block;
+		color: var(--color-fg);
+	}
+
+	.wordmark a:hover {
+		background-color: transparent;
+	}
+
+	/* header {
 		padding: 1rem;
 		padding-top: 4rem;
 		display: flex;
@@ -51,5 +76,5 @@
 
 	.wordmark a:hover {
 		background-color: transparent;
-	}
+	} */
 </style>

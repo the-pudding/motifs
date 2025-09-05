@@ -37,6 +37,7 @@
 			color={motifColors[motifName]}
 			chartId={id}
 			motifId={_.kebabCase(motifName)}
+			emoji={motifs.find((m) => m.name === motifName).emoji}
 		/>
 	{/each}
 </div>
