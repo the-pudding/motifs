@@ -3,7 +3,7 @@
 	import { audioApi } from "$runes/audio.svelte.js";
 	import _ from "lodash";
 
-	let { id, motifs, musical, motifPoints, motifColors, midY } = $props();
+	let { id, transform, motifs, musical, motifPoints, motifColors } = $props();
 
 	const audio = audioApi();
 
@@ -14,7 +14,7 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="html-layer" onclick={onClick}>
+<div class="html-layer" onclick={onClick} style:transform>
 	{#each Object.keys(motifPoints) as motifName}
 		{@const i =
 			audio.figureId === id &&
@@ -22,6 +22,7 @@
 				? audio.motifData.motifI
 				: 0}
 		{@const left = motifPoints[motifName][i].x}
+		{@const top = motifPoints[motifName][i].y}
 		{@const tracks = motifs
 			.find((m) => m.name === motifName)
 			.regions.map((r) => ({
@@ -31,7 +32,7 @@
 			}))}
 		<Play
 			{tracks}
-			top={`${midY}px`}
+			top={`${top}px`}
 			left={`${left}px`}
 			color={motifColors[motifName]}
 			chartId={id}

@@ -70,4 +70,8 @@
 		font-weight: bold;
 		font-size: var(--32px);
 	}
+
+	:global(section#explore) {
+		margin-top: 8rem;
+	}
 </style>

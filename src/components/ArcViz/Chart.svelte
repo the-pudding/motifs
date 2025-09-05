@@ -10,6 +10,11 @@
 		motifs = [],
 		tracks = [],
 		alternate = false,
+		useYAxis = id !== "unlimited" &&
+			id !== "wicked" &&
+			id !== "lesmis" &&
+			id !== "hamilton" &&
+			id !== "explore",
 		interactive
 	} = $props();
 
@@ -83,7 +88,12 @@
 		}, {})
 	);
 
-	const height = 300;
+	const padding = { top: 40, right: 10, bottom: 0, left: 10 };
+	let svgWidth = $state();
+	const svgHeight = 300;
+	let width = $derived(svgWidth - padding.left - padding.right);
+	let height = $derived(svgHeight - padding.top - padding.bottom);
+
 	const curvature = 0.35;
 	const midpoint = $derived(tracks.find((d) => d.name.includes("2-01")).name);
 	const totalMusicalDuration = $derived(
@@ -98,18 +108,25 @@
 		return parts.join("") || "0m";
 	};
 
-	const midY = $derived(height * 0.8);
-	let width = $state();
 	let xScale = $derived(
 		scaleLinear().domain([0, totalMusicalDuration]).range([0, width])
 	);
+	const midY = $derived(height * 0.8);
+	let yScale = $derived(
+		useYAxis
+			? scaleLinear()
+					.domain([0, motifs.length - 1])
+					.range([midY, height * 0.2])
+			: () => midY
+	);
+
 	let motifPoints = $derived(
-		motifs.reduce((acc, motif) => {
+		motifs.reduce((acc, motif, motifI) => {
 			const pts = motif.regions
 				? motif.regions
 						.map((region) => ({
 							x: xScale(getFullTimestamp(region["track-name"], region.start)),
-							y: midY
+							y: yScale(motifI)
 						}))
 						.sort((a, b) => a.x - b.x)
 				: [];
@@ -133,7 +150,7 @@
 		const dir = alternate ? (i % 2 === 0 ? -1 : 1) : -1;
 
 		const cx = (p1.x + p2.x) / 2;
-		const cy = midY + dir * h;
+		const cy = p1.y + dir * h;
 
 		return `M ${p1.x},${p1.y} Q ${cx},${cy} ${p2.x},${p2.y}`;
 	};
@@ -141,94 +158,104 @@
 
 <div
 	class="chart-container"
-	style:height={`${height}px`}
-	bind:clientWidth={width}
+	style:height={`${svgHeight}px`}
+	bind:clientWidth={svgWidth}
 >
 	{#if width}
 		<svg>
-			<line
-				x1="0"
-				y1={midY}
-				x2="100%"
-				y2={midY}
-				stroke="var(--color-gray-400)"
-			/>
-			<line
-				x1={xScale(getFullTimestamp(midpoint, 0))}
-				y1="0%"
-				x2={xScale(getFullTimestamp(midpoint, 0))}
-				y2="100%"
-				stroke="var(--color-gray-400)"
-				stroke-width="1"
-				stroke-dasharray="4"
-			/>
-			<text
-				class="act-label"
-				class:faded={audio.figureId && audio.figureId === id}
-				x={xScale(getFullTimestamp(midpoint, 0)) + 10}
-				y={midY + 10}>Act 2 {"->"}</text
-			>
-			<text
-				class="act-label anchor-end"
-				class:faded={audio.figureId && audio.figureId === id}
-				x={xScale(getFullTimestamp(midpoint, 0)) - 10}
-				y={midY + 10}
-				>{"<-"} Act 1
-			</text>
+			<g style:transform={`translate(${padding.left}px, ${padding.top}px)`}>
+				<line
+					x1="0"
+					y1={midY}
+					x2="100%"
+					y2={midY}
+					stroke="var(--color-gray-400)"
+				/>
+				<line
+					x1={xScale(getFullTimestamp(midpoint, 0))}
+					y1="0%"
+					x2={xScale(getFullTimestamp(midpoint, 0))}
+					y2="100%"
+					stroke="var(--color-gray-400)"
+					stroke-width="1"
+					stroke-dasharray="4"
+				/>
+				<text
+					class="act-label"
+					class:faded={audio.figureId && audio.figureId === id}
+					x={xScale(getFullTimestamp(midpoint, 0)) + 10}
+					y={midY + 10}>Act 2 {"->"}</text
+				>
+				<text
+					class="act-label anchor-end"
+					class:faded={audio.figureId && audio.figureId === id}
+					x={xScale(getFullTimestamp(midpoint, 0)) - 10}
+					y={midY + 10}
+					>{"<-"} Act 1
+				</text>
 
-			<text
-				class="time-label"
-				class:faded={audio.figureId && audio.figureId === id}
-				x={xScale(0)}
-				y={midY + 10}>0h0m</text
-			>
-			<text
-				class="time-label anchor-end"
-				class:faded={audio.figureId && audio.figureId === id}
-				x={xScale(totalMusicalDuration)}
-				y={midY + 10}
-			>
-				{timeFormatter(totalMusicalDuration)}
-			</text>
+				<text
+					class="time-label"
+					class:faded={audio.figureId && audio.figureId === id}
+					x={xScale(0)}
+					y={midY + 10}>0h0m</text
+				>
+				<text
+					class="time-label anchor-end"
+					class:faded={audio.figureId && audio.figureId === id}
+					x={xScale(totalMusicalDuration)}
+					y={midY + 10}
+				>
+					{timeFormatter(totalMusicalDuration)}
+				</text>
 
-			{#if pointsReady}
-				{#each Object.entries(motifPoints) as [name, points]}
-					{#each points as p, i}
-						{@const motifId = `${_.kebabCase(name)}-${i}`}
-						{@const active =
-							audio.figureId &&
-							audio.figureId === id &&
-							audio.motifData.motifId === motifId}
-						{@const faded =
-							audio.figureId !== undefined &&
-							audio.figureId === id &&
-							!audio.motifData.motifId.includes(_.kebabCase(name))}
-						<circle
-							class:active
-							class:faded
-							cx={p.x}
-							cy={p.y}
-							r="4"
-							fill={motifColors[name]}
-						/>
-
-						{#if i < points.length - 1}
-							<path
+				{#if pointsReady}
+					{#each Object.entries(motifPoints) as [name, points]}
+						{#each points as p, i}
+							{@const motifId = `${_.kebabCase(name)}`}
+							{@const active =
+								audio.figureId &&
+								audio.figureId === id &&
+								audio.motifData.motifId === motifId &&
+								audio.motifData.motifI === i}
+							{@const faded =
+								audio.figureId !== undefined &&
+								audio.figureId === id &&
+								!audio.motifData.motifId.includes(_.kebabCase(name))}
+							<circle
+								class:active
 								class:faded
-								d={arcPath(points[i], points[i + 1], i)}
-								fill="none"
-								stroke={motifColors[name]}
-								stroke-width="1"
-								vector-effect="non-scaling-stroke"
+								cx={p.x}
+								cy={p.y}
+								r="4"
+								fill={motifColors[name]}
 							/>
-						{/if}
+
+							{#if i < points.length - 1}
+								<path
+									class:faded
+									d={arcPath(points[i], points[i + 1], i)}
+									fill="none"
+									stroke={motifColors[name]}
+									stroke-width="1"
+									vector-effect="non-scaling-stroke"
+								/>
+							{/if}
+						{/each}
 					{/each}
-				{/each}
-			{/if}
+				{/if}
+			</g>
 		</svg>
 
 		{#if interactive}
-			<Html {id} {musical} {motifPoints} {motifColors} {motifs} {midY} />
+			<Html
+				transform={`translate(${padding.left}px, ${padding.top}px)`}
+				{id}
+				{musical}
+				{motifPoints}
+				{motifColors}
+				{motifs}
+			/>
 		{/if}
 	{/if}
 </div>

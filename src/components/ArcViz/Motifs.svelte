@@ -1,11 +1,39 @@
 <script>
 	import _ from "lodash";
+	import { onMount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 
 	let { motifs, musical } = $props();
 	const audio = audioApi();
+	let smooth;
+	onMount(() => {
+		smooth = audio.subscribeSmooth();
+	});
+	onDestroy(() => smooth?.());
 
-	let selectedMotif = $state();
+	let selectedMotif = $state(motifs[0].name);
+	let percentsDone = $derived.by(() => {
+		if (!selectedMotif) return [];
+		const motif = motifs.find((m) => m.name === selectedMotif);
+		if (!motif) return [];
+		return motif.regions.map((region, i) => {
+			const src = `assets/audio/${musical}/${region["track-name"]}.mp3`;
+			const active = audio.src === src;
+			const time = active ? audio.smoothTime || audio.currentTime : 0;
+			const duration = audio.motifData
+				? audio.motifData.end - audio.motifData.start
+				: 0;
+			return time && duration
+				? ((time - audio.motifData.start) / duration) * 100
+				: 0;
+		});
+	});
+
+	const newMusical = () => {
+		selectedMotif = motifs[0].name;
+	};
+
+	$effect(() => newMusical(musical));
 
 	const playMotif = (e, region, i, motifId) => {
 		e.stopPropagation();
@@ -15,22 +43,28 @@
 		const end = region.end;
 		const motifI = i;
 
-		audio.load(src, {
-			figure: "explore",
-			motif: {
-				start,
-				end,
-				motifId,
-				motifI
-			}
-		});
-		audio.play();
+		if (audio.src === src) {
+			audio.pauseAndClear();
+		} else {
+			audio.load(src, {
+				figure: "explore",
+				motif: {
+					start,
+					end,
+					motifId,
+					motifI
+				}
+			});
+			audio.play();
+		}
 	};
 </script>
 
 <div class="motifs">
 	{#each motifs as motif}
 		{@const selected = selectedMotif && selectedMotif === motif.name}
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div
 			class="motif"
 			class:selected
@@ -49,7 +83,12 @@
 							class="instance"
 							onclick={(e) => playMotif(e, region, i, _.kebabCase(motif.name))}
 						>
-							{trackName}
+							<span>{trackName}</span>
+							<div
+								class="play-pause"
+								style:background-image={`url(assets/svg/play-circle.svg)`}
+							></div>
+							<div class="progress" style:width={`${percentsDone[i]}%`}></div>
 						</button>
 					{/each}
 				</div>
@@ -99,17 +138,45 @@
 	}
 
 	button.instance {
-		color: var(--color-fg);
-		background: var(--color-gray-800);
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		background: var(--color-gray-100);
+		color: var(--color-bg);
 		font-family: var(--mono);
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		font-weight: bold;
 		font-size: var(--14px);
+		transition: all calc(var(--1s) * 0.25) ease-in-out;
+	}
+
+	.play-pause {
+		display: inline-block;
+		width: 1.5em;
+		height: 1.5em;
+		margin-left: 0.25rem;
+		background-position: center;
+		background-size: 1.25rem;
+		background-repeat: no-repeat;
+		z-index: 2;
 	}
 
 	button.instance:hover {
-		cursor: pointer;
-		background: var(--color-gray-700);
+		background: var(--color-gray-300);
+		transform: translateY(-1px);
+		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
+	}
+
+	span {
+		z-index: 2;
+	}
+
+	.progress {
+		background: var(--color-playbill-yellow);
+		height: 100%;
+		border-radius: 0.25rem;
+		position: absolute;
+		left: 0;
 	}
 </style>

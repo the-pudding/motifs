@@ -35,7 +35,7 @@
 	<div
 		class="play-pause"
 		style:background-image={`url(assets/svg/play-circle.svg)`}
-	/>
+	></div>
 	<div class="progress" style:width={`${percentDone}%`}></div>
 </button>
 
