@@ -40,22 +40,35 @@
 		circumference - Math.max(0, Math.min(1, progress)) * circumference
 	);
 
+	const playRecursive = () => {
+		let playTrack = async () => {
+			if (i >= tracks.length) {
+				audio.pauseAndClear();
+				return;
+			}
+
+			audio.load(src, {
+				figure: chartId,
+				motif: { start, end: start + duration, motifId, motifI: i }
+			});
+
+			await audio.play();
+
+			if (!mePlaying) return;
+			i += 1;
+			await playTrack();
+		};
+
+		playTrack(i);
+	};
+
 	const onClick = (e) => {
 		e.stopPropagation();
 
 		if (mePlaying) {
 			audio.pauseAndClear();
 		} else {
-			audio.load(src, {
-				figure: chartId,
-				motif: {
-					start,
-					end: start + duration,
-					motifId: motifId,
-					motifI: i
-				}
-			});
-			audio.play();
+			playRecursive();
 		}
 	};
 
@@ -68,16 +81,7 @@
 			i = 0;
 		}
 
-		audio.load(src, {
-			figure: chartId,
-			motif: {
-				start,
-				end: start + duration,
-				motifId: motifId,
-				motifI: i
-			}
-		});
-		audio.play();
+		playRecursive();
 	};
 
 	const prev = (e) => {
@@ -89,17 +93,14 @@
 			i = tracks.length - 1;
 		}
 
-		audio.load(src, {
-			figure: chartId,
-			motif: {
-				start,
-				end: start + duration,
-				motifId: motifId,
-				motifI: i
-			}
-		});
-		audio.play();
+		playRecursive();
 	};
+
+	$effect(() => {
+		if (!mePlaying) {
+			i = 0;
+		}
+	});
 </script>
 
 <div

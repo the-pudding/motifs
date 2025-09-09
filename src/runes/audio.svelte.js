@@ -18,17 +18,13 @@ export function audioApi() {
 	const onMeta = () => {
 		duration = el?.duration || 0;
 
-		if (motifData && motifData.start) {
-			el.currentTime = motifData.start;
-			currentTime = el.currentTime || 0;
-		}
+		// if (motifData && motifData.start) {
+		// 	el.currentTime = motifData.start;
+		// 	currentTime = el.currentTime || 0;
+		// }
 	};
 	const onTime = () => {
 		currentTime = el?.currentTime || 0;
-
-		if (motifData && motifData.end && currentTime >= motifData.end) {
-			pauseAndClear();
-		}
 	};
 
 	const tick = () => {
@@ -90,8 +86,38 @@ export function audioApi() {
 	};
 
 	const play = () => {
-		el.play();
-		el.onended = clear;
+		return new Promise((resolve, reject) => {
+			if (motifData) {
+				el.currentTime = motifData.start;
+				currentTime = el.currentTime || 0;
+
+				const onTimeUpdate = () => {
+					if (motifData && el.currentTime >= motifData.end) {
+						el.pause();
+						el.removeEventListener("timeupdate", onTimeUpdate);
+						resolve();
+					}
+				};
+
+				el.addEventListener("timeupdate", onTimeUpdate);
+			} else {
+				const onEnded = () => {
+					el.removeEventListener("ended", onEnded);
+					clear();
+					resolve();
+				};
+				el.addEventListener("ended", onEnded);
+			}
+
+			const playPromise = el.play();
+			if (playPromise !== undefined) {
+				playPromise.catch((err) => {
+					el.removeEventListener("timeupdate", onTimeUpdate);
+					el.removeEventListener("ended", onEnded);
+					reject(err);
+				});
+			}
+		});
 	};
 
 	const pause = () => {
