@@ -174,9 +174,9 @@
 				/>
 				<line
 					x1={xScale(getFullTimestamp(midpoint, 0))}
-					y1="0%"
+					y1={0}
 					x2={xScale(getFullTimestamp(midpoint, 0))}
-					y2="100%"
+					y2={svgHeight - padding.top - padding.bottom}
 					stroke="var(--color-gray-400)"
 					stroke-width="1"
 					stroke-dasharray="4"
@@ -250,14 +250,7 @@
 		</svg>
 
 		{#if interactive}
-			<Html
-				transform={`translate(${padding.left}px, ${padding.top}px)`}
-				{id}
-				{musical}
-				{motifPoints}
-				{motifColors}
-				{motifs}
-			/>
+			<Html {id} {padding} {musical} {motifPoints} {motifColors} {motifs} />
 		{/if}
 	{/if}
 </div>

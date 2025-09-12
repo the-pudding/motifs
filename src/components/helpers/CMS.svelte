@@ -37,4 +37,8 @@
 	section {
 		margin: 5rem auto;
 	}
+
+	section:first-of-type {
+		margin-top: 2rem;
+	}
 </style>

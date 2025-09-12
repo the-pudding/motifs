@@ -1,14 +1,26 @@
 <script>
 	import ArcViz from "$components/ArcViz/ArcViz.svelte";
+	import lesMisMotifs from "$data/motifs/lesmis-motifs.json";
+	import wickedMotifs from "$data/motifs/wicked-motifs.json";
+	import hamiltonMotifs from "$data/motifs/hamilton-motifs.json";
 
-	let musical = $state("hamilton");
-	let character = $state();
-	let motif = $state();
 	let musicalOptions = [
 		{ label: "Hamilton", value: "hamilton" },
 		{ label: "Wicked", value: "wicked" },
 		{ label: "Les Misérables", value: "lesmis" }
 	];
+
+	let musical = $state("hamilton");
+	let character = $state();
+	let motif = $state();
+
+	let motifs = $derived(
+		musical === "hamilton"
+			? hamiltonMotifs
+			: musical === "wicked"
+				? wickedMotifs
+				: lesMisMotifs
+	);
 </script>
 
 <div class="filters">

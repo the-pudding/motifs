@@ -202,7 +202,7 @@
 		{musical}
 		motifs={dataMap[id].motifs}
 		tracks={dataMap[id].tracks}
-		interactive={interactive === true && id !== "explore"}
+		interactive={interactive === true}
 	/>
 
 	{#if id === "explore"}

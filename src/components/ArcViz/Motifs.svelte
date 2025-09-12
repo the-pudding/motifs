@@ -25,7 +25,7 @@
 				? audio.motifData.end - audio.motifData.start
 				: 0;
 			return time && duration
-				? ((time - audio.motifData.start) / duration) * 100
+				? Math.min(100, ((time - audio.motifData.start) / duration) * 100)
 				: 0;
 		});
 	});
@@ -62,7 +62,7 @@
 </script>
 
 <div class="motifs">
-	<div style="margin-bottom: 1rem">Instructions Tk</div>
+	<!-- <div style="margin-bottom: 1rem">Instructions Tk</div> -->
 
 	{#each motifs as motif}
 		{@const selected = selectedMotif && selectedMotif === motif.name}
@@ -107,6 +107,7 @@
 		gap: 0.2rem;
 		max-height: 350px;
 		overflow: scroll;
+		margin-top: 2rem;
 	}
 
 	.motif {

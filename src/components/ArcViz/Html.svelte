@@ -3,7 +3,7 @@
 	import { audioApi } from "$runes/audio.svelte.js";
 	import _ from "lodash";
 
-	let { id, transform, motifs, musical, motifPoints, motifColors } = $props();
+	let { id, padding, motifs, musical, motifPoints, motifColors } = $props();
 
 	const audio = audioApi();
 
@@ -14,7 +14,11 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="html-layer" onclick={onClick} style:transform>
+<div
+	class="html-layer"
+	onclick={onClick}
+	style:transform={`translate(${padding.left}px, ${padding.top}px)`}
+>
 	{#each Object.keys(motifPoints) as motifName}
 		{@const i =
 			audio.figureId === id &&
@@ -34,6 +38,7 @@
 			{tracks}
 			top={`${top}px`}
 			left={`${left}px`}
+			{padding}
 			color={motifColors[motifName]}
 			chartId={id}
 			motifId={_.kebabCase(motifName)}

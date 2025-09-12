@@ -7,7 +7,7 @@
 	import { onMount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 
-	let { tracks, top, left, color, chartId, motifId, emoji } = $props();
+	let { tracks, top, left, padding, color, chartId, motifId, emoji } = $props();
 
 	const audio = audioApi();
 	let smooth;
@@ -19,15 +19,16 @@
 	const stroke = 4;
 	const size = 48;
 
-	let i = $state(0);
-	let src = $derived(tracks[i]?.src || "");
-	let start = $derived(tracks[i]?.start || 0);
-	let duration = $derived(tracks[i] ? tracks[i].end - tracks[i].start : 0);
+	let start = $derived(audio.motifData?.start || 0);
+	let duration = $derived(
+		audio.motifData ? audio.motifData.end - audio.motifData.start : 0
+	);
 	let mePlaying = $derived(
 		audio.figureId === chartId &&
-			audio.src === src &&
+			audio.motifData &&
 			audio.motifData.motifId === motifId
 	);
+
 	let label = $derived(mePlaying ? "Pause" : "Play");
 	let progress = $derived(
 		duration && mePlaying
@@ -40,26 +41,35 @@
 		circumference - Math.max(0, Math.min(1, progress)) * circumference
 	);
 
-	const playRecursive = () => {
-		let playTrack = async () => {
-			if (i >= tracks.length) {
+	const playRecursive = (diff) => {
+		let playTrack = async (change) => {
+			const newI = audio.motifData?.motifI + change || 0;
+
+			if (newI >= tracks.length) {
 				audio.pauseAndClear();
 				return;
 			}
 
-			audio.load(src, {
+			const newSrc = tracks[newI]?.src;
+			const newStart = tracks[newI]?.start;
+			const newEnd = tracks[newI]?.end;
+
+			audio.load(newSrc, {
 				figure: chartId,
-				motif: { start, end: start + duration, motifId, motifI: i }
+				motif: {
+					start: newStart,
+					end: newEnd,
+					motifId,
+					motifI: newI || 0
+				}
 			});
 
 			await audio.play();
-
 			if (!mePlaying) return;
-			i += 1;
-			await playTrack();
+			await playTrack(1);
 		};
 
-		playTrack(i);
+		playTrack(diff);
 	};
 
 	const onClick = (e) => {
@@ -68,7 +78,7 @@
 		if (mePlaying) {
 			audio.pauseAndClear();
 		} else {
-			playRecursive();
+			playRecursive(0);
 		}
 	};
 
@@ -76,109 +86,108 @@
 		e.stopPropagation();
 
 		if (audio.motifData.motifI < tracks.length - 1) {
-			i += 1;
+			playRecursive(1);
 		} else {
-			i = 0;
+			playRecursive(0);
 		}
-
-		playRecursive();
 	};
 
 	const prev = (e) => {
 		e.stopPropagation();
 
 		if (audio.motifData.motifI > 0) {
-			i -= 1;
+			playRecursive(-1);
 		} else {
-			i = tracks.length - 1;
+			playRecursive(tracks.length - 1);
 		}
-
-		playRecursive();
 	};
-
-	$effect(() => {
-		if (!mePlaying) {
-			i = 0;
-		}
-	});
 </script>
 
 <div
-	class="play-container"
-	style:top
+	class="song-name"
+	class:visible={mePlaying}
 	style:left
-	style:active={mePlaying}
-	class:faded={audio.figureId === chartId && !mePlaying}
+	style:bottom={`${padding.top}px`}
 >
-	<div class="song-name" class:visible={mePlaying}>{audio.trackName}</div>
-
-	<div class="motif-name">
-		{_.startCase(motifId).toLowerCase()}
-		{emoji}
-	</div>
-	<div class="controls" style={`--color: ${color}`}>
-		<button
-			type="button"
-			class="advance"
-			class:visible={mePlaying}
-			onclick={prev}
-		>
-			{@html prevSvg}
-		</button>
-
-		<button
-			type="button"
-			class="pp"
-			aria-pressed={mePlaying}
-			aria-label={label}
-			aria-describedby="pp-progress"
-			onclick={onClick}
-			style={`--size:${size}px; --stroke:${stroke}px; --color: ${color}`}
-		>
-			<svg
-				class="pp-ring"
-				width={size}
-				height={size}
-				viewBox={`0 0 ${size} ${size}`}
-				role="img"
-				aria-hidden="true"
-			>
-				<circle
-					cx={size / 2}
-					cy={size / 2}
-					{r}
-					class="pp-track"
-					stroke-width={stroke}
-					fill="none"
-				/>
-				<circle
-					cx={size / 2}
-					cy={size / 2}
-					{r}
-					class="pp-progress"
-					stroke-width={stroke}
-					stroke-dasharray={circumference}
-					stroke-dashoffset={dashoffset}
-					stroke-linecap="round"
-					fill="none"
-				/>
-			</svg>
-
-			<span class="pp-face" aria-hidden="true">
-				{@html mePlaying ? pauseSvg : playSvg}
-			</span>
-		</button>
-
-		<button
-			type="button"
-			class="advance"
-			class:visible={mePlaying}
-			onclick={next}
-		>
-			{@html nextSvg}
-		</button>
-	</div>
+	{audio.trackName}
 </div>
+
+{#if chartId !== "explore"}
+	<div
+		class="play-container"
+		style:top
+		style:left
+		style:active={mePlaying}
+		class:faded={audio.figureId === chartId && !mePlaying}
+	>
+		<div class="motif-name">
+			{_.startCase(motifId).toLowerCase()}
+			{emoji}
+		</div>
+		<div class="controls" style={`--color: ${color}`}>
+			<button
+				type="button"
+				class="advance"
+				class:visible={mePlaying}
+				onclick={prev}
+			>
+				{@html prevSvg}
+			</button>
+
+			<button
+				type="button"
+				class="pp"
+				aria-pressed={mePlaying}
+				aria-label={label}
+				aria-describedby="pp-progress"
+				onclick={onClick}
+				style={`--size:${size}px; --stroke:${stroke}px; --color: ${color}`}
+			>
+				<svg
+					class="pp-ring"
+					width={size}
+					height={size}
+					viewBox={`0 0 ${size} ${size}`}
+					role="img"
+					aria-hidden="true"
+				>
+					<circle
+						cx={size / 2}
+						cy={size / 2}
+						{r}
+						class="pp-track"
+						stroke-width={stroke}
+						fill="none"
+					/>
+					<circle
+						cx={size / 2}
+						cy={size / 2}
+						{r}
+						class="pp-progress"
+						stroke-width={stroke}
+						stroke-dasharray={circumference}
+						stroke-dashoffset={dashoffset}
+						stroke-linecap="round"
+						fill="none"
+					/>
+				</svg>
+
+				<span class="pp-face" aria-hidden="true">
+					{@html mePlaying ? pauseSvg : playSvg}
+				</span>
+			</button>
+
+			<button
+				type="button"
+				class="advance"
+				class:visible={mePlaying}
+				onclick={next}
+			>
+				{@html nextSvg}
+			</button>
+		</div>
+	</div>
+{/if}
 
 <style>
 	.play-container {
@@ -200,9 +209,7 @@
 
 	.song-name {
 		position: absolute;
-		top: 100%;
-		left: 50%;
-		transform: translate(-50%, 100%);
+		transform: translate(-50%, 4px);
 		white-space: nowrap;
 		opacity: 0;
 		transition: opacity 0.2s ease-in-out;
