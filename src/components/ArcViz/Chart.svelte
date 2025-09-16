@@ -18,6 +18,8 @@
 		interactive
 	} = $props();
 
+	$inspect({ motifs });
+
 	const audio = audioApi();
 
 	const getFullTimestamp = (trackName, timestamp) => {
