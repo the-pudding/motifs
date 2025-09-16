@@ -2,9 +2,8 @@
 	import _ from "lodash";
 	import { onMount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
-	import copy from "$data/copy.json";
 
-	let { motifs, musical } = $props();
+	let { motifs, musical, character } = $props();
 	const audio = audioApi();
 	let smooth;
 	onMount(() => {
@@ -13,6 +12,15 @@
 	onDestroy(() => smooth?.());
 
 	let selectedMotif = $state(motifs[0].name);
+	let filteredMotifs = $derived(
+		character.includes("All characters")
+			? motifs
+			: motifs.filter((d) =>
+					d.regions.some(
+						(r) => _.intersection(r.character, character).length > 0
+					)
+				)
+	);
 	let percentsDone = $derived.by(() => {
 		if (!selectedMotif) return [];
 		const motif = motifs.find((m) => m.name === selectedMotif);
@@ -29,12 +37,6 @@
 				: 0;
 		});
 	});
-
-	const newMusical = () => {
-		selectedMotif = motifs[0].name;
-	};
-
-	$effect(() => newMusical(musical));
 
 	const playMotif = (e, region, i, motifId) => {
 		e.stopPropagation();
@@ -59,12 +61,18 @@
 			audio.play();
 		}
 	};
+
+	const filterUpdate = () => {
+		selectedMotif = filteredMotifs[0].name;
+	};
+
+	$effect(() => filterUpdate(musical, character));
 </script>
 
 <div class="motifs">
 	<!-- <div style="margin-bottom: 1rem">Instructions Tk</div> -->
 
-	{#each motifs as motif}
+	{#each filteredMotifs as motif}
 		{@const selected = selectedMotif && selectedMotif === motif.name}
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -82,9 +90,13 @@
 							.replace(/_/g, " ")
 							.replace(/^\d+-\d+ /, "")
 							.replace(/\.mp3$/, "")}
+						{@const hasCharacter =
+							(character && region.character.includes(character[0])) ||
+							character.includes("All characters")}
 						<button
 							class="instance"
 							onclick={(e) => playMotif(e, region, i, _.kebabCase(motif.name))}
+							disabled={!hasCharacter}
 						>
 							<span>{trackName}</span>
 							<div
@@ -115,12 +127,15 @@
 	}
 
 	.name {
-		font-size: var(--14px);
+		font-family: var(--mono);
+		color: var(--color-gray-300);
 		text-transform: uppercase;
 	}
 
 	.selected .name {
-		font-size: var(--20px);
+		color: var(--color-white);
+		font-size: var(--24px);
+		font-weight: bold;
 		margin-bottom: 1rem;
 	}
 
@@ -147,9 +162,7 @@
 		align-items: center;
 		background: var(--color-gray-100);
 		color: var(--color-bg);
-		font-family: var(--mono);
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
 		font-weight: bold;
 		font-size: var(--14px);
 		transition: all calc(var(--1s) * 0.25) ease-in-out;
@@ -166,7 +179,7 @@
 		z-index: 2;
 	}
 
-	button.instance:hover {
+	button.instance:hover:not(:disabled) {
 		background: var(--color-gray-300);
 		transform: translateY(-1px);
 		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
