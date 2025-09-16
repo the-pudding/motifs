@@ -7,6 +7,7 @@
 	let {
 		id,
 		musical,
+		character,
 		motifs = [],
 		tracks = [],
 		alternate = false,
@@ -94,6 +95,15 @@
 		: 300;
 	let width = $derived(svgWidth - padding.left - padding.right);
 	let height = $derived(svgHeight - padding.top - padding.bottom);
+	let filteredMotifNamesByCharacter = $derived(
+		!character || character.includes("All characters")
+			? motifs.map((d) => d.name)
+			: motifs
+					.filter((d) =>
+						d.regions.some((r) => r?.character?.includes(character))
+					)
+					.map((d) => d.name)
+	);
 
 	const curvature = 0.35;
 	const midpoint = $derived(tracks.find((d) => d.name.includes("2-01")).name);
@@ -221,9 +231,10 @@
 								audio.motifData.motifId === motifId &&
 								audio.motifData.motifI === i}
 							{@const faded =
-								audio.figureId !== undefined &&
-								audio.figureId === id &&
-								!audio.motifData.motifId.includes(_.kebabCase(name))}
+								(audio.figureId !== undefined &&
+									audio.figureId === id &&
+									!audio.motifData.motifId.includes(_.kebabCase(name))) ||
+								!filteredMotifNamesByCharacter.includes(name)}
 							<circle
 								class:active
 								class:faded

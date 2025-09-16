@@ -12,8 +12,7 @@
 	];
 
 	let musical = $state("hamilton");
-	let character = $state(["All characters"]);
-	let motif = $state();
+	let character = $state("All characters");
 
 	let motifs = $derived(
 		musical === "hamilton"
@@ -36,8 +35,14 @@
 	]);
 
 	const reset = () => {
-		character = ["All characters"];
+		character = "All characters";
 	};
+
+	const newMusical = () => {
+		character = "All characters";
+	};
+
+	$effect(() => newMusical(musical));
 </script>
 
 <div class="filters">
@@ -56,12 +61,12 @@
 
 	<div class="select-wrapper">
 		<label for="character-select">Filter by Character</label>
-		<select bind:value={character[0]} id="character-select">
+		<select bind:value={character} id="character-select">
 			{#each characterOptions as option}
 				<option
 					value={option}
 					selected={character.includes(option)}
-					onclick={() => (character = [option.value])}
+					onclick={() => (character = option.value)}
 					>{_.startCase(option)}</option
 				>
 			{/each}

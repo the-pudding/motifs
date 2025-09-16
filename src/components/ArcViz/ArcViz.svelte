@@ -200,6 +200,7 @@
 	<Chart
 		{id}
 		{musical}
+		{character}
 		motifs={dataMap[id].motifs}
 		tracks={dataMap[id].tracks}
 		interactive={interactive === true}

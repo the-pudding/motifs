@@ -13,12 +13,10 @@
 
 	let selectedMotif = $state(motifs[0].name);
 	let filteredMotifs = $derived(
-		character.includes("All characters")
+		character === "All characters"
 			? motifs
 			: motifs.filter((d) =>
-					d.regions.some(
-						(r) => _.intersection(r.character, character).length > 0
-					)
+					d.regions.some((r) => r?.character?.includes(character))
 				)
 	);
 	let percentsDone = $derived.by(() => {
@@ -91,8 +89,8 @@
 							.replace(/^\d+-\d+ /, "")
 							.replace(/\.mp3$/, "")}
 						{@const hasCharacter =
-							(character && region.character.includes(character[0])) ||
-							character.includes("All characters")}
+							(character && region.character.includes(character)) ||
+							character === "All characters"}
 						<button
 							class="instance"
 							onclick={(e) => playMotif(e, region, i, _.kebabCase(motif.name))}
