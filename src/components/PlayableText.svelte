@@ -11,6 +11,7 @@
 	});
 	onDestroy(() => smooth?.());
 
+	let isPlaying = $derived(audio.src === `assets/audio/${src}`);
 	let percentDone = $derived.by(() => {
 		const active = audio.src === `assets/audio/${src}`;
 		const time = active ? audio.smoothTime || audio.currentTime : 0;
@@ -34,7 +35,7 @@
 	<span>{text}</span>
 	<div
 		class="play-pause"
-		style:background-image={`url(assets/svg/play-circle.svg)`}
+		style:background-image={`url(assets/svg/${isPlaying ? "pause" : "play"}-circle.svg)`}
 	></div>
 	<div class="progress" style:width={`${percentDone}%`}></div>
 </button>
