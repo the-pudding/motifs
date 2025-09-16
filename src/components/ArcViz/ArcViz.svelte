@@ -10,7 +10,7 @@
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
 
-	let { id, title, musical, character, notes, interactive = true } = $props();
+	let { id, title, musical, character, notes } = $props();
 
 	const audio = audioApi();
 
@@ -92,7 +92,7 @@
 					(d) =>
 						d.name === "jvj 1" ||
 						d.name === "jvj 2" ||
-						d.name === "master of the house" ||
+						d.name === "thenardier waltz" ||
 						d.name === "cosette"
 				)
 			),
@@ -208,7 +208,6 @@
 		{character}
 		motifs={dataMap[id].motifs}
 		tracks={dataMap[id].tracks}
-		interactive={interactive === true}
 	/>
 
 	{#if id === "explore"}

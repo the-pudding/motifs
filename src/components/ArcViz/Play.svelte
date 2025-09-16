@@ -230,6 +230,8 @@
 		font-size: var(--14px);
 		letter-spacing: 0.05em;
 		text-transform: uppercase;
+		background: var(--color-gray-900);
+		padding: 2px 6px;
 	}
 
 	.pp {

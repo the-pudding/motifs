@@ -14,11 +14,8 @@
 		useYAxis = id !== "unlimited" &&
 			id !== "lesmis" &&
 			id !== "hamilton" &&
-			id !== "explore",
-		interactive
+			id !== "explore"
 	} = $props();
-
-	$inspect({ motifs });
 
 	const audio = audioApi();
 
@@ -262,9 +259,7 @@
 			</g>
 		</svg>
 
-		{#if interactive}
-			<Html {id} {padding} {musical} {motifPoints} {motifColors} {motifs} />
-		{/if}
+		<Html {id} {padding} {musical} {motifPoints} {motifColors} {motifs} />
 	{/if}
 </div>
 

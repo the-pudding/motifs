@@ -7,6 +7,13 @@
 
 	const audio = audioApi();
 
+	const lesMisPlayable = [
+		"god on high",
+		"on my own",
+		"police 1",
+		"the people 1"
+	];
+
 	const onClick = () => {
 		audio.pauseAndClear();
 	};
@@ -26,7 +33,10 @@
 				? audio.motifData.motifI
 				: 0}
 		{@const left = motifPoints[motifName][i].x}
-		{@const top = motifPoints[motifName][i].y}
+		{@const top =
+			id === "lesmis"
+				? motifPoints[motifName][i].y
+				: motifPoints[motifName][i].y}
 		{@const tracks = motifs
 			.find((m) => m.name === motifName)
 			.regions.map((r) => ({
@@ -34,16 +44,18 @@
 				end: r.end,
 				src: `assets/audio/${musical}/${r["track-name"]}.mp3`
 			}))}
-		<Play
-			{tracks}
-			top={`${top}px`}
-			left={`${left}px`}
-			{padding}
-			color={motifColors[motifName]}
-			chartId={id}
-			motifId={_.kebabCase(motifName)}
-			emoji={motifs.find((m) => m.name === motifName).emoji}
-		/>
+		{#if id !== "lesmis" || lesMisPlayable.includes(motifName)}
+			<Play
+				{tracks}
+				top={`${top}px`}
+				left={`${left}px`}
+				{padding}
+				color={motifColors[motifName]}
+				chartId={id}
+				motifId={_.kebabCase(motifName)}
+				emoji={motifs.find((m) => m.name === motifName).emoji}
+			/>
+		{/if}
 	{/each}
 </div>
 
