@@ -1,8 +1,9 @@
 <script>
+	import ArcViz from "$components/ArcViz/ArcViz.svelte";
 	let { hed, dek, byline } = $props();
 </script>
 
-<section class="headline">
+<div id="headline">
 	<h1>{hed}</h1>
 	{#if dek}
 		<h2>{dek}</h2>
@@ -10,11 +11,16 @@
 	{#if byline}
 		<p class="byline">{@html byline}</p>
 	{/if}
-</section>
+
+	<div class="viz">
+		<ArcViz id="headline" musical="les mis" />
+	</div>
+</div>
 
 <style>
 	h1 {
 		font-weight: bold;
+		font-size: 90px;
 	}
 
 	h2 {
@@ -22,9 +28,19 @@
 		font-size: var(--24px);
 	}
 
-	section {
+	#headline {
+		position: relative;
 		text-align: center;
-		max-width: 700px;
-		margin: 10rem auto 5rem auto;
+		max-width: 1000px;
+		height: 300px;
+		margin: 8rem auto 4rem auto;
+	}
+
+	.viz {
+		position: absolute;
+		top: 0;
+		width: 100%;
+		max-height: 100%;
+		opacity: 0.2;
 	}
 </style>

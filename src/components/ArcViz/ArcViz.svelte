@@ -86,6 +86,10 @@
 			motifs: sortMotifRegions(hamiltonMotifs),
 			tracks: hamiltonTracks
 		},
+		headline: {
+			motifs: sortMotifRegions(hamiltonMotifs),
+			tracks: hamiltonTracks
+		},
 		"character-motif": {
 			motifs: sortMotifRegions(
 				lesMisMotifs.filter(
@@ -222,6 +226,11 @@
 		max-width: 1000px;
 		margin: 3rem auto;
 		padding: 1rem 2rem;
+	}
+
+	:global(#headline figure) {
+		background: none;
+		margin: 0 auto;
 	}
 
 	h3 {

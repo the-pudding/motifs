@@ -12,6 +12,7 @@
 		tracks = [],
 		alternate = false,
 		useYAxis = id !== "unlimited" &&
+			id !== "headline" &&
 			id !== "lesmis" &&
 			id !== "hamilton" &&
 			id !== "explore"
@@ -259,7 +260,9 @@
 			</g>
 		</svg>
 
-		<Html {id} {padding} {musical} {motifPoints} {motifColors} {motifs} />
+		{#if id !== "headline"}
+			<Html {id} {padding} {musical} {motifPoints} {motifColors} {motifs} />
+		{/if}
 	{/if}
 </div>
 
@@ -288,6 +291,10 @@
 	text.time-label {
 		text-anchor: start;
 		alignment-baseline: before-edge;
+	}
+
+	:global(#headline text, #headline line) {
+		display: none;
 	}
 
 	text.anchor-end {

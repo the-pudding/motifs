@@ -11,7 +11,7 @@
 		"god on high",
 		"on my own",
 		"police 1",
-		"the people 1"
+		"the people 2"
 	];
 
 	const onClick = () => {
