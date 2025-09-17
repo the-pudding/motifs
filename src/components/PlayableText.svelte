@@ -1,6 +1,7 @@
 <script>
 	import { onMount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
+	import { unlimited } from "$runes/misc.svelte.js";
 
 	let { id, src, text } = $props();
 
@@ -18,7 +19,7 @@
 		return audio.duration ? (time / audio.duration) * 100 : 0;
 	});
 
-	const onClick = (e) => {
+	const onClick = async (e) => {
 		e.stopPropagation();
 		if (!audio.ready || !src) return;
 
@@ -26,7 +27,13 @@
 			audio.pauseAndClear();
 		} else {
 			audio.load(`assets/audio/${src}`, { name: text, figure: id });
-			audio.play();
+
+			if (id === "playable-0") {
+				await audio.play();
+				unlimited.isClicked = true;
+			} else {
+				audio.play();
+			}
 		}
 	};
 </script>

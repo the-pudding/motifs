@@ -41,6 +41,9 @@
 		},
 		"playbill-yellow": {
 			"value": "#FDE300"
+		},
+		"wicked-green": {
+			"value": "#AAD04D"
 		}
 	}
 }

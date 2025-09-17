@@ -11,6 +11,7 @@
 	import Carousel from "$components/Carousel.svelte";
 	import { onMount, mount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
+	import { unlimited } from "$runes/misc.svelte.js";
 
 	const { body } = copy;
 	const components = { Headline, Piano, ArcViz, Carousel, Explore, Image };
@@ -19,6 +20,13 @@
 	let audioEl;
 
 	const onClick = () => {
+		if (
+			audio.src === "assets/audio/intro/unlimited.mp3" &&
+			!unlimited.isClicked
+		) {
+			unlimited.isClicked = true;
+		}
+
 		audio.pauseAndClear();
 	};
 
@@ -42,7 +50,7 @@
 	onDestroy(() => audio.destroy());
 </script>
 
-<article onclick={onClick}>
+<article onclick={onClick} class:unlimited-clicked={unlimited.isClicked}>
 	<CMS {components} {body} />
 </article>
 
@@ -86,5 +94,33 @@
 
 	:global(section#explore) {
 		margin-top: 8rem;
+	}
+
+	:global(p.spotlight) {
+		text-align: center;
+		margin-bottom: 5rem;
+	}
+
+	:global(article section *) {
+		opacity: 0;
+	}
+
+	:global(article.unlimited-clicked section *) {
+		opacity: 1;
+		transition: opacity calc(var(--1s) * 0.5) ease-in-out;
+	}
+
+	:global(main) {
+		height: calc(100vh - 102.08px);
+		overflow: hidden;
+	}
+
+	:global(main:has(> article.unlimited-clicked)) {
+		height: auto;
+		overflow: visible;
+	}
+
+	:global(#intro p:first-of-type, #intro p:first-of-type *) {
+		opacity: 1;
 	}
 </style>

@@ -83,7 +83,10 @@
 	]);
 	const motifColors = $derived(
 		motifs.reduce((acc, motif, i) => {
-			acc[motif.name] = colorPalette[i % colorPalette.length];
+			if (motif.name === "unlimited")
+				acc[motif.name] = "var(--color-wicked-green)";
+			else acc[motif.name] = colorPalette[i % colorPalette.length];
+
 			return acc;
 		}, {})
 	);
