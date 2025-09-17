@@ -3,7 +3,7 @@
 	let { hed, dek, byline } = $props();
 </script>
 
-<div id="headline">
+<div id="headline-wrapper">
 	<h1>{hed}</h1>
 	{#if dek}
 		<h2>{dek}</h2>
@@ -13,7 +13,7 @@
 	{/if}
 
 	<div class="viz">
-		<ArcViz id="headline" musical="les mis" />
+		<ArcViz id="headline" musical="les mis" animate={true} />
 	</div>
 </div>
 
@@ -28,7 +28,7 @@
 		font-size: var(--24px);
 	}
 
-	#headline {
+	#headline-wrapper {
 		position: relative;
 		text-align: center;
 		max-width: 1000px;

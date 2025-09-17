@@ -122,7 +122,7 @@
 	>
 		<div class="motif-name">
 			{_.startCase(motifId).toLowerCase()}
-			{emoji}
+			{emoji} ({color})
 		</div>
 		<div class="controls" style={`--color: ${color}`}>
 			<button

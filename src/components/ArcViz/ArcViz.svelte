@@ -10,7 +10,7 @@
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
 
-	let { id, title, musical, character, notes } = $props();
+	let { id, title, musical, character, animate, notes } = $props();
 
 	const audio = audioApi();
 
@@ -210,6 +210,7 @@
 		{id}
 		{musical}
 		{character}
+		{animate}
 		motifs={dataMap[id].motifs}
 		tracks={dataMap[id].tracks}
 	/>
@@ -228,7 +229,7 @@
 		padding: 1rem 2rem;
 	}
 
-	:global(#headline figure) {
+	:global(figure#headline) {
 		background: none;
 		margin: 0 auto;
 	}

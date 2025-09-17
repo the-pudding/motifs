@@ -3,6 +3,7 @@
 	import { scaleLinear } from "d3-scale";
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
+	import { onMount } from "svelte";
 
 	let {
 		id,
@@ -11,6 +12,7 @@
 		motifs = [],
 		tracks = [],
 		alternate = false,
+		animate = false,
 		useYAxis = id !== "unlimited" &&
 			id !== "headline" &&
 			id !== "lesmis" &&
@@ -29,58 +31,45 @@
 		return trackStart + timestamp;
 	};
 
-	const colorPalette = _.shuffle([
-		"#e6194b",
-		"#3cb44b",
-		"#ffe119",
-		"#4363d8",
-		"#f58231",
-		"#911eb4",
-		"#46f0f0",
-		"#f032e6",
-		"#bcf60c",
-		"#fabebe",
-		"#008080",
-		"#e6beff",
-		"#9a6324",
-		"#fffac8",
-		"#800000",
-		"#aaffc3",
-		"#808000",
-		"#ffd8b1",
-		"#000075",
-		"#808080",
-		"#ff4500",
+	const colorPalette = [
 		"#32cd32",
+		"#40e0d0",
+		"#b8860b",
+		"#ffd8b1",
 		"#1e90ff",
-		"#ff69b4",
-		"#8b4513",
-		"#00ced1",
-		"#ff6347",
+		"#dc143c",
 		"#7cfc00",
 		"#ba55d3",
-		"#ffb6c1",
-		"#20b2aa",
-		"#ff00ff",
-		"#adff2f",
-		"#0000cd",
-		"#ffa500",
-		"#4b0082",
-		"#40e0d0",
-		"#b22222",
-		"#8a2be2",
-		"#deb887",
-		"#5f9ea0",
-		"#d2691e",
+		"#f032e6",
+		"#aaffc3",
 		"#6495ed",
-		"#dc143c",
+		"#ffa500",
+		"#bcf60c",
+		"#e6beff",
+		"#ff00ff",
+		"#46f0f0",
+		"#ffb6c1",
+		"#adff2f",
+		"#5f9ea0",
+		"#f58231",
+		"#fabebe",
+		"#20b2aa",
 		"#2e8b57",
 		"#ff1493",
-		"#7fffd4",
-		"#b8860b",
+		"#ff69b4",
+		"#deb887",
+		"#9a6324",
+		"#3cb44b",
+		"#ff4500",
+		"#00ced1",
 		"#c71585",
-		"#6a5acd"
-	]);
+		"#d2691e",
+		"#ff6347",
+		"#e6194b",
+		"#fffac8",
+		"#ffe119",
+		"#7fffd4"
+	];
 	const motifColors = $derived(
 		motifs.reduce((acc, motif, i) => {
 			if (motif.name === "unlimited")
@@ -90,6 +79,8 @@
 			return acc;
 		}, {})
 	);
+
+	$inspect(colorPalette);
 
 	const padding = { top: 40, right: 10, bottom: 0, left: 10 };
 	let svgWidth = $state();
@@ -133,7 +124,6 @@
 					.range([midY, height * 0.2])
 			: () => midY
 	);
-
 	let motifPoints = $derived(
 		motifs.reduce((acc, motif, motifI) => {
 			const pts = motif.regions
@@ -155,6 +145,17 @@
 		)
 	);
 
+	let pathEls = $state([]);
+	let pathOffset = $derived(
+		Object.keys(motifPoints).reduce((acc, name, i) => {
+			const prev = Object.keys(motifPoints)
+				.slice(0, i)
+				.reduce((sum, n) => sum + Math.max(0, motifPoints[n].length - 1), 0);
+			acc[name] = prev;
+			return acc;
+		}, {})
+	);
+
 	const arcPath = (p1, p2, i) => {
 		const dx = Math.max(0, p2.x - p1.x);
 		if (dx === 0) return "";
@@ -168,6 +169,23 @@
 
 		return `M ${p1.x},${p1.y} Q ${cx},${cy} ${p2.x},${p2.y}`;
 	};
+
+	const speed = 160;
+	const stagger = 1;
+	const perPathDuration = 2.5;
+
+	$effect(() => {
+		if (animate && pathEls.length) {
+			console.log("setup");
+			pathEls.forEach((el) => {
+				const length = el.getTotalLength();
+				el.style.strokeDasharray = length;
+				el.style.strokeDashoffset = length;
+				el.style.setProperty("--len", length);
+				el.style.animationDuration = `${length / speed}s`;
+			});
+		}
+	});
 </script>
 
 <div
@@ -226,7 +244,8 @@
 
 				{#if pointsReady}
 					{#each Object.entries(motifPoints) as [name, points]}
-						{#each points as p, i}
+						{#each points as p, i (`${_.kebabCase(name)}-${i}`)}
+							{@const pathI = pathOffset[name] + i}
 							{@const motifId = `${_.kebabCase(name)}`}
 							{@const active =
 								audio.figureId &&
@@ -248,14 +267,26 @@
 							/>
 
 							{#if i < points.length - 1}
-								<path
-									class:faded
-									d={arcPath(points[i], points[i + 1], i)}
-									fill="none"
-									stroke={motifColors[name]}
-									stroke-width="1"
-									vector-effect="non-scaling-stroke"
-								/>
+								{#if animate}
+									<path
+										bind:this={pathEls[pathI]}
+										style={`--i:${i}; animation-delay:${i * stagger}s; animation-duration:${perPathDuration}s;`}
+										class:draw={animate}
+										class:faded
+										d={arcPath(points[i], points[i + 1], i)}
+										fill="none"
+										stroke={motifColors[name]}
+										stroke-width="1"
+									/>
+								{:else}
+									<path
+										class:faded
+										d={arcPath(points[i], points[i + 1], i)}
+										fill="none"
+										stroke={motifColors[name]}
+										stroke-width="1"
+									/>
+								{/if}
 							{/if}
 						{/each}
 					{/each}
@@ -316,5 +347,23 @@
 
 	.faded {
 		opacity: 0.1;
+	}
+
+	@keyframes drawline {
+		from {
+			stroke-dashoffset: var(--len);
+		}
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+
+	path.draw {
+		animation-name: drawline;
+		animation-timing-function: linear;
+		animation-iteration-count: infinite;
+		animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+		animation-direction: alternate;
+		will-change: stroke-dashoffset;
 	}
 </style>
