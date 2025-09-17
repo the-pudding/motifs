@@ -37,17 +37,17 @@
 		max-width: 700px;
 		margin: 3rem auto;
 		transform: translate(0, 0);
-		transition: transform 0.2s ease !important;
-	}
-
-	details:hover {
-		cursor: pointer;
-		transform: translate(0.1rem, 0);
 	}
 
 	summary {
 		font-size: var(--12px);
 		margin-bottom: 1rem;
+		transition: transform 0.2s ease !important;
+	}
+
+	summary:hover {
+		cursor: pointer;
+		transform: translate(0.1rem, 0);
 	}
 
 	figure {
