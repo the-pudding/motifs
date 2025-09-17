@@ -80,13 +80,11 @@
 		}, {})
 	);
 
-	$inspect(colorPalette);
-
-	const padding = { top: 40, right: 10, bottom: 0, left: 10 };
+	const padding = { top: 70, right: 10, bottom: 0, left: 10 };
 	let svgWidth = $state();
-	const svgHeight = useYAxis
-		? Math.max(300, Math.min(motifs.length * 80, 700))
-		: 300;
+	const svgHeight = $derived(
+		useYAxis ? Math.max(300, Math.min(motifs.length * 80, 650)) : 300
+	);
 	let width = $derived(svgWidth - padding.left - padding.right);
 	let height = $derived(svgHeight - padding.top - padding.bottom);
 	let filteredMotifNamesByCharacter = $derived(
@@ -121,9 +119,10 @@
 		useYAxis
 			? scaleLinear()
 					.domain([0, motifs.length - 1])
-					.range([midY, height * 0.2])
+					.range([midY, 0])
 			: () => midY
 	);
+
 	let motifPoints = $derived(
 		motifs.reduce((acc, motif, motifI) => {
 			const pts = motif.regions
@@ -141,7 +140,7 @@
 	);
 	let pointsReady = $derived(
 		Object.values(motifPoints).every((points) =>
-			points.every((p) => p.x && p.y)
+			points.every((p) => p.x != null && p.y != null)
 		)
 	);
 
@@ -176,7 +175,6 @@
 
 	$effect(() => {
 		if (animate && pathEls.length) {
-			console.log("setup");
 			pathEls.forEach((el) => {
 				const length = el.getTotalLength();
 				el.style.strokeDasharray = length;
@@ -262,7 +260,6 @@
 								class:faded
 								cx={p.x}
 								cy={p.y}
-								r="4"
 								fill={motifColors[name]}
 							/>
 
@@ -336,6 +333,7 @@
 	}
 
 	circle {
+		r: 4;
 		transition:
 			r 0.2s ease-in-out,
 			opacity 0.2s ease-in-out;

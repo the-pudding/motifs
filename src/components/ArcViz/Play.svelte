@@ -7,7 +7,17 @@
 	import { onMount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 
-	let { tracks, top, left, padding, color, chartId, motifId, emoji } = $props();
+	let {
+		tracks,
+		top,
+		left,
+		padding,
+		color,
+		chartId,
+		motifId,
+		emoji,
+		actOfFirstOccurence
+	} = $props();
 
 	const audio = audioApi();
 	let smooth;
@@ -27,6 +37,9 @@
 		audio.figureId === chartId &&
 			audio.motifData &&
 			audio.motifData.motifId === motifId
+	);
+	let motifLabelCentered = $derived(
+		mePlaying || chartId === "unlimited" || chartId === "lesmis"
 	);
 
 	let label = $derived(mePlaying ? "Pause" : "Play");
@@ -120,9 +133,14 @@
 		style:active={mePlaying}
 		class:faded={audio.figureId === chartId && !mePlaying}
 	>
-		<div class="motif-name">
+		<div
+			class="motif-name"
+			class:centered={motifLabelCentered}
+			class:left={!motifLabelCentered && actOfFirstOccurence === 2}
+			class:right={!motifLabelCentered && actOfFirstOccurence === 1}
+		>
 			{_.startCase(motifId).toLowerCase()}
-			{emoji} ({color})
+			{emoji}
 		</div>
 		<div class="controls" style={`--color: ${color}`}>
 			<button
@@ -222,9 +240,6 @@
 
 	.motif-name {
 		position: absolute;
-		top: 0;
-		left: 50%;
-		transform: translate(-40%, calc(-100% - 6px));
 		white-space: nowrap;
 		font-family: var(--mono);
 		font-size: var(--14px);
@@ -232,6 +247,24 @@
 		text-transform: uppercase;
 		background: var(--color-gray-900);
 		padding: 2px 6px;
+	}
+
+	.motif-name.left {
+		top: 50%;
+		right: 75%;
+		transform: translate(0, -50%);
+	}
+
+	.motif-name.right {
+		top: 50%;
+		left: 75%;
+		transform: translate(0, -50%);
+	}
+
+	.motif-name.centered {
+		top: 0;
+		left: 50%;
+		transform: translate(-40%, calc(-100% - 6px));
 	}
 
 	.pp {

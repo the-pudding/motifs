@@ -101,11 +101,11 @@
 		margin-bottom: 5rem;
 	}
 
-	:global(article section *) {
+	:global(article section > *) {
 		opacity: 0;
 	}
 
-	:global(article.unlimited-clicked section *) {
+	:global(article.unlimited-clicked section > *) {
 		opacity: 1;
 		transition: opacity calc(var(--1s) * 0.5) ease-in-out;
 	}

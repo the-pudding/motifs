@@ -37,6 +37,8 @@
 			id === "lesmis"
 				? motifPoints[motifName][i].y
 				: motifPoints[motifName][i].y}
+		{@const actOfFirstOccurence = +motifs.find((m) => m.name === motifName)
+			.regions[0]["track-name"][0]}
 		{@const tracks = motifs
 			.find((m) => m.name === motifName)
 			.regions.map((r) => ({
@@ -54,6 +56,7 @@
 				chartId={id}
 				motifId={_.kebabCase(motifName)}
 				emoji={motifs.find((m) => m.name === motifName).emoji}
+				{actOfFirstOccurence}
 			/>
 		{/if}
 	{/each}
