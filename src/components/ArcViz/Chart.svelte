@@ -267,10 +267,11 @@
 								audio.motifData.motifId === motifId &&
 								audio.motifData.motifI === i}
 							{@const faded =
-								(audio.figureId !== undefined &&
+								(audio.figureId != null &&
 									audio.figureId === id &&
 									!audio.motifData.motifId.includes(_.kebabCase(name))) ||
-								!filteredMotifNamesByCharacter.includes(name)}
+								(id === "explore" &&
+									!filteredMotifNamesByCharacter.includes(name))}
 							<circle
 								id={id === "unlimited" && i === 0 ? "unlimited-circle" : null}
 								class:active
