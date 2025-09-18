@@ -21,7 +21,7 @@
 
 	const onClick = () => {
 		if (
-			audio.src === "assets/audio/intro/unlimited.mp3" &&
+			audio.src === "assets/audio/text/unlimited.mp3" &&
 			!unlimited.isClicked
 		) {
 			unlimited.isClicked = true;
@@ -116,6 +116,10 @@
 	:global(article.unlimited-clicked section > *) {
 		opacity: 1;
 		transition: opacity calc(var(--1s) * 0.5) ease-in-out;
+	}
+
+	:global(circle#unlimited-circle) {
+		opacity: 1;
 	}
 
 	:global(main) {

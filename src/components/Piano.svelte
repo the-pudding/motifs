@@ -13,7 +13,7 @@
 			<div class="button">
 				<PlayableText
 					id={"piano-unlimited"}
-					src="intro/unlimited-piano.mp3"
+					src="text/unlimited-piano.mp3"
 					text={`"Unlimited"`}
 				/>
 				<div class="source">From <i>Wicked</i></div>
@@ -22,7 +22,7 @@
 			<div class="button">
 				<PlayableText
 					id={"piano-rainbow"}
-					src="intro/rainbow-piano.mp3"
+					src="text/rainbow-piano.mp3"
 					text={`"Somewhere over the rainbow"`}
 				/>
 				<div class="source">From <i>The Wizard of Oz</i></div>

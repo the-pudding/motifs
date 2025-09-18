@@ -226,7 +226,7 @@
 		background: var(--color-gray-800);
 		max-width: 1000px;
 		margin: 3rem auto;
-		padding: 1rem 2rem;
+		padding: 2rem;
 	}
 
 	:global(figure#headline) {
@@ -239,6 +239,7 @@
 		text-transform: uppercase;
 		font-weight: bold;
 		font-size: 20px;
+		margin: 0;
 	}
 
 	.border {
@@ -271,10 +272,6 @@
 
 		figure#explore {
 			padding: 1rem 0;
-		}
-
-		h3 {
-			margin: 0;
 		}
 
 		figure#explore h3 {
