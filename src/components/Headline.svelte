@@ -43,4 +43,10 @@
 		max-height: 100%;
 		opacity: 0.2;
 	}
+
+	@media (max-width: 400px) {
+		h1 {
+			font-size: 64px;
+		}
+	}
 </style>

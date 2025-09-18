@@ -71,7 +71,7 @@
 	}
 
 	:global(p) {
-		line-height: 1.6;
+		line-height: 1.8;
 		font-size: var(--16px);
 	}
 
@@ -122,5 +122,11 @@
 
 	:global(#intro p:first-of-type, #intro p:first-of-type *) {
 		opacity: 1;
+	}
+
+	@media (max-width: 600px) {
+		article {
+			padding: 1rem;
+		}
 	}
 </style>

@@ -27,6 +27,8 @@
 	.caption {
 		margin-top: 0.5rem;
 		font-size: var(--14px);
-		color: var(--color-gray-300);
+		font-style: italic;
+		color: var(--color-gray-200);
+		width: 100%;
 	}
 </style>

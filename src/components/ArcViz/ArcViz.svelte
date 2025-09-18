@@ -262,4 +262,22 @@
 		font-size: var(--14px);
 		border: 1px solid var(--color-bg);
 	}
+
+	@media (max-width: 400px) {
+		figure {
+			padding: 1rem;
+		}
+
+		figure#explore {
+			padding: 1rem 0;
+		}
+
+		h3 {
+			margin: 0;
+		}
+
+		figure#explore h3 {
+			padding: 0 1rem;
+		}
+	}
 </style>

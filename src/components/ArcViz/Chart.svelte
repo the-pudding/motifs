@@ -3,7 +3,9 @@
 	import { scaleLinear } from "d3-scale";
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
-	import { onMount } from "svelte";
+	import useWindowDimensions from "$runes/useWindowDimensions.svelte.js";
+
+	let dimensions = new useWindowDimensions();
 
 	let {
 		id,
@@ -80,10 +82,20 @@
 		}, {})
 	);
 
-	const padding = { top: 70, right: 10, bottom: 0, left: 10 };
+	const isMobile = $derived(dimensions.width <= 600);
+	const padding = $derived({
+		top: isMobile && id === "explore" ? 20 : isMobile ? 100 : 70,
+		right: 10,
+		bottom: 0,
+		left: 10
+	});
 	let svgWidth = $state();
 	const svgHeight = $derived(
-		useYAxis ? Math.max(300, Math.min(motifs.length * 80, 650)) : 300
+		useYAxis
+			? Math.max(300, Math.min(motifs.length * 80, 650))
+			: isMobile
+				? 180
+				: 300
 	);
 	let width = $derived(svgWidth - padding.left - padding.right);
 	let height = $derived(svgHeight - padding.top - padding.bottom);
@@ -96,8 +108,7 @@
 					)
 					.map((d) => d.name)
 	);
-
-	const curvature = 0.35;
+	const curvature = $derived(isMobile ? 0.75 : 0.35);
 	const midpoint = $derived(tracks.find((d) => d.name.includes("2-01")).name);
 	const totalMusicalDuration = $derived(
 		tracks.reduce((total, track) => total + track.duration, 0)
@@ -114,7 +125,7 @@
 	let xScale = $derived(
 		scaleLinear().domain([0, totalMusicalDuration]).range([0, width])
 	);
-	const midY = $derived(height * 0.9);
+	const midY = $derived(height - 30);
 	let yScale = $derived(
 		useYAxis
 			? scaleLinear()
