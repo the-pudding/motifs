@@ -29,6 +29,7 @@
 	const stroke = 4;
 	const size = 48;
 
+	let unlimitedPlayClicked = $state(false);
 	let start = $derived(audio.motifData?.start || 0);
 	let duration = $derived(
 		audio.motifData ? audio.motifData.end - audio.motifData.start : 0
@@ -88,6 +89,10 @@
 
 	const onClick = (e) => {
 		e.stopPropagation();
+
+		if (chartId === "unlimited" && !unlimitedPlayClicked) {
+			unlimitedPlayClicked = true;
+		}
 
 		if (mePlaying) {
 			audio.pauseAndClear();
@@ -156,6 +161,7 @@
 			<button
 				type="button"
 				class="pp"
+				class:bounce={chartId === "unlimited" && !unlimitedPlayClicked}
 				aria-pressed={mePlaying}
 				aria-label={label}
 				aria-describedby="pp-progress"
@@ -328,6 +334,20 @@
 
 	:global(.advance svg polyline) {
 		stroke: var(--color-white);
+	}
+
+	.pp.bounce {
+		animation: bounce 1s infinite;
+	}
+
+	@keyframes bounce {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-10%);
+		}
 	}
 
 	.controls {

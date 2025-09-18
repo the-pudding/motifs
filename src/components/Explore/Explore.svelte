@@ -129,6 +129,7 @@
 	.filters {
 		display: flex;
 		align-items: end;
+		justify-content: space-between;
 		gap: 2rem;
 		max-width: 700px;
 		margin: 0 auto;

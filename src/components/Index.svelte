@@ -87,6 +87,10 @@
 		margin: 2rem auto;
 	}
 
+	:global(span.green) {
+		color: var(--color-wicked-green);
+	}
+
 	:global(span.note) {
 		font-size: var(--14px);
 		color: var(--color-gray-300);
