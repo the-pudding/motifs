@@ -5,6 +5,8 @@
 	import hamiltonMotifs from "$data/motifs/hamilton-motifs.json";
 	import _ from "lodash";
 
+	let { favorites } = $props();
+
 	let musicalOptions = [
 		{ label: "Hamilton", value: "hamilton" },
 		{ label: "Wicked", value: "wicked" },
@@ -120,6 +122,7 @@
 	{song}
 	{character}
 	title={`${musicalOptions.find((d) => d.value === musical).label}: All motifs`}
+	{favorites}
 />
 
 <style>

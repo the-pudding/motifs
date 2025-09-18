@@ -3,7 +3,7 @@
 	import { onMount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 
-	let { motifs, musical, song, character } = $props();
+	let { motifs, musical, song, character, favorites } = $props();
 	const audio = audioApi();
 	let smooth;
 	onMount(() => {
@@ -75,6 +75,7 @@
 	<!-- <div style="margin-bottom: 1rem">Instructions Tk</div> -->
 
 	{#each filteredMotifs as motif}
+		{@const isFavorite = favorites.includes(motif.name)}
 		{@const selected = selectedMotif && selectedMotif === motif.name}
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -83,7 +84,11 @@
 			class:selected
 			onclick={() => (selectedMotif = motif.name)}
 		>
-			<div class="name">{motif.emoji} {motif.name}</div>
+			<div class="name" class:favorite={isFavorite}>
+				{motif.emoji}
+				{motif.name}
+				{#if isFavorite}🌟{/if}
+			</div>
 
 			{#if selected}
 				<div class="instances">
@@ -139,6 +144,10 @@
 		font-size: var(--24px);
 		font-weight: bold;
 		margin-bottom: 1rem;
+	}
+
+	.name.favorite {
+		color: var(--color-playbill-yellow);
 	}
 
 	.motif:hover {
