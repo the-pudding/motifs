@@ -65,7 +65,8 @@
 
 			const newSrc = tracks[newI]?.src;
 			const newStart = tracks[newI]?.start;
-			const newEnd = tracks[newI]?.end;
+			const newEnd =
+				chartId === "unlimited" ? tracks[newI]["end-short"] : tracks[newI]?.end;
 
 			audio.load(newSrc, {
 				figure: chartId,
@@ -130,7 +131,7 @@
 		class="play-container"
 		style:top
 		style:left
-		style:active={mePlaying}
+		class:active={mePlaying}
 		class:faded={audio.figureId === chartId && !mePlaying}
 	>
 		<div
@@ -348,5 +349,11 @@
 	button.advance.visible {
 		pointer-events: auto;
 		visibility: visible;
+	}
+
+	@media (max-width: 400px) {
+		.active .motif-name {
+			display: none;
+		}
 	}
 </style>

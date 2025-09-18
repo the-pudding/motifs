@@ -84,7 +84,8 @@
 
 	const isMobile = $derived(dimensions.width <= 600);
 	const padding = $derived({
-		top: isMobile && id === "explore" ? 20 : isMobile ? 100 : 70,
+		top:
+			isMobile && id === "explore" ? 20 : isMobile ? 100 : useYAxis ? 70 : 20,
 		right: 10,
 		bottom: 0,
 		left: 10
@@ -95,7 +96,7 @@
 			? Math.max(300, Math.min(motifs.length * 80, 650))
 			: isMobile
 				? 180
-				: 300
+				: 200
 	);
 	let width = $derived(svgWidth - padding.left - padding.right);
 	let height = $derived(svgHeight - padding.top - padding.bottom);
@@ -180,8 +181,8 @@
 		return `M ${p1.x},${p1.y} Q ${cx},${cy} ${p2.x},${p2.y}`;
 	};
 
-	const speed = 160;
-	const stagger = 1;
+	const speed = 100;
+	const stagger = 4;
 	const perPathDuration = 2.5;
 
 	$effect(() => {
@@ -278,7 +279,7 @@
 								{#if animate}
 									<path
 										bind:this={pathEls[pathI]}
-										style={`--i:${i}; animation-delay:${i * stagger}s; animation-duration:${perPathDuration}s;`}
+										style={`--i:${i}; animation-delay:${Math.random() * stagger}s; animation-duration:${perPathDuration}s;`}
 										class:draw={animate}
 										class:faded
 										d={arcPath(points[i], points[i + 1], i)}

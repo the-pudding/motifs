@@ -92,6 +92,14 @@
 		color: var(--color-gray-300);
 	}
 
+	:global(section#intro) {
+		margin-bottom: 0;
+	}
+
+	:global(section#motifs) {
+		margin-top: 0;
+	}
+
 	:global(section#explore) {
 		margin-top: 8rem;
 	}

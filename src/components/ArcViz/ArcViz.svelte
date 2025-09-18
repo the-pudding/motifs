@@ -232,6 +232,7 @@
 	:global(figure#headline) {
 		background: none;
 		margin: 0 auto;
+		padding: 0;
 	}
 
 	h3 {

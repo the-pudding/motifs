@@ -2,17 +2,20 @@
 	import Play from "$components/ArcViz/Play.svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 	import _ from "lodash";
+	import useWindowDimensions from "$runes/useWindowDimensions.svelte.js";
+
+	let dimensions = new useWindowDimensions();
 
 	let { id, padding, motifs, musical, motifPoints, motifColors } = $props();
 
 	const audio = audioApi();
+	let isMobile = $derived(dimensions.width <= 600);
 
-	const lesMisPlayable = [
-		"god on high",
-		"on my own",
-		"police 1",
-		"the people 2"
-	];
+	const lesMisPlayable = $derived(
+		isMobile
+			? ["on my own"]
+			: ["god on high", "on my own", "police 1", "the people 2"]
+	);
 
 	const onClick = () => {
 		audio.pauseAndClear();
@@ -42,9 +45,8 @@
 		{@const tracks = motifs
 			.find((m) => m.name === motifName)
 			.regions.map((r) => ({
-				start: r.start,
-				end: r.end,
-				src: `assets/audio/${musical}/${r["track-name"]}.mp3`
+				src: `assets/audio/${musical}/${r["track-name"]}.mp3`,
+				...r
 			}))}
 		{#if id !== "lesmis" || lesMisPlayable.includes(motifName)}
 			<Play

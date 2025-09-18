@@ -32,16 +32,13 @@
 		position: relative;
 		text-align: center;
 		max-width: 1000px;
-		height: 300px;
-		margin: 8rem auto 4rem auto;
+		margin: 8rem auto 0 auto;
 	}
 
 	.viz {
-		position: absolute;
-		top: 0;
-		width: 100%;
-		max-height: 100%;
-		opacity: 0.2;
+		transform: translate(0, -55%);
+		opacity: 0.5;
+		pointer-events: none;
 	}
 
 	@media (max-width: 400px) {
