@@ -12,7 +12,8 @@
 	];
 
 	let musical = $state("hamilton");
-	let character = $state("All characters");
+	let song = $state("All Songs");
+	let character = $state("All Characters");
 
 	let motifs = $derived(
 		musical === "hamilton"
@@ -21,8 +22,21 @@
 				? wickedMotifs
 				: lesMisMotifs
 	);
+	let songOptions = $derived([
+		"All Songs",
+		...motifs.reduce((acc, motif) => {
+			const newTracks = motif.regions.flatMap((r) => r["track-name"]);
+			for (const t of newTracks) {
+				if (t && !acc.includes(t)) {
+					acc = [...acc, t].sort();
+				}
+			}
+			return acc;
+		}, [])
+	]);
+
 	let characterOptions = $derived([
-		"All characters",
+		"All Characters",
 		...motifs.reduce((acc, motif) => {
 			const newChars = motif.regions.flatMap((r) => r.character);
 			for (const c of newChars) {
@@ -35,11 +49,13 @@
 	]);
 
 	const reset = () => {
-		character = "All characters";
+		character = "All Characters";
+		song = "All Songs";
 	};
 
 	const newMusical = () => {
-		character = "All characters";
+		character = "All Characters";
+		song = "All Songs";
 	};
 
 	$effect(() => newMusical(musical));
@@ -60,8 +76,30 @@
 	</div>
 
 	<div class="select-wrapper">
+		<label for="song-select">Filter by Song</label>
+		<select
+			bind:value={song}
+			id="song-select"
+			disabled={character !== "All Characters"}
+		>
+			{#each songOptions as option}
+				<option
+					value={option}
+					selected={song === option}
+					onclick={() => (song = option.value)}
+					>{option.replace(/^\d+-+\d+\s+/, "")}</option
+				>
+			{/each}
+		</select>
+	</div>
+
+	<div class="select-wrapper">
 		<label for="character-select">Filter by Character</label>
-		<select bind:value={character} id="character-select">
+		<select
+			bind:value={character}
+			id="character-select"
+			disabled={song !== "All Songs"}
+		>
 			{#each characterOptions as option}
 				<option
 					value={option}
@@ -73,12 +111,13 @@
 		</select>
 	</div>
 
-	<button class="reset" onclick={reset}>Reset filters</button>
+	<button class="reset" onclick={reset}>Reset</button>
 </div>
 
 <ArcViz
 	id="explore"
 	{musical}
+	{song}
 	{character}
 	title={`${musicalOptions.find((d) => d.value === musical).label}: All motifs`}
 />
@@ -87,7 +126,7 @@
 	.filters {
 		display: flex;
 		align-items: end;
-		gap: 3rem;
+		gap: 2rem;
 		max-width: 700px;
 		margin: 0 auto;
 		margin-bottom: 1rem;
@@ -97,6 +136,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.25rem;
+		max-width: calc((100% - 6rem) / 3);
 	}
 
 	label {

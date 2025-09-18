@@ -3,7 +3,7 @@
 	import { onMount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 
-	let { motifs, musical, character } = $props();
+	let { motifs, musical, song, character } = $props();
 	const audio = audioApi();
 	let smooth;
 	onMount(() => {
@@ -13,11 +13,14 @@
 
 	let selectedMotif = $state(motifs[0].name);
 	let filteredMotifs = $derived(
-		character === "All characters"
-			? motifs
-			: motifs.filter((d) =>
-					d.regions.some((r) => r?.character?.includes(character))
-				)
+		motifs.filter((d) =>
+			d.regions.some(
+				(r) =>
+					(r?.character?.includes(character) ||
+						character === "All Characters") &&
+					(r["track-name"] === song || song === "All Songs")
+			)
+		)
 	);
 	let percentsDone = $derived.by(() => {
 		if (!selectedMotif) return [];
@@ -61,6 +64,7 @@
 	};
 
 	const filterUpdate = () => {
+		if (filteredMotifs.length === 0) return;
 		selectedMotif = filteredMotifs[0].name;
 	};
 
@@ -90,7 +94,7 @@
 							.replace(/\.mp3$/, "")}
 						{@const hasCharacter =
 							(character && region.character.includes(character)) ||
-							character === "All characters"}
+							character === "All Characters"}
 						<button
 							class="instance"
 							onclick={(e) => playMotif(e, region, i, _.kebabCase(motif.name))}

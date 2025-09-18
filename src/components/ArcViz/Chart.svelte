@@ -10,6 +10,7 @@
 	let {
 		id,
 		musical,
+		song,
 		character,
 		motifs = [],
 		tracks = [],
@@ -101,13 +102,16 @@
 	let width = $derived(svgWidth - padding.left - padding.right);
 	let height = $derived(svgHeight - padding.top - padding.bottom);
 	let filteredMotifNamesByCharacter = $derived(
-		!character || character.includes("All characters")
-			? motifs.map((d) => d.name)
-			: motifs
-					.filter((d) =>
-						d.regions.some((r) => r?.character?.includes(character))
-					)
-					.map((d) => d.name)
+		motifs
+			.filter((d) =>
+				d.regions.some(
+					(r) =>
+						(r?.character?.includes(character) ||
+							character === "All Characters") &&
+						(r["track-name"] === song || song === "All Songs")
+				)
+			)
+			.map((d) => d.name)
 	);
 	const curvature = $derived(isMobile ? 0.75 : 0.35);
 	const midpoint = $derived(tracks.find((d) => d.name.includes("2-01")).name);

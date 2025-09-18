@@ -10,7 +10,7 @@
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
 
-	let { id, title, musical, character, animate, notes } = $props();
+	let { id, title, musical, song, character, animate, notes } = $props();
 
 	const audio = audioApi();
 
@@ -209,6 +209,7 @@
 	<Chart
 		{id}
 		{musical}
+		{song}
 		{character}
 		{animate}
 		motifs={dataMap[id].motifs}
@@ -216,7 +217,7 @@
 	/>
 
 	{#if id === "explore"}
-		<Motifs motifs={dataMap[id].motifs} {musical} {character} />
+		<Motifs motifs={dataMap[id].motifs} {musical} {song} {character} />
 	{/if}
 </figure>
 
