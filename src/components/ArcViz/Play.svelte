@@ -39,6 +39,7 @@
 			audio.motifData &&
 			audio.motifData.motifId === motifId
 	);
+	let loading = $derived(mePlaying && !audio.ready);
 	let motifLabelCentered = $derived(
 		mePlaying || chartId === "unlimited" || chartId === "lesmis"
 	);
@@ -137,6 +138,7 @@
 		style:top
 		style:left
 		class:active={mePlaying}
+		class:loading
 		class:faded={audio.figureId === chartId && !mePlaying}
 	>
 		<div
@@ -152,7 +154,7 @@
 			<button
 				type="button"
 				class="advance"
-				class:visible={mePlaying}
+				class:visible={mePlaying && !loading}
 				onclick={prev}
 			>
 				{@html prevSvg}
@@ -166,7 +168,7 @@
 				aria-label={label}
 				aria-describedby="pp-progress"
 				onclick={onClick}
-				style={`--size:${size}px; --stroke:${stroke}px; --color: ${color}`}
+				style={`--size:${size}px; --c: ${2 * Math.PI * (size / 2)}; --stroke:${stroke}px; --color: ${color}`}
 			>
 				<svg
 					class="pp-ring"
@@ -198,14 +200,18 @@
 				</svg>
 
 				<span class="pp-face" aria-hidden="true">
-					{@html mePlaying ? pauseSvg : playSvg}
+					{#if loading}
+						<text>loading</text>
+					{:else}
+						{@html mePlaying ? pauseSvg : playSvg}
+					{/if}
 				</span>
 			</button>
 
 			<button
 				type="button"
 				class="advance"
-				class:visible={mePlaying}
+				class:visible={mePlaying && !loading}
 				onclick={next}
 			>
 				{@html nextSvg}
@@ -316,6 +322,22 @@
 		stroke: var(--color);
 		transform: rotate(-90deg);
 		transform-origin: 50% 50%;
+		animation: none;
+	}
+
+	.loading .pp-progress {
+		animation: spin 1.2s ease-in-out infinite;
+	}
+
+	@keyframes spin {
+		0% {
+			stroke-dashoffset: 390px;
+			transform: rotate(-90deg);
+		}
+		100% {
+			stroke-dashoffset: 390px;
+			transform: rotate(270deg);
+		}
 	}
 
 	.pp-face {

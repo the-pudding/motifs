@@ -4,6 +4,7 @@ export function audioApi() {
 	if (audioManager) return audioManager;
 
 	let el = $state(null); // single <audio> element
+	let ready = $state(false); // whether the element exists and is ready to play fully
 	let src = $state(null); // audio file source
 	let trackName = $state(null); // track name
 	let currentTime = $state(0); // playback time in seconds
@@ -17,12 +18,8 @@ export function audioApi() {
 
 	const onMeta = () => {
 		duration = el?.duration || 0;
-
-		// if (motifData && motifData.start) {
-		// 	el.currentTime = motifData.start;
-		// 	currentTime = el.currentTime || 0;
-		// }
 	};
+
 	const onTime = () => {
 		currentTime = el?.currentTime || 0;
 	};
@@ -72,6 +69,8 @@ export function audioApi() {
 	};
 
 	const load = (newSrc, { figure, motif } = {}) => {
+		ready = false;
+
 		src = newSrc;
 		trackName = newSrc
 			?.split("/")
@@ -83,6 +82,10 @@ export function audioApi() {
 		motifData = motif ?? null;
 		el.src = newSrc;
 		el.load();
+
+		el.addEventListener("canplaythrough", () => {
+			ready = true;
+		});
 	};
 
 	const play = () => {
@@ -160,7 +163,7 @@ export function audioApi() {
 		seek,
 
 		get ready() {
-			return !!el;
+			return ready;
 		},
 		get src() {
 			return src;

@@ -21,7 +21,7 @@
 
 	const onClick = async (e) => {
 		e.stopPropagation();
-		if (!audio.ready || !src) return;
+		if (!src) return;
 
 		if (audio.src === `assets/audio/${src}`) {
 			audio.pauseAndClear();
