@@ -6,7 +6,8 @@
 
 	let dimensions = new useWindowDimensions();
 
-	let { id, padding, motifs, musical, motifPoints, motifColors } = $props();
+	let { id, chartWidth, padding, motifs, musical, motifPoints, motifColors } =
+		$props();
 
 	const audio = audioApi();
 	let isMobile = $derived(dimensions.width <= 600);
@@ -53,6 +54,7 @@
 				{tracks}
 				top={`${top}px`}
 				left={`${left}px`}
+				{chartWidth}
 				{padding}
 				color={motifColors[motifName]}
 				chartId={id}

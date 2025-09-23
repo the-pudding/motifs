@@ -11,6 +11,7 @@
 		tracks,
 		top,
 		left,
+		chartWidth,
 		padding,
 		color,
 		chartId,
@@ -19,17 +20,14 @@
 		actOfFirstOccurence
 	} = $props();
 
-	const audio = audioApi();
 	let smooth;
-	onMount(() => {
-		smooth = audio.subscribeSmooth();
-	});
-	onDestroy(() => smooth?.());
-
+	const audio = audioApi();
 	const stroke = 4;
 	const size = 48;
 
 	let unlimitedPlayClicked = $state(false);
+	let motifLabelWidth = $state(0);
+
 	let start = $derived(audio.motifData?.start || 0);
 	let duration = $derived(
 		audio.motifData ? audio.motifData.end - audio.motifData.start : 0
@@ -43,7 +41,6 @@
 	let motifLabelCentered = $derived(
 		mePlaying || chartId === "unlimited" || chartId === "lesmis"
 	);
-
 	let label = $derived(mePlaying ? "Pause" : "Play");
 	let progress = $derived(
 		duration && mePlaying
@@ -55,6 +52,12 @@
 	let dashoffset = $derived(
 		circumference - Math.max(0, Math.min(1, progress)) * circumference
 	);
+	// let motifLabelOverflowing = $derived({
+	// 	left: left.replace("px", "") - motifLabelWidth / 2 < 0,
+	// 	right: left.replace("px", "") + motifLabelWidth > chartWidth
+	// });
+
+	// $inspect({ motifLabelOverflowing });
 
 	const playRecursive = (diff) => {
 		let playTrack = async (change) => {
@@ -121,6 +124,11 @@
 			playRecursive(tracks.length - 1);
 		}
 	};
+
+	onMount(() => {
+		smooth = audio.subscribeSmooth();
+	});
+	onDestroy(() => smooth?.());
 </script>
 
 <div
@@ -146,6 +154,7 @@
 			class:centered={motifLabelCentered}
 			class:left={!motifLabelCentered && actOfFirstOccurence === 2}
 			class:right={!motifLabelCentered && actOfFirstOccurence === 1}
+			bind:clientWidth={motifLabelWidth}
 		>
 			{_.startCase(motifId).toLowerCase()}
 			{emoji}

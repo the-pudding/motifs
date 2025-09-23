@@ -141,7 +141,7 @@
 
 	.selected .name {
 		color: var(--color-white);
-		font-size: var(--24px);
+		font-size: var(--28px);
 		font-weight: bold;
 		margin-bottom: 1rem;
 	}

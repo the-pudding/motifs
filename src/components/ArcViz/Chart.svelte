@@ -309,7 +309,15 @@
 		</svg>
 
 		{#if id !== "headline"}
-			<Html {id} {padding} {musical} {motifPoints} {motifColors} {motifs} />
+			<Html
+				{id}
+				chartWidth={width}
+				{padding}
+				{musical}
+				{motifPoints}
+				{motifColors}
+				{motifs}
+			/>
 		{/if}
 	{/if}
 </div>
