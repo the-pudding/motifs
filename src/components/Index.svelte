@@ -112,7 +112,7 @@
 		z-index: 1;
 		transition: transform var(--1s) ease-in-out;
 		background-image:
-			linear-gradient(to bottom, rgba(37, 34, 34, 0.9), rgba(37, 34, 34, 0.25)),
+			linear-gradient(to bottom, rgba(37, 34, 34, 1), rgba(37, 34, 34, 0.25)),
 			url("assets/img/curtain.jpeg");
 		background-size: 200% 100%;
 		background-repeat: no-repeat;
@@ -184,7 +184,6 @@
 	:global(p.spotlight) {
 		text-align: center;
 		margin-bottom: 2rem;
-		background: rgb(37 34 34 / 90%);
 		padding: 0.5rem 0.75rem;
 		width: fit-content;
 	}
