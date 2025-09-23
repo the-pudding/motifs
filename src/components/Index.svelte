@@ -21,6 +21,7 @@
 	const audio = audioApi();
 	let audioEl;
 	let articleHeight = $state(0);
+	let articleReady = $state(false);
 
 	const onClick = () => {
 		unlimited.isClicked = true;
@@ -42,6 +43,8 @@
 				props: { id: `playable-${i}`, src, text }
 			});
 		});
+
+		articleReady = true;
 	});
 
 	onDestroy(() => audio.destroy());
@@ -61,6 +64,7 @@
 		<article
 			onclick={onClick}
 			class:unlimited-clicked={unlimited.isClicked}
+			class:visible={articleReady}
 			bind:clientHeight={articleHeight}
 		>
 			<CMS {components} {body} />
@@ -79,11 +83,17 @@
 <style>
 	article {
 		padding: 2rem;
-		padding-top: 10rem;
+		padding-top: 12rem;
 		position: absolute;
 		z-index: 2;
 		width: 100%;
 		height: 100%;
+		opacity: 0;
+		transition: opacity 0.3s ease-in-out;
+	}
+
+	article.visible {
+		opacity: 1;
 	}
 
 	.open article {
@@ -185,9 +195,21 @@
 
 	:global(p.spotlight) {
 		text-align: center;
-		margin-bottom: 2rem;
-		padding: 0.5rem 0.75rem;
+		margin-bottom: 3rem;
 		width: fit-content;
+	}
+
+	:global(p.begin) {
+		text-align: center;
+		width: fit-content;
+		text-transform: uppercase;
+		letter-spacing: 0.15em;
+		font-size: var(--12px);
+		color: var(--color-gray-200);
+	}
+
+	:global(.open .begin) {
+		display: none;
 	}
 
 	:global(article section > *) {
@@ -209,7 +231,11 @@
 		overflow: visible;
 	}
 
-	:global(#intro p:first-of-type, #intro p:first-of-type *) {
+	:global(
+		#intro p:first-of-type,
+		#intro p:first-of-type *,
+		#intro p:nth-of-type(2)
+	) {
 		opacity: 1;
 	}
 
