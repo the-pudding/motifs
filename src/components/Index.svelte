@@ -13,6 +13,7 @@
 	import { onMount, mount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 	import { unlimited } from "$runes/misc.svelte.js";
+	import { base } from "$app/paths";
 
 	const { body } = copy;
 	const components = { Headline, Piano, ArcViz, Carousel, Explore, Image };
@@ -50,6 +51,7 @@
 	class="curtain"
 	class:open={unlimited.isClicked}
 	style:height={unlimited.isClicked ? `${articleHeight}px` : "auto"}
+	style={`--curtain-src: url(${base}/assets/img/curtain.jpeg)`}
 >
 	<div class="curtain-wrapper">
 		<Header />
@@ -113,7 +115,7 @@
 		transition: transform var(--1s) ease-in-out;
 		background-image:
 			linear-gradient(to bottom, rgba(37, 34, 34, 1), rgba(37, 34, 34, 0.25)),
-			url("assets/img/curtain.jpeg");
+			var(--curtain-src);
 		background-size: 200% 100%;
 		background-repeat: no-repeat;
 		background-position-y: top;
