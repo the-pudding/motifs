@@ -33,6 +33,7 @@
 	{#each Object.keys(motifPoints) as motifName}
 		{@const i =
 			audio.figureId === id &&
+			audio.motifData &&
 			audio.motifData.motifId === _.kebabCase(motifName)
 				? audio.motifData.motifI
 				: 0}

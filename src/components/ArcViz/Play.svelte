@@ -27,6 +27,7 @@
 
 	let unlimitedPlayClicked = $state(false);
 	let motifLabelWidth = $state(0);
+	let songLabelWidth = $state(0);
 
 	let start = $derived(audio.motifData?.start || 0);
 	let duration = $derived(
@@ -52,12 +53,21 @@
 	let dashoffset = $derived(
 		circumference - Math.max(0, Math.min(1, progress)) * circumference
 	);
-	// let motifLabelOverflowing = $derived({
-	// 	left: left.replace("px", "") - motifLabelWidth / 2 < 0,
-	// 	right: left.replace("px", "") + motifLabelWidth > chartWidth
-	// });
-
-	// $inspect({ motifLabelOverflowing });
+	let songLabelOverflowing = $derived(
+		mePlaying
+			? {
+					left: +left.replace("px", "") - songLabelWidth / 2 < 0,
+					right: +left.replace("px", "") + songLabelWidth > chartWidth
+				}
+			: { left: false, right: false }
+	);
+	let songLeft = $derived(
+		songLabelOverflowing.left
+			? 0
+			: songLabelOverflowing.right
+				? chartWidth - songLabelWidth
+				: +left.replace("px", "")
+	);
 
 	const playRecursive = (diff) => {
 		let playTrack = async (change) => {
@@ -125,6 +135,9 @@
 		}
 	};
 
+	if (motifId === "no-one-mourns")
+		$inspect({ songLabelWidth, songLabelOverflowing, songLeft });
+
 	onMount(() => {
 		smooth = audio.subscribeSmooth();
 	});
@@ -134,8 +147,12 @@
 <div
 	class="song-name"
 	class:visible={mePlaying}
-	style:left
+	style:left={`${songLeft}px`}
 	style:bottom={`${padding.top}px`}
+	style:transform={songLeft === 0 || songLeft === chartWidth - songLabelWidth
+		? "translate(0, 4px)"
+		: "translate(-50%, 4px)"}
+	bind:clientWidth={songLabelWidth}
 >
 	{audio.trackName}
 </div>
@@ -249,7 +266,7 @@
 
 	.song-name {
 		position: absolute;
-		transform: translate(-50%, 4px);
+		width: fit-content;
 		white-space: nowrap;
 		opacity: 0;
 		transition: opacity 0.2s ease-in-out;
