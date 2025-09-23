@@ -1,5 +1,6 @@
 <script>
 	import copy from "$data/copy.json";
+	import Header from "$components/Header.svelte";
 	import CMS from "$components/helpers/CMS.svelte";
 	import Headline from "$components/Headline.svelte";
 	import PlayableText from "$components/PlayableText.svelte";
@@ -18,15 +19,10 @@
 
 	const audio = audioApi();
 	let audioEl;
+	let articleHeight = $state(0);
 
 	const onClick = () => {
-		if (
-			audio.src === "assets/audio/text/unlimited.mp3" &&
-			!unlimited.isClicked
-		) {
-			unlimited.isClicked = true;
-		}
-
+		unlimited.isClicked = true;
 		audio.pauseAndClear();
 	};
 
@@ -50,9 +46,27 @@
 	onDestroy(() => audio.destroy());
 </script>
 
-<article onclick={onClick} class:unlimited-clicked={unlimited.isClicked}>
-	<CMS {components} {body} />
-</article>
+<div
+	class="curtain"
+	class:open={unlimited.isClicked}
+	style:height={unlimited.isClicked ? `${articleHeight}px` : "auto"}
+>
+	<div class="curtain-wrapper">
+		<Header />
+
+		<div class="panel left"></div>
+
+		<article
+			onclick={onClick}
+			class:unlimited-clicked={unlimited.isClicked}
+			bind:clientHeight={articleHeight}
+		>
+			<CMS {components} {body} />
+		</article>
+
+		<div class="panel right"></div>
+	</div>
+</div>
 
 <svelte:boundary onerror={(e) => console.error(e)}>
 	<Footer recirc={true} />
@@ -63,6 +77,65 @@
 <style>
 	article {
 		padding: 2rem;
+		padding-top: 10rem;
+		position: absolute;
+		z-index: 2;
+		width: 100%;
+		height: 100%;
+	}
+
+	.open article {
+		height: auto;
+	}
+
+	.curtain {
+		width: 100%;
+		height: 100svh;
+		overflow: hidden;
+		position: relative;
+	}
+
+	.curtain.open {
+		overflow: auto;
+	}
+
+	.curtain-wrapper {
+		width: 100%;
+		height: 100%;
+	}
+
+	.panel {
+		width: 50%;
+		height: 100svh;
+		float: left;
+		position: relative;
+		z-index: 1;
+		transition: transform var(--1s) ease-in-out;
+		background-image:
+			linear-gradient(to bottom, rgba(37, 34, 34, 0.9), rgba(37, 34, 34, 0.25)),
+			url("assets/img/curtain.jpeg");
+		background-size: 200% 100%;
+		background-repeat: no-repeat;
+		background-position-y: top;
+		pointer-events: none;
+	}
+
+	.left {
+		transform: translateX(0);
+		background-position-x: left;
+	}
+
+	.right {
+		transform: translateX(0);
+		background-position-x: right;
+	}
+
+	.open .left {
+		transform: translateX(-100%);
+	}
+
+	.open .right {
+		transform: translateX(100%);
 	}
 
 	:global(p, h2) {
@@ -110,7 +183,10 @@
 
 	:global(p.spotlight) {
 		text-align: center;
-		margin-bottom: 5rem;
+		margin-bottom: 2rem;
+		background: rgb(37 34 34 / 90%);
+		padding: 0.5rem 0.75rem;
+		width: fit-content;
 	}
 
 	:global(article section > *) {
@@ -119,19 +195,15 @@
 
 	:global(article.unlimited-clicked section > *) {
 		opacity: 1;
-		transition: opacity calc(var(--1s) * 0.5) ease-in-out;
-	}
-
-	:global(circle#unlimited-circle) {
-		opacity: 1;
+		transition: opacity calc(var(--1s) * 0.5) calc(var(--1s) * 0.5) ease-in-out;
 	}
 
 	:global(main) {
-		height: calc(100vh - 102.08px);
+		height: 100svh;
 		overflow: hidden;
 	}
 
-	:global(main:has(> article.unlimited-clicked)) {
+	:global(main:has(> .curtain.open)) {
 		height: auto;
 		overflow: visible;
 	}
@@ -143,6 +215,7 @@
 	@media (max-width: 600px) {
 		article {
 			padding: 1rem;
+			padding-top: 6rem;
 		}
 	}
 </style>

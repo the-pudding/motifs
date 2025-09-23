@@ -273,7 +273,6 @@
 								(id === "explore" &&
 									!filteredMotifNamesByCharacter.includes(name))}
 							<circle
-								id={id === "unlimited" && i === 0 ? "unlimited-circle" : null}
 								class:active
 								class:faded
 								cx={p.x}
