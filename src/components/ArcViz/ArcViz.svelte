@@ -11,8 +11,7 @@
 	import { audioApi } from "$runes/audio.svelte.js";
 	import copy from "$data/copy.json";
 
-	let { id, title, musical, song, character, animate, notes, favorites } =
-		$props();
+	let { id, title, musical, song, character, animate } = $props();
 
 	const audio = audioApi();
 
@@ -183,6 +182,7 @@
 			["asc", "asc"]
 		)
 	);
+	const tracks = $derived(dataMap[id].tracks);
 </script>
 
 <figure {id} class="arc-viz">
@@ -195,18 +195,10 @@
 	{/if}
 
 	{#if title}<h3>{title}</h3>{/if}
-	<Chart
-		{id}
-		{musical}
-		{song}
-		{character}
-		{animate}
-		{motifs}
-		tracks={dataMap[id].tracks}
-	/>
+	<Chart {id} {musical} {song} {character} {animate} {motifs} {tracks} />
 
 	{#if id === "explore"}
-		<Motifs {motifs} {musical} {song} {character} {favorites} />
+		<Motifs {motifs} {tracks} {musical} {song} {character} />
 	{/if}
 </figure>
 

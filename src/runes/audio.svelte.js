@@ -75,7 +75,7 @@ export function audioApi() {
 		trackName = newSrc
 			?.split("/")
 			.pop()
-			.replace(/_/g, " ")
+			// .replace(/_/g, " ")
 			.replace(/^\d+-\d+ /, "")
 			.replace(/\.mp3$/, "");
 		figureId = figure ?? null;

@@ -6,8 +6,16 @@
 
 	let dimensions = new useWindowDimensions();
 
-	let { id, chartWidth, padding, motifs, musical, motifPoints, motifColors } =
-		$props();
+	let {
+		id,
+		chartWidth,
+		padding,
+		motifs,
+		tracks,
+		musical,
+		motifPoints,
+		motifColors
+	} = $props();
 
 	const audio = audioApi();
 	let isMobile = $derived(dimensions.width <= 600);
@@ -44,7 +52,7 @@
 				: motifPoints[motifName][i].y}
 		{@const actOfFirstOccurence = +motifs.find((m) => m.name === motifName)
 			.regions[0]["track-name"][0]}
-		{@const tracks = motifs
+		{@const regions = motifs
 			.find((m) => m.name === motifName)
 			.regions.map((r) => ({
 				src: `assets/audio/${musical}/${r["track-name"]}.mp3`,
@@ -52,9 +60,10 @@
 			}))}
 		{#if id !== "lesmis" || lesMisPlayable.includes(motifName)}
 			<Play
-				{tracks}
 				top={`${top}px`}
 				left={`${left}px`}
+				{regions}
+				{tracks}
 				{chartWidth}
 				{padding}
 				color={motifColors[motifName]}

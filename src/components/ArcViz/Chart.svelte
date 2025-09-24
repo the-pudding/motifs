@@ -317,6 +317,7 @@
 				{motifPoints}
 				{motifColors}
 				{motifs}
+				{tracks}
 			/>
 		{/if}
 	{/if}

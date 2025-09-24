@@ -4,7 +4,7 @@
 	import { audioApi } from "$runes/audio.svelte.js";
 	import copy from "$data/copy.json";
 
-	let { motifs, musical, song, character, favorites } = $props();
+	let { motifs, tracks, musical, song, character } = $props();
 	const audio = audioApi();
 	let smooth;
 	onMount(() => {
@@ -69,6 +69,11 @@
 		selectedMotif = filteredMotifs[0].name;
 	};
 
+	const getDisplaySongName = (trackName) => {
+		const trackData = tracks.find((t) => t.name.includes(trackName));
+		return trackData?.displayName || trackName;
+	};
+
 	$effect(() => filterUpdate(musical, character));
 </script>
 
@@ -93,10 +98,12 @@
 			{#if selected}
 				<div class="instances">
 					{#each motif.regions as region, i}
-						{@const trackName = region["track-name"]
-							.replace(/_/g, " ")
-							.replace(/^\d+-\d+ /, "")
-							.replace(/\.mp3$/, "")}
+						{@const trackName = getDisplaySongName(
+							region["track-name"]
+								// .replace(/_/g, " ")
+								.replace(/^\d+-\d+ /, "")
+								.replace(/\.mp3$/, "")
+						)}
 						{@const hasCharacter =
 							(character && region.character.includes(character)) ||
 							character === "All Characters"}

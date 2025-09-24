@@ -3,6 +3,9 @@
 	import lesMisMotifs from "$data/motifs/lesmis-motifs.json";
 	import wickedMotifs from "$data/motifs/wicked-motifs.json";
 	import hamiltonMotifs from "$data/motifs/hamilton-motifs.json";
+	import lesMisTracks from "$data/tracks/lesmis-tracks.json";
+	import wickedTracks from "$data/tracks/wicked-tracks.json";
+	import hamiltonTracks from "$data/tracks/hamilton-tracks.json";
 	import _ from "lodash";
 
 	let { favorites } = $props();
@@ -23,6 +26,13 @@
 			: musical === "wicked"
 				? wickedMotifs
 				: lesMisMotifs
+	);
+	let tracks = $derived(
+		musical === "hamilton"
+			? hamiltonTracks
+			: musical === "wicked"
+				? wickedTracks
+				: lesMisTracks
 	);
 	let songOptions = $derived([
 		"All Songs",
@@ -60,6 +70,11 @@
 		song = "All Songs";
 	};
 
+	const displaySong = (option) => {
+		const trackData = tracks.find((t) => t.name.includes(option));
+		return trackData?.displayName || option.replace(/^\d+-+\d+\s+/, "");
+	};
+
 	$effect(() => newMusical(musical));
 </script>
 
@@ -88,8 +103,7 @@
 				<option
 					value={option}
 					selected={song === option}
-					onclick={() => (song = option.value)}
-					>{option.replace(/^\d+-+\d+\s+/, "")}</option
+					onclick={() => (song = option.value)}>{displaySong(option)}</option
 				>
 			{/each}
 		</select>

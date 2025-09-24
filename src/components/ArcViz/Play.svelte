@@ -8,9 +8,10 @@
 	import { audioApi } from "$runes/audio.svelte.js";
 
 	let {
-		tracks,
 		top,
 		left,
+		regions,
+		tracks,
 		chartWidth,
 		padding,
 		color,
@@ -73,15 +74,17 @@
 		let playTrack = async (change) => {
 			const newI = audio.motifData?.motifI + change || 0;
 
-			if (newI >= tracks.length) {
+			if (newI >= regions.length) {
 				audio.pauseAndClear();
 				return;
 			}
 
-			const newSrc = tracks[newI]?.src;
-			const newStart = tracks[newI]?.start;
+			const newSrc = regions[newI]?.src;
+			const newStart = regions[newI]?.start;
 			const newEnd =
-				chartId === "unlimited" ? tracks[newI]["end-short"] : tracks[newI]?.end;
+				chartId === "unlimited"
+					? regions[newI]["end-short"]
+					: regions[newI]?.end;
 
 			audio.load(newSrc, {
 				figure: chartId,
@@ -118,7 +121,7 @@
 	const next = (e) => {
 		e.stopPropagation();
 
-		if (audio.motifData.motifI < tracks.length - 1) {
+		if (audio.motifData.motifI < regions.length - 1) {
 			playRecursive(1);
 		} else {
 			playRecursive(0);
@@ -131,8 +134,13 @@
 		if (audio.motifData.motifI > 0) {
 			playRecursive(-1);
 		} else {
-			playRecursive(tracks.length - 1);
+			playRecursive(regions.length - 1);
 		}
+	};
+
+	const getDisplaySongName = (trackName) => {
+		const trackData = tracks.find((t) => t.name.includes(trackName));
+		return trackData?.displayName || trackName;
 	};
 
 	onMount(() => {
@@ -151,7 +159,7 @@
 		: "translate(-50%, 4px)"}
 	bind:clientWidth={songLabelWidth}
 >
-	{audio.trackName}
+	{getDisplaySongName(audio.trackName)}
 </div>
 
 {#if chartId !== "explore"}
