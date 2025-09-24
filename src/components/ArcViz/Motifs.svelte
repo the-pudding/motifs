@@ -12,8 +12,6 @@
 	});
 	onDestroy(() => smooth?.());
 
-	$inspect({ motifs });
-
 	let selectedMotif = $state(motifs[0].name);
 	let filteredMotifs = $derived(
 		motifs.filter((d) =>

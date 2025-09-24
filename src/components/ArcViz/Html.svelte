@@ -15,7 +15,7 @@
 	const lesMisPlayable = $derived(
 		isMobile
 			? ["on my own"]
-			: ["god on high", "on my own", "police 1", "the people 2"]
+			: ["god on high", "on my own", "police", "the people b"]
 	);
 
 	const onClick = () => {

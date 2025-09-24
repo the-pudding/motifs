@@ -174,6 +174,7 @@
 
 	:global(span.green) {
 		color: var(--color-wicked-green);
+		text-transform: uppercase;
 	}
 
 	:global(span.note) {
@@ -206,6 +207,13 @@
 		letter-spacing: 0.15em;
 		font-size: var(--12px);
 		color: var(--color-gray-200);
+	}
+
+	:global(strong.instructions) {
+		font-family: var(--mono);
+		padding-left: 3rem;
+		display: inline-block;
+		margin-top: 1.5rem;
 	}
 
 	:global(.open .begin) {

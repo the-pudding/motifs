@@ -269,7 +269,7 @@
 							{@const faded =
 								(audio.figureId != null &&
 									audio.figureId === id &&
-									!audio.motifData.motifId.includes(_.kebabCase(name))) ||
+									audio.motifData.motifId !== _.kebabCase(name)) ||
 								(id === "explore" &&
 									!filteredMotifNamesByCharacter.includes(name))}
 							<circle

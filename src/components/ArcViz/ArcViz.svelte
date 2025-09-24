@@ -64,130 +64,114 @@
 				return { ...motif, regions: sortedRegions };
 			}),
 			// 3) Sort motifs by first region start time
-			(d) => [d.regions[0]["track-name"], d.regions[0].start],
+			(d) => [d.regions[0]["track-name"], +d.regions[0].start],
 			["asc", "asc"]
 		);
 	};
 
 	const dataMap = $derived({
 		unlimited: {
-			motifs: sortMotifRegions(
-				wickedMotifs.filter((d) => d.name === "unlimited")
-			),
+			motifs: wickedMotifs.filter((d) => d.name === "unlimited"),
 			tracks: wickedTracks
 		},
 		wicked: {
-			motifs: sortMotifRegions(wickedMotifs),
+			motifs: wickedMotifs,
 			tracks: wickedTracks
 		},
 		lesmis: {
-			motifs: sortMotifRegions(lesMisMotifs),
+			motifs: lesMisMotifs,
 			tracks: lesMisTracks
 		},
 		hamilton: {
-			motifs: sortMotifRegions(hamiltonMotifs),
+			motifs: hamiltonMotifs,
 			tracks: hamiltonTracks
 		},
 		headline: {
-			motifs: sortMotifRegions(hamiltonMotifs),
+			motifs: hamiltonMotifs,
 			tracks: hamiltonTracks
 		},
 		"character-motif": {
-			motifs: sortMotifRegions(
-				lesMisMotifs.filter(
-					(d) =>
-						d.name === "jvj 1" ||
-						d.name === "jvj 2" ||
-						d.name === "thenardier waltz" ||
-						d.name === "cosette"
-				)
+			motifs: lesMisMotifs.filter(
+				(d) =>
+					d.name === "valjean rising" ||
+					d.name === "valjean rising 2" ||
+					d.name === "thenardier waltz" ||
+					d.name === "cosette"
 			),
 			tracks: lesMisTracks
 		},
 		"character-motif-hamilton": {
-			motifs: sortMotifRegions(
-				hamiltonMotifs.filter(
-					(d) =>
-						d.name === "alexander hamilton" ||
-						d.name === "angelica" ||
-						d.name === "eliza" ||
-						d.name === "schuyler sisters" ||
-						d.name === "phillip rap"
-				)
+			motifs: hamiltonMotifs.filter(
+				(d) =>
+					d.name === "alexander hamilton" ||
+					d.name === "angelica" ||
+					d.name === "eliza" ||
+					d.name === "schuyler sisters" ||
+					d.name === "phillip rap"
 			),
 			tracks: hamiltonTracks
 		},
 		idea: {
-			motifs: sortMotifRegions(
-				lesMisMotifs.filter(
-					(d) =>
-						d.name === "anguish" ||
-						d.name === "god on high" ||
-						d.name === "drink with me" ||
-						d.name === "look down"
-				)
+			motifs: lesMisMotifs.filter(
+				(d) =>
+					d.name === "anguish" ||
+					d.name === "god on high" ||
+					d.name === "drink with me" ||
+					d.name === "look down"
 			),
 			tracks: lesMisTracks
 		},
 		"idea-ab": {
-			motifs: sortMotifRegions(
-				lesMisMotifs.filter(
-					(d) => d.name === "police 1" || d.name === "police 2"
-				)
+			motifs: lesMisMotifs.filter(
+				(d) => d.name === "police 1" || d.name === "police 2"
 			),
 			tracks: lesMisTracks
 		},
 		"new-emotion": {
-			motifs: sortMotifRegions(
-				lesMisMotifs.filter(
-					(d) =>
-						d.name === "friendship" ||
-						d.name === "little people" ||
-						d.name === "lovely ladies" ||
-						d.name === "rain"
-				)
+			motifs: lesMisMotifs.filter(
+				(d) =>
+					d.name === "friendship" ||
+					d.name === "little people" ||
+					d.name === "lovely ladies" ||
+					d.name === "rain"
 			),
 			tracks: lesMisTracks
 		},
 		"new-emotion-hamilton": {
-			motifs: sortMotifRegions(
-				hamiltonMotifs.filter(
-					(d) => d.name === "counting" || d.name === "i imagine death"
-				)
+			motifs: hamiltonMotifs.filter(
+				(d) => d.name === "counting" || d.name === "i imagine death"
 			),
 			tracks: hamiltonTracks
 		},
 		nonstop: {
-			motifs: sortMotifRegions(
-				hamiltonMotifs.filter((d) =>
+			motifs: hamiltonMotifs
+				.filter((d) =>
 					d.regions.some((r) => r["track-name"] === "1-23 Non-Stop")
 				)
-			).map((d) => ({
-				...d,
-				regions: d.regions.filter((r) => r["track-name"].startsWith("1"))
-			})),
+				.map((d) => ({
+					...d,
+					regions: d.regions.filter((r) => r["track-name"].startsWith("1"))
+				})),
 			tracks: hamiltonTracks
 		},
 		"one-day-more": {
-			motifs: sortMotifRegions(
-				lesMisMotifs
-					.filter((d) =>
-						d.regions.some((r) => r["track-name"] === "1-23 One Day More")
-					)
-					.map((d) => ({
-						...d,
-						regions: d.regions.filter((r) => r["track-name"].startsWith("1"))
-					}))
-			),
+			motifs: lesMisMotifs
+				.filter((d) =>
+					d.regions.some((r) => r["track-name"] === "1-23 One Day More")
+				)
+				.map((d) => ({
+					...d,
+					regions: d.regions.filter((r) => r["track-name"].startsWith("1"))
+				})),
 			tracks: lesMisTracks
 		},
 		explore: {
 			motifs:
 				musical === "hamilton"
-					? sortMotifRegions(hamiltonMotifs)
+					? hamiltonMotifs
 					: musical === "wicked"
-						? sortMotifRegions(wickedMotifs)
-						: sortMotifRegions(lesMisMotifs),
+						? wickedMotifs
+						: lesMisMotifs,
 			tracks:
 				musical === "hamilton"
 					? hamiltonTracks
@@ -196,6 +180,12 @@
 						: lesMisTracks
 		}
 	});
+
+	const motifs = $derived(
+		sortMotifRegions(dataMap[id].motifs).filter((d) => d.regions.length > 1)
+	);
+
+	$inspect({ motifs });
 </script>
 
 <figure {id} class="arc-viz">
@@ -214,18 +204,12 @@
 		{song}
 		{character}
 		{animate}
-		motifs={dataMap[id].motifs}
+		{motifs}
 		tracks={dataMap[id].tracks}
 	/>
 
 	{#if id === "explore"}
-		<Motifs
-			motifs={dataMap[id].motifs}
-			{musical}
-			{song}
-			{character}
-			{favorites}
-		/>
+		<Motifs {motifs} {musical} {song} {character} {favorites} />
 	{/if}
 </figure>
 
@@ -247,7 +231,7 @@
 	h3 {
 		text-transform: uppercase;
 		font-weight: bold;
-		font-size: 20px;
+		font-size: var(--24px);
 		margin: 0;
 	}
 
@@ -256,8 +240,9 @@
 		top: 1rem;
 		right: 1rem;
 		padding: 2px;
-		max-width: 40%;
+		max-width: 450px;
 		background: var(--color-white);
+		z-index: 1000;
 		opacity: 0;
 		transition: opacity 0.3s ease;
 	}
