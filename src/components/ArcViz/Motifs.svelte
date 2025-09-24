@@ -2,6 +2,7 @@
 	import _ from "lodash";
 	import { onMount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
+	import copy from "$data/copy.json";
 
 	let { motifs, musical, song, character, favorites } = $props();
 	const audio = audioApi();
@@ -10,6 +11,8 @@
 		smooth = audio.subscribeSmooth();
 	});
 	onDestroy(() => smooth?.());
+
+	$inspect({ motifs });
 
 	let selectedMotif = $state(motifs[0].name);
 	let filteredMotifs = $derived(
@@ -72,11 +75,10 @@
 </script>
 
 <div class="motifs">
-	<!-- <div style="margin-bottom: 1rem">Instructions Tk</div> -->
-
 	{#each filteredMotifs as motif}
-		{@const isFavorite = favorites.includes(motif.name)}
 		{@const selected = selectedMotif && selectedMotif === motif.name}
+		{@const description =
+			copy.descriptions?.[musical]?.[_.kebabCase(motif.name)] || ""}
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div
@@ -84,10 +86,10 @@
 			class:selected
 			onclick={() => (selectedMotif = motif.name)}
 		>
-			<div class="name" class:favorite={isFavorite}>
+			<div class="name">
 				{motif.emoji}
 				{motif.name}
-				{#if isFavorite}🌟{/if}
+				<div class="description">{@html description}</div>
 			</div>
 
 			{#if selected}
@@ -146,10 +148,6 @@
 		margin-bottom: 1rem;
 	}
 
-	.name.favorite {
-		color: var(--color-playbill-yellow);
-	}
-
 	.motif:hover {
 		cursor: pointer;
 		background: var(--color-gray-700);
@@ -159,6 +157,18 @@
 		border: 1px solid var(--color-gray-400);
 		border-radius: 3px;
 		background: var(--color-gray-600);
+	}
+
+	.description {
+		display: none;
+		text-transform: none;
+		font-weight: normal;
+		font-size: var(--12px);
+		margin-top: 0.5rem;
+	}
+
+	.selected .description {
+		display: inline-block;
 	}
 
 	.instances {

@@ -135,9 +135,6 @@
 		}
 	};
 
-	if (motifId === "no-one-mourns")
-		$inspect({ songLabelWidth, songLabelOverflowing, songLeft });
-
 	onMount(() => {
 		smooth = audio.subscribeSmooth();
 	});
@@ -420,8 +417,16 @@
 	}
 
 	@media (max-width: 400px) {
-		.active .motif-name {
-			display: none;
+		.motif-name {
+			font-size: var(--12px);
+		}
+
+		.motif-name.left {
+			right: 70%;
+		}
+
+		.motif-name.right {
+			left: 70%;
 		}
 	}
 </style>

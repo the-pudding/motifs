@@ -9,6 +9,7 @@
 	import wickedTracks from "$data/tracks/wicked-tracks.json";
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
+	import copy from "$data/copy.json";
 
 	let { id, title, musical, song, character, animate, notes, favorites } =
 		$props();
@@ -16,7 +17,7 @@
 	const audio = audioApi();
 
 	let note = $derived(
-		notes && audio.motifData ? notes[audio.motifData.motifId] : null
+		copy.descriptions[musical]?.[audio?.motifData?.motifId] || null
 	);
 
 	const sortMotifRegions = (motifs) => {
@@ -198,7 +199,7 @@
 </script>
 
 <figure {id} class="arc-viz">
-	{#if note}
+	{#if note && id !== "explore"}
 		<div class="border" class:visible={audio.figureId === id}>
 			<div class="note">
 				🎧 {@html note}

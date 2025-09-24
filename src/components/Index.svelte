@@ -242,7 +242,7 @@
 	@media (max-width: 600px) {
 		article {
 			padding: 1rem;
-			padding-top: 6rem;
+			padding-top: 8rem;
 		}
 	}
 </style>

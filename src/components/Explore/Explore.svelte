@@ -13,7 +13,7 @@
 		{ label: "Les Misérables", value: "lesmis" }
 	];
 
-	let musical = $state("hamilton");
+	let musical = $state("lesmis");
 	let song = $state("All Songs");
 	let character = $state("All Characters");
 
