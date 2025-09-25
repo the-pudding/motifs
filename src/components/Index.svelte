@@ -172,6 +172,13 @@
 		margin: 2rem auto;
 	}
 
+	:global(p.callout) {
+		display: inline-block;
+		margin-top: 1.5rem;
+		background: var(--color-gray-700);
+		padding: 1rem;
+	}
+
 	:global(span.green) {
 		color: var(--color-wicked-green);
 		text-transform: uppercase;
@@ -207,13 +214,6 @@
 		letter-spacing: 0.15em;
 		font-size: var(--12px);
 		color: var(--color-gray-200);
-	}
-
-	:global(strong.instructions) {
-		font-family: var(--mono);
-		padding-left: 3rem;
-		display: inline-block;
-		margin-top: 1.5rem;
 	}
 
 	:global(.open .begin) {

@@ -22,7 +22,7 @@
 
 	const lesMisPlayable = $derived(
 		isMobile
-			? ["on my own"]
+			? ["god on high", "on my own"]
 			: ["god on high", "on my own", "police", "the people b"]
 	);
 

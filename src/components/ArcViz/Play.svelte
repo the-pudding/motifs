@@ -69,6 +69,14 @@
 				? chartWidth - songLabelWidth
 				: +left.replace("px", "")
 	);
+	let motifLabelOverflowing = $derived(
+		mePlaying
+			? {
+					left: +left.replace("px", "") - motifLabelWidth / 2 < 0,
+					right: +left.replace("px", "") + motifLabelWidth / 2 > chartWidth
+				}
+			: { left: false, right: false }
+	);
 
 	const playRecursive = (diff) => {
 		let playTrack = async (change) => {
@@ -176,6 +184,13 @@
 			class:centered={motifLabelCentered}
 			class:left={!motifLabelCentered && actOfFirstOccurence === 2}
 			class:right={!motifLabelCentered && actOfFirstOccurence === 1}
+			style:transform={!motifLabelCentered
+				? "translate(0, -50%)"
+				: motifLabelOverflowing.left
+					? "translate(-15%, calc(-100% - 6px))"
+					: motifLabelOverflowing.right
+						? "translate(-85%, calc(-100% - 6px))"
+						: "translate(-50%, calc(-100% - 6px))"}
 			bind:clientWidth={motifLabelWidth}
 		>
 			{chartId === "lesmis" && motifId === "the-people-b"
@@ -298,19 +313,16 @@
 	.motif-name.left {
 		top: 50%;
 		right: 75%;
-		transform: translate(0, -50%);
 	}
 
 	.motif-name.right {
 		top: 50%;
 		left: 75%;
-		transform: translate(0, -50%);
 	}
 
 	.motif-name.centered {
 		top: 0;
 		left: 50%;
-		transform: translate(-40%, calc(-100% - 6px));
 	}
 
 	.pp {
