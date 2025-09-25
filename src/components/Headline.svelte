@@ -11,28 +11,28 @@
 	{#if byline}
 		<p class="byline">{@html byline}</p>
 	{/if}
-
+	<!-- 
 	<div class="viz">
 		<ArcViz id="headline" musical="les mis" animate={true} />
-	</div>
+	</div> -->
 </div>
 
 <style>
 	h1 {
 		font-weight: bold;
-		font-size: 90px;
+		font-size: 82px;
 	}
 
 	h2 {
 		font-weight: normal;
-		font-size: var(--24px);
+		font-size: var(--20px);
 	}
 
 	#headline-wrapper {
 		position: relative;
 		text-align: center;
 		max-width: 1000px;
-		margin: 8rem auto 0 auto;
+		margin: 4rem auto 4rem auto;
 	}
 
 	.viz {

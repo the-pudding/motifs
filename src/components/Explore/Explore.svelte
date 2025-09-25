@@ -16,7 +16,7 @@
 		{ label: "Les Misérables", value: "lesmis" }
 	];
 
-	let musical = $state("lesmis");
+	let musical = $state("hamilton");
 	let song = $state("All Songs");
 	let character = $state("All Characters");
 
@@ -121,7 +121,9 @@
 					value={option}
 					selected={character.includes(option)}
 					onclick={() => (character = option.value)}
-					>{_.startCase(option)}</option
+					>{option === "marquis de lafayette"
+						? "Marquis de Lafayette"
+						: _.startCase(option)}</option
 				>
 			{/each}
 		</select>
@@ -132,7 +134,7 @@
 
 <ArcViz
 	id="explore"
-	{musical}
+	bind:musical
 	{song}
 	{character}
 	title={`${musicalOptions.find((d) => d.value === musical).label}: All motifs`}
@@ -164,5 +166,24 @@
 
 	button.reset {
 		font-size: var(--14px);
+	}
+
+	@media (max-width: 600px) {
+		.filters {
+			flex-wrap: wrap;
+			gap: 0.5rem;
+		}
+
+		.select-wrapper {
+			max-width: calc((100% - 1.5rem) / 3);
+		}
+	}
+
+	@media (max-width: 400px) {
+		label,
+		.select-wrapper,
+		button.reset {
+			font-size: var(--12px);
+		}
 	}
 </style>

@@ -4,7 +4,7 @@
 	import { audioApi } from "$runes/audio.svelte.js";
 	import copy from "$data/copy.json";
 
-	let { motifs, tracks, musical, song, character } = $props();
+	let { motifs, tracks, musical = $bindable(), song, character } = $props();
 	const audio = audioApi();
 	let smooth;
 	onMount(() => {
@@ -64,9 +64,29 @@
 		}
 	};
 
+	$inspect({ selectedMotif });
+
 	const filterUpdate = () => {
 		if (filteredMotifs.length === 0) return;
+
 		selectedMotif = filteredMotifs[0].name;
+
+		const drinkButton = document.getElementById("drink-with-me");
+		const raiseButton = document.getElementById("raise-a-glass");
+
+		if (drinkButton) {
+			drinkButton.addEventListener("click", () => {
+				musical = "lesmis";
+				//selectedMotif = "drink with me";
+			});
+		}
+
+		if (raiseButton) {
+			raiseButton.addEventListener("click", () => {
+				musical = "hamilton";
+				//selectedMotif = "raise a glass";
+			});
+		}
 	};
 
 	const getDisplaySongName = (trackName) => {
@@ -78,7 +98,7 @@
 </script>
 
 <div class="motifs">
-	{#each filteredMotifs as motif}
+	{#each filteredMotifs as motif (motif.name)}
 		{@const selected = selectedMotif && selectedMotif === motif.name}
 		{@const description =
 			copy.descriptions?.[musical]?.[_.kebabCase(motif.name)] || ""}
@@ -194,6 +214,14 @@
 		transition: all calc(var(--1s) * 0.25) ease-in-out;
 	}
 
+	:global(button#drink-with-me, button#raise-a-glass) {
+		background: var(--color-gray-100);
+		color: var(--color-bg);
+		text-transform: uppercase;
+		font-weight: bold;
+		transition: all calc(var(--1s) * 0.25) ease-in-out;
+	}
+
 	.play-pause {
 		display: inline-block;
 		width: 1.5em;
@@ -205,7 +233,8 @@
 		z-index: 2;
 	}
 
-	button.instance:hover:not(:disabled) {
+	button.instance:hover:not(:disabled),
+	:global(button#drink-with-me:hover, button#raise-a-glass:hover) {
 		background: var(--color-gray-300);
 		transform: translateY(-1px);
 		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;

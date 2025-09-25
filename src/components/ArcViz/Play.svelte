@@ -178,7 +178,9 @@
 			class:right={!motifLabelCentered && actOfFirstOccurence === 1}
 			bind:clientWidth={motifLabelWidth}
 		>
-			{_.startCase(motifId).toLowerCase()}
+			{chartId === "lesmis" && motifId === "the-people-b"
+				? "the people"
+				: _.startCase(motifId).toLowerCase()}
 			{emoji}
 		</div>
 		<div class="controls" style={`--color: ${color}`}>

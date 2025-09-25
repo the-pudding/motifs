@@ -42,14 +42,14 @@
 				"track-name": "1-23 Non-Stop",
 				"start": 231.569064,
 				"end": 242.74610099999998,
-				"character": ["eliza"]
+				"character": ["eliza schuyler"]
 			},
 			{
 				"id": "region-igkrf1l0m6g",
 				"track-name": "1-17 That Would Be Enough",
 				"start": 64.24929099999999,
 				"end": 91.08148185037665,
-				"character": ["eliza"]
+				"character": ["eliza schuyler"]
 			},
 			{
 				"id": "region-3ne43clt2a",
@@ -62,21 +62,21 @@
 				"track-name": "2-18 It's Quiet Uptown",
 				"start": 103.708645,
 				"end": 132.948771,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-3sa60gtsomk",
 				"track-name": "2-21 Best of Wives and Best of Women",
 				"start": 25.529709,
 				"end": 27.274835,
-				"character": ["eliza"]
+				"character": ["eliza schuyler"]
 			},
 			{
 				"id": "region-f84p7rj2444",
 				"track-name": "2-23 Who Lives, Who Dies, Who Tells Your Story",
 				"start": 73.86475299999996,
 				"end": 75.86493100000001,
-				"character": ["eliza"]
+				"character": ["eliza schuyler"]
 			},
 			{
 				"id": "region-hmar2ofdo2",
@@ -95,14 +95,14 @@
 				"track-name": "1-19 History Has Its Eyes On You",
 				"start": 0.848797,
 				"end": 14.492857,
-				"character": ["washington"]
+				"character": ["george washington"]
 			},
 			{
 				"id": "region-nnlk497935k",
 				"track-name": "1-23 Non-Stop",
 				"start": 304.65871000000016,
 				"end": 315.9940010000001,
-				"character": ["washington"]
+				"character": ["george washington"]
 			},
 			{
 				"id": "region-d5mvh8aes1g",
@@ -121,14 +121,14 @@
 				"track-name": "1-23 Non-Stop",
 				"start": 333.14868300000006,
 				"end": 338.3823750000003,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-7t8i2rns4gs",
 				"track-name": "1-05 The Schuyler Sisters",
 				"start": 114.838509,
 				"end": 124.370451,
-				"character": ["eliza", "angelica", "peggy"]
+				"character": ["eliza schuyler", "angelica schuyler", "peggy schuyler"]
 			},
 			{
 				"id": "region-7isad2cdvrk",
@@ -147,7 +147,7 @@
 				"track-name": "2-06 Schuyler Defeated",
 				"start": 21.336966,
 				"end": 29.850132,
-				"character": ["eliza", "phillip"]
+				"character": ["eliza schuyler", "phillip hamilton"]
 			}
 		]
 	},
@@ -160,14 +160,14 @@
 				"track-name": "1-23 Non-Stop",
 				"start": 337.7975239999999,
 				"end": 340.26860699999986,
-				"character": ["eliza"]
+				"character": ["eliza schuyler"]
 			},
 			{
 				"id": "region-9dvun7bcq0k",
 				"track-name": "1-10 Helpless",
 				"start": 11.840309,
 				"end": 24.859985,
-				"character": ["eliza"]
+				"character": ["eliza schuyler"]
 			},
 			{
 				"id": "region-a78o8bibvuk",
@@ -192,7 +192,7 @@
 				"track-name": "1-11 Satisfied",
 				"start": 161.167578,
 				"end": 170.914392,
-				"character": ["eliza"]
+				"character": ["eliza schuyler"]
 			}
 		]
 	},
@@ -205,21 +205,21 @@
 				"track-name": "1-23 Non-Stop",
 				"start": 343.5271699999999,
 				"end": 364.2954627441734,
-				"character": ["angelica"]
+				"character": ["angelica schuyler"]
 			},
 			{
 				"id": "region-6g727q3gcjc",
 				"track-name": "1-11 Satisfied",
 				"start": 314.106133,
 				"end": 323.2061,
-				"character": ["angelica"]
+				"character": ["angelica schuyler"]
 			},
 			{
 				"id": "region-intm4s9fb2c",
 				"track-name": "2-14 The Reynolds Pamphlet",
 				"start": 84.751772,
 				"end": 90.726415,
-				"character": ["angelica"]
+				"character": ["angelica schuyler"]
 			}
 		]
 	},
@@ -232,14 +232,14 @@
 				"track-name": "1-23 Non-Stop",
 				"start": 348.8053400000002,
 				"end": 368.969387146622,
-				"character": ["washington"]
+				"character": ["george washington"]
 			},
 			{
 				"id": "region-7p01rre6ado",
 				"track-name": "1-19 History Has Its Eyes On You",
 				"start": 24.615204999999996,
 				"end": 32.629982,
-				"character": ["washington"]
+				"character": ["george washington"]
 			},
 			{
 				"id": "region-bf3nc7dm5r",
@@ -264,14 +264,14 @@
 				"track-name": "1-23 Non-Stop",
 				"start": 369.680448,
 				"end": 382.613579,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-9ll3bfg4a3o",
 				"track-name": "1-03 My Shot",
 				"start": 0.029767491126302087,
 				"end": 10.017947,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-v4n44tsai6k",
@@ -320,14 +320,14 @@
 				"track-name": "1-08 Right Hand Man",
 				"start": 273.758317,
 				"end": 276.275659,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-jcbrc1ohpvc",
 				"track-name": "1-20 Yorktown (The World Turned Upside Down)",
 				"start": 31.239217,
 				"end": 43.323484,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			}
 		]
 	},
@@ -340,21 +340,21 @@
 				"track-name": "1-03 My Shot",
 				"start": 232.431588,
 				"end": 254.228828,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-je99jk0cqvs",
 				"track-name": "1-20 Yorktown (The World Turned Upside Down)",
 				"start": 50.313438999999995,
 				"end": 61.13543,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-jbtqecdkd4k",
 				"track-name": "2-22 The World Was Wide Enough",
 				"start": 102.58580799999999,
 				"end": 117.858615,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			}
 		]
 	},
@@ -368,9 +368,9 @@
 				"start": 22.945202999999992,
 				"end": 46.78668220660788,
 				"character": [
-					"hamilton",
+					"alexander hamilton",
 					"john laurens",
-					"lafayette",
+					"marquis de lafayette",
 					"hercules mulligan"
 				]
 			},
@@ -391,7 +391,7 @@
 				"track-name": "2-22 The World Was Wide Enough",
 				"start": 185.023787,
 				"end": 187.450078,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-nnef6pru18o",
@@ -399,9 +399,9 @@
 				"start": 20.76356,
 				"end": 43.917587,
 				"character": [
-					"hamilton",
+					"alexander hamilton",
 					"john laurens",
-					"lafayette",
+					"marquis de lafayette",
 					"hercules mulligan"
 				]
 			}
@@ -449,7 +449,7 @@
 				"track-name": "2-05 The Room Where It Happens",
 				"start": 25.735086000000017,
 				"end": 36.099754000000004,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			}
 		]
 	},
@@ -462,7 +462,11 @@
 				"track-name": "1-10 Helpless",
 				"start": 85.42291,
 				"end": 102.721292,
-				"character": ["eliza", "hamilton", "angelica"]
+				"character": [
+					"eliza schuyler",
+					"alexander hamilton",
+					"angelica schuyler"
+				]
 			},
 			{
 				"id": "region-bd9un5vii2c",
@@ -475,7 +479,7 @@
 				"track-name": "1-11 Satisfied",
 				"start": 177.583671,
 				"end": 182.803697,
-				"character": ["hamilton", "angelica"]
+				"character": ["alexander hamilton", "angelica schuyler"]
 			},
 			{
 				"id": "region-vhoean22o3c",
@@ -540,7 +544,7 @@
 				"track-name": "2-03 Take a Break",
 				"start": 0.012369169406970804,
 				"end": 10.866975,
-				"character": ["eliza", "phillip"]
+				"character": ["eliza schuyler", "phillip hamilton"]
 			},
 			{
 				"id": "region-ilf5n1t2ass",
@@ -567,7 +571,7 @@
 				"track-name": "2-17 Stay Alive (Reprise)",
 				"start": 94.156655,
 				"end": 108.092255,
-				"character": ["eliza", "phillip"]
+				"character": ["eliza schuyler", "phillip hamilton"]
 			}
 		]
 	},
@@ -580,14 +584,14 @@
 				"track-name": "2-03 Take a Break",
 				"start": 79.23711899999996,
 				"end": 102.682899,
-				"character": ["phillip"]
+				"character": ["phillip hamilton"]
 			},
 			{
 				"id": "region-fqfafpqha9o",
 				"track-name": "2-16 Blow Us All Away",
 				"start": 140.97566100000003,
 				"end": 151.80524,
-				"character": ["phillip"]
+				"character": ["phillip hamilton"]
 			}
 		]
 	},
@@ -600,14 +604,14 @@
 				"track-name": "2-16 Blow Us All Away",
 				"start": 163.072859,
 				"end": 170.648453,
-				"character": ["phillip"]
+				"character": ["phillip hamilton"]
 			},
 			{
 				"id": "region-htivbc62mlo",
 				"track-name": "1-15 Ten Duel Commandments",
 				"start": 96.25100900000001,
 				"end": 101.30197500000003,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-llpognclc5g",
@@ -627,7 +631,7 @@
 				"track-name": "1-18 Guns and Ships",
 				"start": 80.07979400000002,
 				"end": 82.439689,
-				"character": ["washington"]
+				"character": ["george washington"]
 			},
 			{
 				"id": "region-ni93ldn54n4",
@@ -640,7 +644,7 @@
 				"track-name": "1-01 Alexander Hamilton",
 				"start": 79.00070100000003,
 				"end": 85.74464900000001,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-o8m52s42918",
@@ -665,7 +669,7 @@
 				"track-name": "1-23 Non-Stop",
 				"start": 374.28847800000017,
 				"end": 376.48819600000024,
-				"character": ["hamilton", "ensemble"]
+				"character": ["alexander hamilton", "ensemble"]
 			}
 		]
 	},
@@ -678,14 +682,14 @@
 				"track-name": "1-19 History Has Its Eyes On You",
 				"start": 53.1179721390306,
 				"end": 65.342678,
-				"character": ["washington"]
+				"character": ["george washington"]
 			},
 			{
 				"id": "region-tu5n4r8ptig",
 				"track-name": "2-23 Who Lives, Who Dies, Who Tells Your Story",
 				"start": 4.406835,
 				"end": 17.288397,
-				"character": ["washington"]
+				"character": ["george washington"]
 			},
 			{
 				"id": "region-fcb8auk85nc",
@@ -726,7 +730,7 @@
 		]
 	},
 	{
-		"name": "angelica",
+		"name": "angelica schuyler",
 		"emoji": "📜",
 		"regions": [
 			{
@@ -734,14 +738,14 @@
 				"track-name": "2-03 Take a Break",
 				"start": 190.80036999999996,
 				"end": 192.01946400000003,
-				"character": ["eliza"]
+				"character": ["eliza schuyler"]
 			},
 			{
 				"id": "region-v6rn5q7dpv4",
 				"track-name": "1-05 The Schuyler Sisters",
 				"start": 21.945038000000004,
 				"end": 23.127059,
-				"character": ["angelica"]
+				"character": ["angelica schuyler"]
 			},
 			{
 				"id": "region-4o7jupf8kno",
@@ -754,19 +758,19 @@
 				"track-name": "2-14 The Reynolds Pamphlet",
 				"start": 57.566477000000006,
 				"end": 58.630695,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-qlb6074e5ns",
 				"track-name": "2-23 Who Lives, Who Dies, Who Tells Your Story",
 				"start": 89.04612399999998,
 				"end": 90.88453200000002,
-				"character": ["eliza"]
+				"character": ["eliza schuyler"]
 			}
 		]
 	},
 	{
-		"name": "eliza",
+		"name": "eliza schuyler",
 		"emoji": "🕯️",
 		"regions": [
 			{
@@ -774,14 +778,14 @@
 				"track-name": "2-03 Take a Break",
 				"start": 191.859392,
 				"end": 193.869172,
-				"character": ["angelica"]
+				"character": ["angelica schuyler"]
 			},
 			{
 				"id": "region-jh1ocqoprco",
 				"track-name": "1-05 The Schuyler Sisters",
 				"start": 24.436584999999994,
 				"end": 25.774346999999995,
-				"character": ["eliza"]
+				"character": ["eliza schuyler"]
 			},
 			{
 				"id": "region-606uqgalhb8",
@@ -813,7 +817,7 @@
 				"track-name": "2-03 Take a Break",
 				"start": 194.893283,
 				"end": 197.530602,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-267fvidef4g",
@@ -929,14 +933,14 @@
 				"track-name": "2-14 The Reynolds Pamphlet",
 				"start": 67.91064499999999,
 				"end": 81.4011,
-				"character": ["angelica"]
+				"character": ["angelica schuyler"]
 			},
 			{
 				"id": "region-6vo1d9t916s",
 				"track-name": "1-11 Satisfied",
 				"start": 228.23271400000002,
 				"end": 243.649904,
-				"character": ["angelica"]
+				"character": ["angelica schuyler"]
 			}
 		]
 	},
@@ -949,14 +953,14 @@
 				"track-name": "2-18 It's Quiet Uptown",
 				"start": 132.972872,
 				"end": 162.703035,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-8jkf6r3es4c",
 				"track-name": "1-17 That Would Be Enough",
 				"start": 91.58983699999997,
 				"end": 118.788456,
-				"character": ["eliza"]
+				"character": ["eliza schuyler"]
 			}
 		]
 	},
@@ -969,14 +973,14 @@
 				"track-name": "2-19 The Election Of 1800",
 				"start": 7.647128,
 				"end": 21.920334,
-				"character": ["jefferson"]
+				"character": ["thomas jefferson"]
 			},
 			{
 				"id": "region-7qo60jq6034",
 				"track-name": "2-08 Washington On Your Side",
 				"start": 22.452720000000003,
 				"end": 36.66088,
-				"character": ["jefferson"]
+				"character": ["thomas jefferson"]
 			}
 		]
 	},
@@ -989,7 +993,7 @@
 				"track-name": "2-19 The Election Of 1800",
 				"start": 51.04170900000002,
 				"end": 65.28005999999995,
-				"character": ["jefferson", "madison"]
+				"character": ["thomas jefferson", "james madison"]
 			},
 			{
 				"id": "region-73msqahdj4o",
@@ -1039,7 +1043,7 @@
 				"track-name": "2-19 The Election Of 1800",
 				"start": 98.86506,
 				"end": 101.104136,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-cojab6i4sis",
@@ -1052,7 +1056,7 @@
 				"track-name": "2-18 It's Quiet Uptown",
 				"start": 45.45143,
 				"end": 48.227976,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-ucbs976ddmg",
@@ -1083,14 +1087,14 @@
 				"track-name": "2-19 The Election Of 1800",
 				"start": 121.95631199999997,
 				"end": 134.077989,
-				"character": ["aaron burr", "hamilton"]
+				"character": ["aaron burr", "alexander hamilton"]
 			},
 			{
 				"id": "region-ou0jafgakug",
 				"track-name": "1-02 Aaron Burr, Sir",
 				"start": 13.921711,
 				"end": 23.708555,
-				"character": ["aaron burr", "hamilton"]
+				"character": ["aaron burr", "alexander hamilton"]
 			},
 			{
 				"id": "region-ij0omtjj9g",
@@ -1099,8 +1103,8 @@
 				"end": 55.934482,
 				"character": [
 					"aaron burr",
-					"hamilton",
-					"lafayette",
+					"alexander hamilton",
+					"marquis de lafayette",
 					"hercules mulligan"
 				]
 			},
@@ -1109,7 +1113,7 @@
 				"track-name": "1-23 Non-Stop",
 				"start": 126.008451,
 				"end": 136.803783,
-				"character": ["aaron burr", "hamilton"]
+				"character": ["aaron burr", "alexander hamilton"]
 			}
 		]
 	},
@@ -1122,7 +1126,7 @@
 				"track-name": "2-21 Best of Wives and Best of Women",
 				"start": 20.378246000000004,
 				"end": 23.66256,
-				"character": ["eliza"]
+				"character": ["eliza schuyler"]
 			},
 			{
 				"id": "region-bqe1fs4im9s",
@@ -1172,7 +1176,7 @@
 				"track-name": "2-23 Who Lives, Who Dies, Who Tells Your Story",
 				"start": 85.77028700000001,
 				"end": 88.59650800000001,
-				"character": ["eliza"]
+				"character": ["eliza schuyler"]
 			}
 		]
 	},
@@ -1192,7 +1196,7 @@
 				"track-name": "1-01 Alexander Hamilton",
 				"start": 89.561632,
 				"end": 94.221933,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-jk4cm51poio",
@@ -1213,7 +1217,7 @@
 				"end": 77.31909978016799,
 				"character": [
 					"aaron burr",
-					"hamilton",
+					"alexander hamilton",
 					"john laurens",
 					"ensemble",
 					"charles lee"
@@ -1237,7 +1241,7 @@
 				"track-name": "2-22 The World Was Wide Enough",
 				"start": 169.20745200000002,
 				"end": 171.586362,
-				"character": ["hamilton"]
+				"character": ["alexander hamilton"]
 			},
 			{
 				"id": "region-l8dgjjhm99o",
@@ -1256,7 +1260,7 @@
 				"track-name": "2-09 One Last Time",
 				"start": 59.766827,
 				"end": 63.959138,
-				"character": ["washington"]
+				"character": ["george washington"]
 			},
 			{
 				"id": "region-fb98t8e3fmc",

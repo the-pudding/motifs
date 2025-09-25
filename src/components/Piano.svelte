@@ -20,10 +20,11 @@
 		"rainbow-piano": [0.784, 2.042, 3.376, 4.326]
 	};
 
-	const clear = (track) => {
+	const clear = () => {
 		if (
-			track === null ||
-			(track !== "unlimited-piano" && track === "unlimited-piano")
+			audio.trackName === null ||
+			(audio.trackName !== "unlimited-piano" &&
+				audio.trackName !== "rainbow-piano")
 		)
 			return;
 
@@ -37,7 +38,7 @@
 		if (
 			audio.trackName === null ||
 			(audio.trackName !== "unlimited-piano" &&
-				audio.trackName === "unlimited-piano")
+				audio.trackName !== "rainbow-piano")
 		)
 			return;
 
@@ -49,6 +50,14 @@
 		});
 	};
 
+	const openChange = () => {
+		if (open) {
+			circleGroups.forEach((circle) => {
+				circle.style.opacity = 0;
+			});
+		}
+	};
+
 	onMount(() => {
 		const g = document.querySelectorAll("#piano svg g");
 		g.forEach((circle) => {
@@ -57,6 +66,7 @@
 		circleGroups = g;
 	});
 
+	$effect(() => openChange(open));
 	$effect(() => clear(audio.trackName));
 	$effect(() => timeChange(audio.smoothTime));
 </script>

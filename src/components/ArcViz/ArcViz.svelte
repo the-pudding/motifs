@@ -11,7 +11,7 @@
 	import { audioApi } from "$runes/audio.svelte.js";
 	import copy from "$data/copy.json";
 
-	let { id, title, musical, song, character, animate } = $props();
+	let { id, title, musical = $bindable(), song, character, animate } = $props();
 
 	const audio = audioApi();
 
@@ -198,7 +198,7 @@
 	<Chart {id} {musical} {song} {character} {animate} {motifs} {tracks} />
 
 	{#if id === "explore"}
-		<Motifs {motifs} {tracks} {musical} {song} {character} />
+		<Motifs {motifs} {tracks} bind:musical {song} {character} />
 	{/if}
 </figure>
 
