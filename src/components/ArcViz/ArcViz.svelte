@@ -192,7 +192,8 @@
 	{#if note && id !== "explore" && id !== "lesmis"}
 		<div class="border" class:visible={audio.figureId === id}>
 			<div class="note">
-				🎧 {@html note}
+				<span class="listening">Listening notes:</span>
+				{@html note}
 			</div>
 		</div>
 	{/if}
@@ -226,7 +227,8 @@
 
 	.border {
 		padding: 2px;
-		max-width: 450px;
+		width: fit-content;
+		max-width: 600px;
 		margin: 0 auto;
 		margin-top: 1rem;
 		background: var(--color-white);
@@ -245,6 +247,16 @@
 		padding: 1rem;
 		font-size: var(--14px);
 		border: 1px solid var(--color-bg);
+	}
+
+	span.listening {
+		font-family: var(--mono);
+		font-weight: bold;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-size: var(--12px);
+		display: block;
+		text-decoration: underline;
 	}
 
 	@media (max-width: 400px) {
