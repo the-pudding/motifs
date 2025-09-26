@@ -40,7 +40,7 @@
 		position: relative;
 		text-align: center;
 		max-width: 1000px;
-		padding: 2rem;
+		padding: 2rem 3rem;
 		border: 1px solid var(--color-bg);
 		display: flex;
 		flex-direction: column;

@@ -102,11 +102,7 @@
 		const container = document.body;
 
 		const handler = (e) => {
-			if (
-				e.target &&
-				(e.target.className === "goto-drink-with-me" ||
-					e.target.className === "goto-raise-a-glass")
-			) {
+			if (e.target && e.target.className.includes("goto-")) {
 				e.stopPropagation();
 
 				if (
@@ -119,8 +115,7 @@
 					}
 				}
 
-				musical =
-					e.target.className === "goto-drink-with-me" ? "lesmis" : "hamilton";
+				musical = e.target.dataset.musical;
 				song = "All Songs";
 				character = "All Characters";
 				selectedMotif = _.lowerCase(e.target.className.replace("goto-", ""));

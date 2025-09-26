@@ -186,7 +186,7 @@
 	}
 
 	.border {
-		padding: 2px;
+		padding: 4px;
 		width: fit-content;
 		max-width: 600px;
 		margin: 0 auto;

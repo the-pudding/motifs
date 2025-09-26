@@ -41,6 +41,11 @@
 		transform: translate(0, 0);
 	}
 
+	details:open {
+		border: 4px solid var(--color-fg);
+		padding: 1rem;
+	}
+
 	details * {
 		font-size: var(--14px);
 	}

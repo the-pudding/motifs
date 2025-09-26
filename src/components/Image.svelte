@@ -3,7 +3,9 @@
 </script>
 
 <div class="img-wrapper">
-	<img src={`assets/img/${src}`} {alt} loading="lazy" />
+	<div class="border">
+		<img src={`assets/img/${src}`} {alt} loading="lazy" />
+	</div>
 
 	{#if caption}
 		<div class="caption">{@html caption}</div>
@@ -22,6 +24,12 @@
 	img,
 	.caption {
 		width: 500px;
+	}
+
+	.border {
+		padding: 4px;
+		background: var(--color-white);
+		width: fit-content;
 	}
 
 	.caption {
