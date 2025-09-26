@@ -6,6 +6,7 @@
 <div id="headline">
 	<div class="border">
 		<div class="playbill">
+			<h1 class="sr-only">Common Threads</h1>
 			{@html hedSvg}
 
 			{#if dek}

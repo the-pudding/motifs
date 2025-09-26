@@ -174,7 +174,7 @@
 		font-size: var(--32px);
 	}
 
-	:global(h4) {
+	:global(h3) {
 		font-weight: bold;
 		font-size: var(--28px);
 		max-width: 700px;
