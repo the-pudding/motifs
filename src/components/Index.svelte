@@ -8,6 +8,7 @@
 	import ArcViz from "$components/ArcViz/ArcViz.svelte";
 	import Explore from "$components/Explore/Explore.svelte";
 	import Image from "$components/Image.svelte";
+	import Summary from "$components/Summary.svelte";
 	import Footer from "$components/Footer.svelte";
 	import Carousel from "$components/Carousel.svelte";
 	import { onMount, mount, onDestroy } from "svelte";
@@ -16,7 +17,15 @@
 	import { base } from "$app/paths";
 
 	const { body } = copy;
-	const components = { Headline, Piano, ArcViz, Carousel, Explore, Image };
+	const components = {
+		Headline,
+		Piano,
+		ArcViz,
+		Carousel,
+		Explore,
+		Image,
+		Summary
+	};
 
 	const audio = audioApi();
 	let audioEl;
@@ -173,10 +182,8 @@
 	}
 
 	:global(p.callout) {
-		display: inline-block;
+		font-weight: bold;
 		margin-top: 1.5rem;
-		background: var(--color-gray-700);
-		padding: 1rem;
 	}
 
 	:global(span.green) {

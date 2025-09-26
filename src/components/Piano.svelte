@@ -11,7 +11,6 @@
 	});
 	onDestroy(() => smooth?.());
 
-	let open = $state(false);
 	let circleGroups = $state([]);
 	let shown = $state(new Set());
 
@@ -21,17 +20,23 @@
 	};
 
 	const clear = () => {
-		if (
-			audio.trackName === null ||
-			(audio.trackName !== "unlimited-piano" &&
-				audio.trackName !== "rainbow-piano")
-		)
+		if (audio.trackName === null && shown.size > 0) {
+			shown.clear();
+			circleGroups.forEach((circle) => {
+				circle.style.opacity = 0;
+			});
 			return;
+		}
 
-		shown.clear();
-		circleGroups.forEach((circle) => {
-			circle.style.opacity = 0;
-		});
+		if (
+			audio.trackName === "unlimited-piano" ||
+			audio.trackName === "rainbow-piano"
+		) {
+			shown.clear();
+			circleGroups.forEach((circle) => {
+				circle.style.opacity = 0;
+			});
+		}
 	};
 
 	const timeChange = () => {
@@ -42,20 +47,20 @@
 		)
 			return;
 
+		if (audio.smoothTime < ts[audio.trackName][0] && shown.size > 0) {
+			shown.clear();
+			circleGroups.forEach((circle) => {
+				circle.style.opacity = 0;
+			});
+			return;
+		}
+
 		ts[audio.trackName].forEach((t, i) => {
 			if (audio.smoothTime >= t && !shown.has(i)) {
 				circleGroups[i].style.opacity = 1;
 				shown.add(i);
 			}
 		});
-	};
-
-	const openChange = () => {
-		if (open) {
-			circleGroups.forEach((circle) => {
-				circle.style.opacity = 0;
-			});
-		}
 	};
 
 	onMount(() => {
@@ -66,56 +71,34 @@
 		circleGroups = g;
 	});
 
-	$effect(() => openChange(open));
 	$effect(() => clear(audio.trackName));
 	$effect(() => timeChange(audio.smoothTime));
 </script>
 
-<details bind:open>
-	<summary>{open ? "Told ya." : "I don't believe you."}</summary>
-
-	<figure id="piano">
-		<div class="buttons">
-			<div class="button">
-				<PlayableText
-					id={"piano-unlimited"}
-					src="text/unlimited-piano.mp3"
-					text={`"Unlimited"`}
-				/>
-				<div class="source">From <i>Wicked</i></div>
-			</div>
-
-			<div class="button">
-				<PlayableText
-					id={"piano-rainbow"}
-					src="text/rainbow-piano.mp3"
-					text={`"Somewhere over the rainbow"`}
-				/>
-				<div class="source">From <i>The Wizard of Oz</i></div>
-			</div>
+<figure id="piano">
+	<div class="buttons">
+		<div class="button">
+			<PlayableText
+				id={"piano-unlimited"}
+				src="text/unlimited-piano.mp3"
+				text={`"Unlimited"`}
+			/>
+			<div class="source">From <i>Wicked</i></div>
 		</div>
-		{@html pianoSvg}
-	</figure>
-</details>
+
+		<div class="button">
+			<PlayableText
+				id={"piano-rainbow"}
+				src="text/rainbow-piano.mp3"
+				text={`"Somewhere over the rainbow"`}
+			/>
+			<div class="source">From <i>The Wizard of Oz</i></div>
+		</div>
+	</div>
+	{@html pianoSvg}
+</figure>
 
 <style>
-	details {
-		max-width: 700px;
-		margin: 3rem auto;
-		transform: translate(0, 0);
-	}
-
-	summary {
-		font-size: var(--12px);
-		margin-bottom: 1rem;
-		transition: transform 0.2s ease !important;
-	}
-
-	summary:hover {
-		cursor: pointer;
-		transform: translate(0.1rem, 0);
-	}
-
 	figure {
 		display: flex;
 		flex-direction: column;
