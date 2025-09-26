@@ -4,7 +4,13 @@
 	import { audioApi } from "$runes/audio.svelte.js";
 	import copy from "$data/copy.json";
 
-	let { motifs, tracks, musical = $bindable(), song, character } = $props();
+	let {
+		selectedMotif = $bindable(),
+		filteredMotifs,
+		tracks,
+		musical,
+		character
+	} = $props();
 	const audio = audioApi();
 	let smooth;
 	onMount(() => {
@@ -12,20 +18,9 @@
 	});
 	onDestroy(() => smooth?.());
 
-	let selectedMotif = $state(motifs[0].name);
-	let filteredMotifs = $derived(
-		motifs.filter((d) =>
-			d.regions.some(
-				(r) =>
-					(r?.character?.includes(character) ||
-						character === "All Characters") &&
-					(r["track-name"] === song || song === "All Songs")
-			)
-		)
-	);
 	let percentsDone = $derived.by(() => {
 		if (!selectedMotif) return [];
-		const motif = motifs.find((m) => m.name === selectedMotif);
+		const motif = filteredMotifs.find((m) => m.name === selectedMotif);
 		if (!motif) return [];
 		return motif.regions.map((region, i) => {
 			const src = `assets/audio/${musical}/${region["track-name"]}.mp3`;
@@ -64,12 +59,6 @@
 		}
 	};
 
-	const filterUpdate = () => {
-		if (filteredMotifs.length === 0) return;
-
-		selectedMotif = filteredMotifs[0].name;
-	};
-
 	const scrollToMotif = () => {
 		const container = document.querySelector(".motifs");
 		const motifEl = document.getElementById(
@@ -91,7 +80,6 @@
 		return trackData?.displayName || trackName;
 	};
 
-	$effect(() => filterUpdate(musical, character));
 	$effect(() => scrollToMotif(selectedMotif));
 </script>
 
@@ -152,7 +140,8 @@
 		gap: 0.2rem;
 		max-height: 350px;
 		overflow: scroll;
-		margin-top: 2rem;
+		padding: 0 2rem 2rem 2rem;
+		background: var(--color-gray-800);
 	}
 
 	.motif {
@@ -213,7 +202,7 @@
 		transition: all calc(var(--1s) * 0.25) ease-in-out;
 	}
 
-	:global(button#drink-with-me, button#raise-a-glass) {
+	:global(button.goto-drink-with-me, button.goto-raise-a-glass) {
 		background: var(--color-gray-100);
 		color: var(--color-bg);
 		text-transform: uppercase;
@@ -233,7 +222,7 @@
 	}
 
 	button.instance:hover:not(:disabled),
-	:global(button#drink-with-me:hover, button#raise-a-glass:hover) {
+	:global(button.goto-drink-with-me:hover, button.goto-raise-a-glass:hover) {
 		background: var(--color-gray-300);
 		transform: translateY(-1px);
 		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;

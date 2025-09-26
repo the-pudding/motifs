@@ -1,6 +1,5 @@
 <script>
 	import Chart from "$components/ArcViz/Chart.svelte";
-	import Motifs from "$components/ArcViz/Motifs.svelte";
 	import lesMisMotifs from "$data/motifs/lesmis-motifs.json";
 	import wickedMotifs from "$data/motifs/wicked-motifs.json";
 	import hamiltonMotifs from "$data/motifs/hamilton-motifs.json";
@@ -10,6 +9,7 @@
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
 	import copy from "$data/copy.json";
+	import sortMotifRegions from "$utils/sortMotifRegions.js";
 
 	let { id, title, musical = $bindable(), song, character, animate } = $props();
 
@@ -18,50 +18,6 @@
 	let note = $derived(
 		copy.descriptions[musical]?.[audio?.motifData?.motifId] || null
 	);
-
-	const sortMotifRegions = (motifs) => {
-		const parseTrackName = (trackName) => {
-			const match = trackName.match(/^(\d+)-(\d+)/);
-			if (!match) return { act: Infinity, song: Infinity };
-			return {
-				act: parseInt(match[1], 10),
-				song: parseInt(match[2], 10)
-			};
-		};
-
-		return motifs.map((motif) => {
-			// 1) Keep only one region per track-name: the one with the lowest start
-			const byTrack = new Map();
-			for (const r of motif.regions) {
-				const key = r["track-name"];
-				const prev = byTrack.get(key);
-				if (
-					!prev ||
-					Number(r.start) < Number(prev.start) ||
-					(Number(r.start) === Number(prev.start) &&
-						Number(r.end) < Number(prev.end))
-				) {
-					byTrack.set(key, r);
-				}
-			}
-
-			const filtered = Array.from(byTrack.values());
-
-			// 2) Sort by act, then song, then track-name
-			const sortedRegions = filtered.sort((a, b) => {
-				const A = parseTrackName(a["track-name"]);
-				const B = parseTrackName(b["track-name"]);
-				if (A.act !== B.act) return A.act - B.act;
-				if (A.song !== B.song) return A.song - B.song;
-				if (a["track-name"] !== b["track-name"]) {
-					return a["track-name"].localeCompare(b["track-name"]);
-				}
-				return Number(a.start) - Number(b.start);
-			});
-
-			return { ...motif, regions: sortedRegions };
-		});
-	};
 
 	const dataMap = $derived({
 		unlimited: {
@@ -198,9 +154,9 @@
 		</div>
 	{/if}
 
-	{#if id === "explore"}
+	<!-- {#if id === "explore"}
 		<Motifs {motifs} {tracks} bind:musical {song} {character} />
-	{/if}
+	{/if} -->
 </figure>
 
 <style>
@@ -216,6 +172,10 @@
 		background: none;
 		margin: 0 auto;
 		padding: 0;
+	}
+
+	:global(figure#explore) {
+		margin-bottom: 0;
 	}
 
 	h3 {

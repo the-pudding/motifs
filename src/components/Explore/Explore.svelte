@@ -1,12 +1,15 @@
 <script>
 	import ArcViz from "$components/ArcViz/ArcViz.svelte";
+	import Motifs from "$components/Explore/Motifs.svelte";
 	import lesMisMotifs from "$data/motifs/lesmis-motifs.json";
 	import wickedMotifs from "$data/motifs/wicked-motifs.json";
 	import hamiltonMotifs from "$data/motifs/hamilton-motifs.json";
 	import lesMisTracks from "$data/tracks/lesmis-tracks.json";
 	import wickedTracks from "$data/tracks/wicked-tracks.json";
 	import hamiltonTracks from "$data/tracks/hamilton-tracks.json";
+	import sortMotifRegions from "$utils/sortMotifRegions.js";
 	import _ from "lodash";
+	import { onMount } from "svelte";
 
 	let { favorites } = $props();
 
@@ -22,11 +25,22 @@
 
 	let allMotifs = $derived(
 		musical === "hamilton"
-			? hamiltonMotifs
+			? sortMotifRegions(hamiltonMotifs)
 			: musical === "wicked"
-				? wickedMotifs
-				: lesMisMotifs
+				? sortMotifRegions(wickedMotifs)
+				: sortMotifRegions(lesMisMotifs)
 	);
+	let filteredMotifs = $derived(
+		allMotifs.filter((d) =>
+			d.regions.some(
+				(r) =>
+					(r?.character?.includes(character) ||
+						character === "All Characters") &&
+					(r["track-name"] === song || song === "All Songs")
+			)
+		)
+	);
+	let selectedMotif = $state(filteredMotifs[0].name);
 	let tracks = $derived(
 		musical === "hamilton"
 			? hamiltonTracks
@@ -46,7 +60,6 @@
 			return acc;
 		}, [])
 	]);
-
 	let characterOptions = $derived([
 		"All Characters",
 		...allMotifs.reduce((acc, motif) => {
@@ -63,11 +76,21 @@
 	const reset = () => {
 		character = "All Characters";
 		song = "All Songs";
+		selectedMotif = filteredMotifs[0]?.name;
 	};
 
-	const newMusical = () => {
-		character = "All Characters";
+	const musicalChange = () => {
 		song = "All Songs";
+		character = "All Characters";
+		selectedMotif = filteredMotifs[0]?.name;
+	};
+
+	const songChange = () => {
+		selectedMotif = filteredMotifs[0]?.name;
+	};
+
+	const characterChange = () => {
+		selectedMotif = filteredMotifs[0]?.name;
 	};
 
 	const displaySong = (option) => {
@@ -75,73 +98,118 @@
 		return trackData?.displayName || option.replace(/^\d+-+\d+\s+/, "");
 	};
 
-	$effect(() => newMusical(musical));
+	onMount(() => {
+		const container = document.body;
+
+		const handler = (e) => {
+			if (
+				e.target &&
+				(e.target.className === "goto-drink-with-me" ||
+					e.target.className === "goto-raise-a-glass")
+			) {
+				e.stopPropagation();
+
+				if (
+					e.target.parentElement &&
+					e.target.parentElement.classList.contains("note")
+				) {
+					const exploreSection = document.getElementById("explore");
+					if (exploreSection) {
+						exploreSection.scrollIntoView({ behavior: "smooth" });
+					}
+				}
+
+				musical =
+					e.target.className === "goto-drink-with-me" ? "lesmis" : "hamilton";
+				song = "All Songs";
+				character = "All Characters";
+				selectedMotif = _.lowerCase(e.target.className.replace("goto-", ""));
+			}
+		};
+
+		container.addEventListener("click", handler);
+
+		return () => {
+			container.removeEventListener("click", handler);
+		};
+	});
 </script>
 
-<div class="filters">
-	<div class="select-wrapper">
-		<label for="musical-select">Choose a musical</label>
-		<select bind:value={musical} id="musical-select">
-			{#each musicalOptions as option}
-				<option
-					value={option.value}
-					selected={option.value === musical}
-					onclick={() => (musical = option.value)}>{option.label}</option
-				>
-			{/each}
-		</select>
+<div class="container">
+	<div class="filters">
+		<div class="select-wrapper">
+			<label for="musical-select">Choose a musical</label>
+			<select bind:value={musical} id="musical-select" onchange={musicalChange}>
+				{#each musicalOptions as option}
+					<option
+						value={option.value}
+						selected={option.value === musical}
+						onclick={() => (musical = option.value)}>{option.label}</option
+					>
+				{/each}
+			</select>
+		</div>
+
+		<div class="select-wrapper">
+			<label for="song-select">Filter by Song</label>
+			<select
+				bind:value={song}
+				id="song-select"
+				disabled={character !== "All Characters"}
+				onchange={songChange}
+			>
+				{#each songOptions as option}
+					<option
+						value={option}
+						selected={song === option}
+						onclick={() => (song = option.value)}>{displaySong(option)}</option
+					>
+				{/each}
+			</select>
+		</div>
+
+		<div class="select-wrapper">
+			<label for="character-select">Filter by Character</label>
+			<select
+				bind:value={character}
+				id="character-select"
+				disabled={song !== "All Songs"}
+				onchange={characterChange}
+			>
+				{#each characterOptions as option}
+					<option
+						value={option}
+						selected={character.includes(option)}
+						onclick={() => (character = option.value)}
+						>{option === "marquis de lafayette"
+							? "Marquis de Lafayette"
+							: _.startCase(option)}</option
+					>
+				{/each}
+			</select>
+		</div>
+
+		<button class="reset" onclick={reset}>Reset</button>
 	</div>
 
-	<div class="select-wrapper">
-		<label for="song-select">Filter by Song</label>
-		<select
-			bind:value={song}
-			id="song-select"
-			disabled={character !== "All Characters"}
-		>
-			{#each songOptions as option}
-				<option
-					value={option}
-					selected={song === option}
-					onclick={() => (song = option.value)}>{displaySong(option)}</option
-				>
-			{/each}
-		</select>
-	</div>
+	<ArcViz
+		id="explore"
+		bind:musical
+		{song}
+		{character}
+		title={`${musicalOptions.find((d) => d.value === musical).label}: All motifs`}
+		{favorites}
+	/>
 
-	<div class="select-wrapper">
-		<label for="character-select">Filter by Character</label>
-		<select
-			bind:value={character}
-			id="character-select"
-			disabled={song !== "All Songs"}
-		>
-			{#each characterOptions as option}
-				<option
-					value={option}
-					selected={character.includes(option)}
-					onclick={() => (character = option.value)}
-					>{option === "marquis de lafayette"
-						? "Marquis de Lafayette"
-						: _.startCase(option)}</option
-				>
-			{/each}
-		</select>
-	</div>
-
-	<button class="reset" onclick={reset}>Reset</button>
+	<Motifs bind:selectedMotif {filteredMotifs} {tracks} {musical} {character} />
 </div>
 
-<ArcViz
-	id="explore"
-	bind:musical
-	{song}
-	{character}
-	title={`${musicalOptions.find((d) => d.value === musical).label}: All motifs`}
-	{favorites}
-/>
-
 <style>
+	.container {
+		max-width: 1000px;
+		margin: 0 auto;
+	}
+
 	.filters {
 		display: flex;
 		align-items: end;
