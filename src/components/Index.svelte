@@ -181,6 +181,20 @@
 		margin: 2rem auto;
 	}
 
+	:global(hr) {
+		border: 0.5px solid var(--color-gray-600);
+		max-width: 500px;
+		margin: 0 auto;
+	}
+
+	:global(hr:first-of-type) {
+		margin-bottom: 3rem;
+	}
+
+	:global(hr:last-of-type) {
+		margin-top: 3rem;
+	}
+
 	:global(p.callout) {
 		font-weight: bold;
 		margin-top: 1.5rem;
@@ -205,7 +219,7 @@
 	}
 
 	:global(section#explore) {
-		margin-top: 8rem;
+		margin-top: 5rem;
 	}
 
 	:global(p.spotlight) {

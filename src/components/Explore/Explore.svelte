@@ -20,7 +20,7 @@
 	let song = $state("All Songs");
 	let character = $state("All Characters");
 
-	let motifs = $derived(
+	let allMotifs = $derived(
 		musical === "hamilton"
 			? hamiltonMotifs
 			: musical === "wicked"
@@ -36,7 +36,7 @@
 	);
 	let songOptions = $derived([
 		"All Songs",
-		...motifs.reduce((acc, motif) => {
+		...allMotifs.reduce((acc, motif) => {
 			const newTracks = motif.regions.flatMap((r) => r["track-name"]);
 			for (const t of newTracks) {
 				if (t && !acc.includes(t)) {
@@ -49,7 +49,7 @@
 
 	let characterOptions = $derived([
 		"All Characters",
-		...motifs.reduce((acc, motif) => {
+		...allMotifs.reduce((acc, motif) => {
 			const newChars = motif.regions.flatMap((r) => r.character);
 			for (const c of newChars) {
 				if (c && !acc.includes(c)) {

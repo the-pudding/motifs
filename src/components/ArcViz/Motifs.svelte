@@ -70,23 +70,6 @@
 		if (filteredMotifs.length === 0) return;
 
 		selectedMotif = filteredMotifs[0].name;
-
-		const drinkButton = document.getElementById("drink-with-me");
-		const raiseButton = document.getElementById("raise-a-glass");
-
-		if (drinkButton) {
-			drinkButton.addEventListener("click", () => {
-				musical = "lesmis";
-				//selectedMotif = "drink with me";
-			});
-		}
-
-		if (raiseButton) {
-			raiseButton.addEventListener("click", () => {
-				musical = "hamilton";
-				//selectedMotif = "raise a glass";
-			});
-		}
 	};
 
 	const getDisplaySongName = (trackName) => {

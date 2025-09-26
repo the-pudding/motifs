@@ -25,8 +25,8 @@
 	--color-bg: #252222;
 	--color-fg: var(--color-white);
 	--color-primary: var(--color-black);
-	--color-link: var(--color-playbill-yellow);
-	--color-link-hover: var(--color-black);
+	--color-link: var(--color-fg);
+	--color-link-hover: var(--color-playbill-yellow);
 	--color-focus: var(--color-red);
 	--color-mark: var(--color-yellow);
 	--color-selection: var(--color-gray-300);

@@ -1,49 +1,63 @@
 <script>
-	import ArcViz from "$components/ArcViz/ArcViz.svelte";
+	import hedSvg from "$svg/playbill-hed.svg";
 	let { hed, dek, byline } = $props();
 </script>
 
-<div id="headline-wrapper">
-	<h1>{hed}</h1>
-	{#if dek}
-		<h2>{dek}</h2>
-	{/if}
+<div id="headline">
+	<div class="border">
+		<div class="playbill">
+			{@html hedSvg}
+
+			{#if dek}
+				<h2>{dek}</h2>
+			{/if}
+		</div>
+	</div>
+
 	{#if byline}
 		<p class="byline">{@html byline}</p>
 	{/if}
-	<!-- 
-	<div class="viz">
-		<ArcViz id="headline" musical="les mis" animate={true} />
-	</div> -->
 </div>
 
 <style>
-	h1 {
-		font-weight: bold;
-		font-size: 82px;
+	#headline {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin: 6rem auto 3rem auto;
+	}
+
+	.border {
+		padding: 8px;
+		background: var(--color-white);
+		width: fit-content;
+	}
+
+	.playbill {
+		background: var(--color-playbill-yellow);
+		color: var(--color-bg);
+		position: relative;
+		text-align: center;
+		max-width: 1000px;
+		padding: 2rem;
+		border: 1px solid var(--color-bg);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 
 	h2 {
 		font-weight: normal;
-		font-size: var(--20px);
+		font-size: var(--18px);
+		text-transform: uppercase;
+		margin: 1.5rem 0 0 0;
 	}
 
-	#headline-wrapper {
-		position: relative;
-		text-align: center;
-		max-width: 1000px;
-		margin: 4rem auto 4rem auto;
+	.byline {
 	}
 
-	.viz {
-		transform: translate(0, -55%);
-		opacity: 0.5;
-		pointer-events: none;
-	}
-
-	@media (max-width: 400px) {
-		h1 {
-			font-size: 64px;
-		}
+	:global(#headline-wrapper a) {
+		color: var(--color-bg);
+		border-bottom: 1px solid var(--color-bg);
 	}
 </style>
