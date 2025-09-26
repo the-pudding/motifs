@@ -161,10 +161,10 @@
 	class="song-name"
 	class:visible={mePlaying}
 	style:left={`${songLeft}px`}
-	style:bottom={`${padding.top}px`}
+	style:bottom={`${0}px`}
 	style:transform={songLeft === 0 || songLeft === chartWidth - songLabelWidth
-		? "translate(0, 4px)"
-		: "translate(-50%, 4px)"}
+		? "translate(0, calc(100% + 8px))"
+		: "translate(-50%, calc(100% + 8px))"}
 	bind:clientWidth={songLabelWidth}
 >
 	{getDisplaySongName(audio.trackName)}

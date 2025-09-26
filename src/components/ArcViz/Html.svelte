@@ -9,6 +9,7 @@
 	let {
 		id,
 		chartWidth,
+		chartHeight,
 		padding,
 		motifs,
 		tracks,
@@ -36,6 +37,8 @@
 <div
 	class="html-layer"
 	onclick={onClick}
+	style:width={`${chartWidth}px`}
+	style:height={`${chartHeight}px`}
 	style:transform={`translate(${padding.left}px, ${padding.top}px)`}
 >
 	{#each Object.keys(motifPoints) as motifName}
@@ -80,7 +83,5 @@
 	.html-layer {
 		position: absolute;
 		top: 0;
-		width: 100%;
-		height: 100%;
 	}
 </style>

@@ -85,10 +85,9 @@
 
 	const isMobile = $derived(dimensions.width <= 600);
 	const padding = $derived({
-		top:
-			isMobile && id === "explore" ? 20 : isMobile ? 100 : useYAxis ? 70 : 20,
+		top: isMobile && id === "explore" ? 20 : !isMobile && !useYAxis ? 0 : 50,
 		right: 10,
-		bottom: 0,
+		bottom: 30,
 		left: 10
 	});
 	let svgWidth = $state();
@@ -130,13 +129,12 @@
 	let xScale = $derived(
 		scaleLinear().domain([0, totalMusicalDuration]).range([0, width])
 	);
-	const midY = $derived(height - 30);
 	let yScale = $derived(
 		useYAxis
 			? scaleLinear()
 					.domain([0, motifs.length - 1])
-					.range([midY, 0])
-			: () => midY
+					.range([height, padding.top])
+			: () => height
 	);
 
 	let motifPoints = $derived(
@@ -212,16 +210,16 @@
 			<g style:transform={`translate(${padding.left}px, ${padding.top}px)`}>
 				<line
 					x1="0"
-					y1={midY}
-					x2="100%"
-					y2={midY}
+					y1={yScale(0)}
+					x2={xScale(totalMusicalDuration)}
+					y2={yScale(0)}
 					stroke="var(--color-gray-400)"
 				/>
 				<line
 					x1={xScale(getFullTimestamp(midpoint, 0))}
 					y1={0}
 					x2={xScale(getFullTimestamp(midpoint, 0))}
-					y2={svgHeight - padding.top - padding.bottom}
+					y2={height + padding.bottom}
 					stroke="var(--color-gray-400)"
 					stroke-width="1"
 					stroke-dasharray="4"
@@ -231,13 +229,13 @@
 					class="act-label"
 					class:faded={audio.figureId && audio.figureId === id}
 					x={xScale(getFullTimestamp(midpoint, 0)) + 10}
-					y={midY + 10}>Act 2 {"->"}</text
+					y={yScale(0) + 10}>Act 2 {"->"}</text
 				>
 				<text
 					class="act-label anchor-end"
 					class:faded={audio.figureId && audio.figureId === id}
 					x={xScale(getFullTimestamp(midpoint, 0)) - 10}
-					y={midY + 10}
+					y={yScale(0) + 10}
 					>{"<-"} Act 1
 				</text>
 
@@ -245,13 +243,13 @@
 					class="time-label"
 					class:faded={audio.figureId && audio.figureId === id}
 					x={xScale(0)}
-					y={midY + 10}>0h0m</text
+					y={yScale(0) + 10}>0h0m</text
 				>
 				<text
 					class="time-label anchor-end"
 					class:faded={audio.figureId && audio.figureId === id}
 					x={xScale(totalMusicalDuration)}
-					y={midY + 10}
+					y={yScale(0) + 10}
 				>
 					{timeFormatter(totalMusicalDuration)}
 				</text>
@@ -312,6 +310,7 @@
 			<Html
 				{id}
 				chartWidth={width}
+				chartHeight={height}
 				{padding}
 				{musical}
 				{motifPoints}

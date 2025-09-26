@@ -186,6 +186,9 @@
 </script>
 
 <figure {id} class="arc-viz">
+	{#if title}<h3>{title}</h3>{/if}
+	<Chart {id} {musical} {song} {character} {animate} {motifs} {tracks} />
+
 	{#if note && id !== "explore" && id !== "lesmis"}
 		<div class="border" class:visible={audio.figureId === id}>
 			<div class="note">
@@ -193,9 +196,6 @@
 			</div>
 		</div>
 	{/if}
-
-	{#if title}<h3>{title}</h3>{/if}
-	<Chart {id} {musical} {song} {character} {animate} {motifs} {tracks} />
 
 	{#if id === "explore"}
 		<Motifs {motifs} {tracks} bind:musical {song} {character} />
@@ -225,11 +225,10 @@
 	}
 
 	.border {
-		position: absolute;
-		top: 1rem;
-		right: 1rem;
 		padding: 2px;
 		max-width: 450px;
+		margin: 0 auto;
+		margin-top: 1rem;
 		background: var(--color-white);
 		z-index: 1000;
 		opacity: 0;
