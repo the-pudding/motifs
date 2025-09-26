@@ -64,12 +64,26 @@
 		}
 	};
 
-	$inspect({ selectedMotif });
-
 	const filterUpdate = () => {
 		if (filteredMotifs.length === 0) return;
 
 		selectedMotif = filteredMotifs[0].name;
+	};
+
+	const scrollToMotif = () => {
+		const container = document.querySelector(".motifs");
+		const motifEl = document.getElementById(
+			`motif-${_.kebabCase(selectedMotif)}`
+		);
+		if (container && motifEl) {
+			const elOffset = motifEl.offsetTop - container.offsetTop;
+			const scrollTarget =
+				elOffset - container.clientHeight / 2 + motifEl.clientHeight / 2;
+			container.scrollTo({
+				top: scrollTarget,
+				behavior: "smooth"
+			});
+		}
 	};
 
 	const getDisplaySongName = (trackName) => {
@@ -78,6 +92,7 @@
 	};
 
 	$effect(() => filterUpdate(musical, character));
+	$effect(() => scrollToMotif(selectedMotif));
 </script>
 
 <div class="motifs">
@@ -88,6 +103,7 @@
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div
+			id={`motif-${_.kebabCase(motif.name)}`}
 			class="motif"
 			class:selected
 			onclick={() => (selectedMotif = motif.name)}
