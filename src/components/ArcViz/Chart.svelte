@@ -158,6 +158,8 @@
 		)
 	);
 
+	$inspect({ motifPoints, motifs });
+
 	let pathEls = $state([]);
 	let pathOffset = $derived(
 		Object.keys(motifPoints).reduce((acc, name, i) => {
@@ -270,6 +272,15 @@
 									audio.motifData.motifId !== _.kebabCase(name)) ||
 								(id === "explore" &&
 									!filteredMotifNamesByCharacter.includes(name))}
+							{@const partiallyFaded =
+								character &&
+								character !== "All Characters" &&
+								id === "explore" &&
+								!faded
+									? !motifs
+											.find((m) => m.name === name)
+											?.regions[i].character?.includes(character)
+									: false}
 							<circle
 								class:active
 								class:faded
