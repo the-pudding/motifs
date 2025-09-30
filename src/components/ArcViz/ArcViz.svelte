@@ -10,6 +10,7 @@
 	import { audioApi } from "$runes/audio.svelte.js";
 	import copy from "$data/copy.json";
 	import sortMotifRegions from "$utils/sortMotifRegions.js";
+	import inView from "$actions/inView.js";
 
 	let { id, title, musical = $bindable(), song, character, animate } = $props();
 
@@ -139,9 +140,15 @@
 		)
 	);
 	const tracks = $derived(dataMap[id].tracks);
+
+	const onExit = () => {
+		if (audio.figureId === id) {
+			audio.pauseAndClear();
+		}
+	};
 </script>
 
-<figure {id} class="arc-viz">
+<figure {id} class="arc-viz" use:inView onexit={onExit}>
 	{#if title}<h3>{title}</h3>{/if}
 	<Chart {id} {musical} {song} {character} {animate} {motifs} {tracks} />
 
@@ -153,10 +160,6 @@
 			</div>
 		</div>
 	{/if}
-
-	<!-- {#if id === "explore"}
-		<Motifs {motifs} {tracks} bind:musical {song} {character} />
-	{/if} -->
 </figure>
 
 <style>
