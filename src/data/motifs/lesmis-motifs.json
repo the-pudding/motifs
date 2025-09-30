@@ -189,20 +189,20 @@
 			},
 			{
 				"id": "region-st5rk9pat9",
-				"track-name": "2-21 Epilogue (Les Misérables)",
+				"track-name": "2-21 Epilogue (Les Miserables)",
 				"start": 316.1538100000001,
 				"end": 349.323985,
 				"character": ["jean valjean"]
 			},
 			{
 				"id": "region-gv42ivcaaeo",
-				"track-name": "2-21 Epilogue (Les Misérables)",
+				"track-name": "2-21 Epilogue (Les Miserables)",
 				"start": 348.786155,
 				"end": 383.214098
 			},
 			{
 				"id": "region-3e5hfboqn74",
-				"track-name": "2-21 Epilogue (Les Misérables)",
+				"track-name": "2-21 Epilogue (Les Miserables)",
 				"start": 383.58148,
 				"end": 421.416502
 			}
@@ -700,14 +700,14 @@
 			},
 			{
 				"id": "region-thgmeeva56s",
-				"track-name": "2-21 Epilogue (Les Misérables)",
+				"track-name": "2-21 Epilogue (Les Miserables)",
 				"start": 158.379737,
 				"end": 184.971301,
 				"character": ["jean valjean", "fantine"]
 			},
 			{
 				"id": "region-i1ai7pvimqg",
-				"track-name": "2-21 Epilogue (Les Misérables)",
+				"track-name": "2-21 Epilogue (Les Miserables)",
 				"start": 257.071265,
 				"end": 287.361894
 			}
@@ -733,7 +733,7 @@
 			},
 			{
 				"id": "region-qihunnmgcks",
-				"track-name": "2-21 Epilogue (Les Misérables)",
+				"track-name": "2-21 Epilogue (Les Miserables)",
 				"start": 287.619819,
 				"end": 315.920985,
 				"character": ["jean valjean", "cosette"]
@@ -1311,20 +1311,20 @@
 		"regions": [
 			{
 				"id": "region-btlrchdugbs",
-				"track-name": "1-18 The ABC Café (Red And Black)",
+				"track-name": "1-18 The ABC Cafe (Red And Black)",
 				"start": 13.076676000000003,
 				"end": 24.16120899999999,
 				"character": ["ensemble"]
 			},
 			{
 				"id": "region-7rnq8gk1pt",
-				"track-name": "1-18 The ABC Café (Red And Black)",
+				"track-name": "1-18 The ABC Cafe (Red And Black)",
 				"start": 276.844761,
 				"end": 287.903332
 			},
 			{
 				"id": "region-ccgr1dr5sik",
-				"track-name": "1-18 The ABC Café (Red And Black)",
+				"track-name": "1-18 The ABC Cafe (Red And Black)",
 				"start": 287.869717,
 				"end": 298.805881
 			},
@@ -1343,13 +1343,13 @@
 		"regions": [
 			{
 				"id": "region-muk8r2pvs68",
-				"track-name": "1-18 The ABC Café (Red And Black)",
+				"track-name": "1-18 The ABC Cafe (Red And Black)",
 				"start": 303.483333,
 				"end": 324.75951972621306
 			},
 			{
 				"id": "region-6fi46u8g2jk",
-				"track-name": "1-18 The ABC Café (Red And Black)",
+				"track-name": "1-18 The ABC Cafe (Red And Black)",
 				"start": 24.663267,
 				"end": 42.72717912396176
 			}
@@ -1387,20 +1387,20 @@
 			},
 			{
 				"id": "region-fnntr2qj4vk",
-				"track-name": "2-21 Epilogue (Les Misérables)",
+				"track-name": "2-21 Epilogue (Les Miserables)",
 				"start": 422.2301510000001,
 				"end": 447.575073,
 				"character": ["ensemble"]
 			},
 			{
 				"id": "region-j81bujt6nd",
-				"track-name": "2-21 Epilogue (Les Misérables)",
+				"track-name": "2-21 Epilogue (Les Miserables)",
 				"start": 466.448381,
 				"end": 491.978863
 			},
 			{
 				"id": "region-csvg3pi4kbc",
-				"track-name": "2-21 Epilogue (Les Misérables)",
+				"track-name": "2-21 Epilogue (Les Miserables)",
 				"start": 491.38866,
 				"end": 538.0380900668753
 			}
@@ -1425,7 +1425,7 @@
 			},
 			{
 				"id": "region-9hskiohc4f",
-				"track-name": "2-21 Epilogue (Les Misérables)",
+				"track-name": "2-21 Epilogue (Les Miserables)",
 				"start": 447.791022,
 				"end": 466.289887,
 				"character": ["ensemble"]
@@ -1529,14 +1529,14 @@
 			},
 			{
 				"id": "region-tb68l10ed38",
-				"track-name": "1-18 The ABC Café (Red And Black)",
+				"track-name": "1-18 The ABC Cafe (Red And Black)",
 				"start": 41.947219,
 				"end": 66.713316,
 				"character": ["enjolras"]
 			},
 			{
 				"id": "region-gqtjpghu5a8",
-				"track-name": "1-18 The ABC Café (Red And Black)",
+				"track-name": "1-18 The ABC Cafe (Red And Black)",
 				"start": 324.305858,
 				"end": 359.86560823289346
 			},
@@ -1640,20 +1640,20 @@
 			},
 			{
 				"id": "region-tpke2mri19c",
-				"track-name": "1-18 The ABC Café (Red And Black)",
+				"track-name": "1-18 The ABC Cafe (Red And Black)",
 				"start": 159.92620699999995,
 				"end": 180.7607057513158,
 				"character": ["enjolras"]
 			},
 			{
 				"id": "region-43pi0sdt3i",
-				"track-name": "1-18 The ABC Café (Red And Black)",
+				"track-name": "1-18 The ABC Cafe (Red And Black)",
 				"start": 213.448695,
 				"end": 234.886148
 			},
 			{
 				"id": "region-59q74f357fc",
-				"track-name": "1-18 The ABC Café (Red And Black)",
+				"track-name": "1-18 The ABC Cafe (Red And Black)",
 				"start": 251.087657,
 				"end": 274.90181332179407
 			}
@@ -1843,7 +1843,7 @@
 		"regions": [
 			{
 				"id": "region-j83m2i148gg",
-				"track-name": "2-21 Epilogue (Les Misérables)",
+				"track-name": "2-21 Epilogue (Les Miserables)",
 				"start": 98.32135899999997,
 				"end": 157.880516,
 				"character": ["jean valjean"]

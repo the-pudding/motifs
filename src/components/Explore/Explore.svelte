@@ -192,7 +192,7 @@
 		bind:musical
 		{song}
 		{character}
-		title={`${musicalOptions.find((d) => d.value === musical).label}: All motifs`}
+		title={`${musicalOptions.find((d) => d.value === musical).label}`}
 		{favorites}
 	/>
 

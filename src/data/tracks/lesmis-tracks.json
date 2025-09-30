@@ -92,8 +92,9 @@
 		"duration": 108.826
 	},
 	{
-		"name": "1-18 The ABC Café (Red And Black)",
-		"file": "assets/audio/lesmis/1-18 The ABC Café (Red And Black).mp3",
+		"name": "1-18 The ABC Cafe (Red And Black)",
+		"displayName": "The ABC Café (Red And Black)",
+		"file": "assets/audio/lesmis/1-18 The ABC Cafe (Red And Black).mp3",
 		"duration": 360.02
 	},
 	{
@@ -229,8 +230,9 @@
 		"duration": 329.3
 	},
 	{
-		"name": "2-21 Epilogue (Les Misérables)",
-		"file": "assets/audio/lesmis/2-21 Epilogue (Les Misérables).mp3",
+		"name": "2-21 Epilogue (Les Miserables)",
+		"displayName": "Epilogue (Les Misérables)",
+		"file": "assets/audio/lesmis/2-21 Epilogue (Les Miserables).mp3",
 		"duration": 567.092
 	}
 ]
