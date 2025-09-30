@@ -111,4 +111,26 @@
 		margin-bottom: 1rem;
 		width: 100%;
 	}
+
+	.button {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	@media (max-width: 600px) {
+		.buttons {
+			flex-direction: column;
+			gap: 1rem;
+			align-items: center;
+		}
+
+		.source {
+			font-size: var(--14px);
+		}
+
+		.button {
+			align-items: center;
+		}
+	}
 </style>

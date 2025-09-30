@@ -450,5 +450,9 @@
 		.motif-name.right {
 			left: 70%;
 		}
+
+		.song-name {
+			font-size: var(--12px);
+		}
 	}
 </style>

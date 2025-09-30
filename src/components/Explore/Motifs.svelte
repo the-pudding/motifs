@@ -3,6 +3,9 @@
 	import { onMount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 	import copy from "$data/copy.json";
+	import useWindowDimensions from "$runes/useWindowDimensions.svelte.js";
+	import Explore from "./Explore.svelte";
+	let dimensions = new useWindowDimensions();
 
 	let {
 		selectedMotif = $bindable(),
@@ -73,6 +76,13 @@
 				behavior: "smooth"
 			});
 		}
+
+		if (dimensions.width <= 600) {
+			const exploreSection = document.querySelector("figure#explore");
+			if (exploreSection) {
+				exploreSection.scrollIntoView();
+			}
+		}
 	};
 
 	const getDisplaySongName = (trackName) => {
@@ -138,9 +148,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.2rem;
-		max-height: 350px;
+		max-height: 400px;
 		overflow: scroll;
 		padding: 0 2rem 2rem 2rem;
+		margin-bottom: 4rem;
 		background: var(--color-gray-800);
 	}
 
@@ -238,5 +249,33 @@
 		border-radius: 0.25rem;
 		position: absolute;
 		left: 0;
+	}
+
+	@media (max-width: 600px) {
+		.motifs {
+			padding: 0 0.5rem 1rem 0.5rem;
+		}
+
+		button.instance {
+			padding: 6px;
+		}
+	}
+
+	@media (max-width: 400px) {
+		.name {
+			font-size: var(--14px);
+		}
+
+		.selected .name {
+			font-size: var(--24px);
+		}
+
+		.motif {
+			padding: 4px;
+		}
+
+		.motif.selected {
+			padding: 8px;
+		}
 	}
 </style>

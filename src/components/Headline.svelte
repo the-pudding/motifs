@@ -54,11 +54,19 @@
 		margin: 1.5rem 0 0 0;
 	}
 
-	.byline {
-	}
-
 	:global(#headline-wrapper a) {
 		color: var(--color-bg);
 		border-bottom: 1px solid var(--color-bg);
+	}
+
+	@media (max-width: 600px) {
+		.playbill {
+			padding: 1.5rem 1rem;
+		}
+
+		h2 {
+			font-size: var(--14px);
+			margin: 1rem 0 0 0;
+		}
 	}
 </style>

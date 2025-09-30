@@ -166,6 +166,7 @@
 		max-width: 1000px;
 		margin: 3rem auto;
 		padding: 2rem;
+		overflow: hidden;
 	}
 
 	:global(figure#headline) {
@@ -181,7 +182,6 @@
 	h3 {
 		text-transform: uppercase;
 		font-weight: bold;
-		font-size: var(--24px);
 		margin: 0;
 	}
 

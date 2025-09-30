@@ -177,14 +177,14 @@
 
 	:global(h3) {
 		font-weight: bold;
-		font-size: var(--28px);
+		font-size: var(--24px);
 		max-width: 700px;
 		margin: 2rem auto;
 	}
 
 	:global(hr) {
 		border: 0.5px solid var(--color-gray-600);
-		max-width: 500px;
+		max-width: min(500px, 70%);
 		margin: 0 auto;
 	}
 
@@ -273,6 +273,16 @@
 		article {
 			padding: 1rem;
 			padding-top: 8rem;
+		}
+	}
+
+	@media (max-width: 400px) {
+		:global(h2) {
+			font-size: var(--28px);
+		}
+
+		:global(h3) {
+			font-size: var(--20px);
 		}
 	}
 </style>

@@ -158,8 +158,6 @@
 		)
 	);
 
-	$inspect({ motifPoints, motifs });
-
 	let pathEls = $state([]);
 	let pathOffset = $derived(
 		Object.keys(motifPoints).reduce((acc, name, i) => {
@@ -282,8 +280,8 @@
 											?.regions[i].character?.includes(character)
 									: false}
 							<circle
-								class:active
 								class:faded
+								r={active ? 8 : 4}
 								cx={p.x}
 								cy={p.y}
 								fill={motifColors[name]}
@@ -369,14 +367,9 @@
 	}
 
 	circle {
-		r: 4;
 		transition:
 			r 0.2s ease-in-out,
 			opacity 0.2s ease-in-out;
-	}
-
-	circle.active {
-		r: 8;
 	}
 
 	.faded {
