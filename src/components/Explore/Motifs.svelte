@@ -98,13 +98,18 @@
 		{@const selected = selectedMotif && selectedMotif === motif.name}
 		{@const description =
 			copy.descriptions?.[musical]?.[_.kebabCase(motif.name)] || ""}
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div
 			id={`motif-${_.kebabCase(motif.name)}`}
 			class="motif"
 			class:selected
-			onclick={() => (selectedMotif = motif.name)}
+			role="button"
+			tabindex="0"
+			onkeydown={(e) => {
+				if (e.key === "Enter" || e.key === " ") {
+					e.preventDefault();
+					selectedMotif = motif.name;
+				}
+			}}
 		>
 			<div class="name">
 				{motif.emoji}
@@ -117,7 +122,6 @@
 					{#each motif.regions as region, i}
 						{@const trackName = getDisplaySongName(
 							region["track-name"]
-								// .replace(/_/g, " ")
 								.replace(/^\d+-\d+ /, "")
 								.replace(/\.mp3$/, "")
 						)}

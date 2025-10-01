@@ -37,6 +37,15 @@
 		audio.pauseAndClear();
 	};
 
+	const onKeyDown = (e) => {
+		if (
+			!unlimited.isClicked &&
+			(e.key === "Escape" || e.key === " " || e.key === "Enter")
+		)
+			unlimited.isClicked = true;
+		else if (audio.figureId) audio.pauseAndClear();
+	};
+
 	onMount(() => {
 		audio.setup(audioEl);
 
@@ -59,6 +68,8 @@
 	onDestroy(() => audio.destroy());
 </script>
 
+<svelte:window onclick={onClick} onkeydown={onKeyDown} />
+
 <div
 	class="curtain"
 	class:open={unlimited.isClicked}
@@ -71,7 +82,6 @@
 		<div class="panel left"></div>
 
 		<article
-			onclick={onClick}
 			class:unlimited-clicked={unlimited.isClicked}
 			class:visible={articleReady}
 			bind:clientHeight={articleHeight}

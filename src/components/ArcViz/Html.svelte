@@ -21,27 +21,39 @@
 	const audio = audioApi();
 	let isMobile = $derived(dimensions.width <= 600);
 
+	let playEls = $state({});
+
 	const lesMisPlayable = $derived(
 		isMobile
 			? ["god on high", "on my own"]
 			: ["god on high", "on my own", "police", "the people b"]
 	);
 
-	const onClick = () => {
-		audio.pauseAndClear();
+	const onKeyDown = (e) => {
+		if (audio.figureId === id && id !== "explore") {
+			const playEl = playEls[audio.motifData.motifId];
+			if (!playEl) return;
+
+			if (e.key === "ArrowLeft") {
+				playEl.prev(e);
+			} else if (e.key === "ArrowRight") {
+				playEl.next(e);
+			}
+		}
 	};
 </script>
 
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y_no_static_element_interactions -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <div
 	class="html-layer"
-	onclick={onClick}
 	style:width={`${chartWidth}px`}
 	style:height={`${chartHeight}px`}
 	style:transform={`translate(${padding.left}px, ${padding.top}px)`}
+	onkeydown={onKeyDown}
+	role="application"
+	aria-label="keyboard arrow key controls"
 >
-	{#each Object.keys(motifPoints) as motifName}
+	{#each Object.keys(motifPoints) as motifName, motifI}
 		{@const i =
 			audio.figureId === id &&
 			audio.motifData &&
@@ -63,6 +75,7 @@
 			}))}
 		{#if id !== "lesmis" || lesMisPlayable.includes(motifName)}
 			<Play
+				bind:this={playEls[_.kebabCase(motifName)]}
 				top={`${top}px`}
 				left={`${left}px`}
 				{regions}

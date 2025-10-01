@@ -11,6 +11,8 @@
 	});
 	onDestroy(() => smooth?.());
 
+	let { figcaption } = $props();
+
 	let circleGroups = $state([]);
 	let shown = $state(new Set());
 
@@ -76,6 +78,7 @@
 </script>
 
 <figure id="piano">
+	<figcaption class="sr-only">{figcaption}</figcaption>
 	<div class="buttons">
 		<div class="button">
 			<PlayableText

@@ -210,6 +210,7 @@
 		align-items: end;
 		justify-content: space-between;
 		gap: 2rem;
+		flex-wrap: wrap;
 		max-width: 700px;
 		margin: 0 auto;
 		margin-bottom: 1rem;

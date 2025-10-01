@@ -106,14 +106,13 @@
 			tracks: hamiltonTracks
 		},
 		"one-day-more": {
-			motifs: lesMisMotifs
-				.filter((d) =>
-					d.regions.some((r) => r["track-name"] === "1-23 One Day More")
-				)
-				.map((d) => ({
-					...d,
-					regions: d.regions.filter((r) => r["track-name"].startsWith("1"))
-				})),
+			motifs: lesMisMotifs.filter((d) =>
+				d.regions.some((r) => r["track-name"] === "1-23 One Day More")
+			),
+			// .map((d) => ({
+			// 	...d,
+			// 	regions: d.regions.filter((r) => r["track-name"].startsWith("1"))
+			// })),
 			tracks: lesMisTracks
 		},
 		explore: {
@@ -160,6 +159,21 @@
 			</div>
 		</div>
 	{/if}
+
+	<figcaption class="sr-only">
+		A chart with time on the x-axis depicting the occurence of {motifs.length ===
+		1
+			? "the"
+			: motifs.length}
+		{title.toLowerCase().includes("all motifs")
+			? "total motifs"
+			: id === "explore"
+				? "motifs"
+				: title.toLowerCase().includes("one day more") ||
+					  title.toLowerCase().includes("non-stop")
+					? `motifs from ${title.split(":")[1].trim().toLowerCase()}`
+					: title.split(":")[1].trim().toLowerCase()} in {musical}.
+	</figcaption>
 </figure>
 
 <style>
@@ -170,6 +184,7 @@
 		margin: 3rem auto;
 		padding: 2rem;
 		overflow: hidden;
+		border: 4px solid var(--color-fg);
 	}
 
 	:global(figure#headline) {
@@ -180,6 +195,7 @@
 
 	:global(figure#explore) {
 		margin-bottom: 0;
+		border: none;
 	}
 
 	h3 {

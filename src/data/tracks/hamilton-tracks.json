@@ -30,8 +30,9 @@
 		"duration": 112.823
 	},
 	{
-		"name": "1-07 You'll Be Back",
-		"file": "assets/audio/hamilton/1-07 You'll Be Back.mp3",
+		"name": "1-07 Youll Be Back",
+		"file": "assets/audio/hamilton/1-07 Youll Be Back.mp3",
+		"displayName": "You'll Be Back",
 		"duration": 208.405
 	},
 	{
@@ -40,8 +41,9 @@
 		"duration": 321.776
 	},
 	{
-		"name": "1-09 A Winter's Ball",
-		"file": "assets/audio/hamilton/1-09 A Winter's Ball.mp3",
+		"name": "1-09 A Winters Ball",
+		"file": "assets/audio/hamilton/1-09 A Winters Ball.mp3",
+		"displayName": "A Winter's Ball",
 		"duration": 69.982
 	},
 	{
@@ -116,8 +118,9 @@
 		"duration": 385.515
 	},
 	{
-		"name": "2-01 What'd I Miss",
-		"file": "assets/audio/hamilton/2-01 What'd I Miss.mp3",
+		"name": "2-01 Whatd I Miss",
+		"file": "assets/audio/hamilton/2-01 Whatd I Miss.mp3",
+		"displayName": "What'd I Miss?",
 		"duration": 236.774
 	},
 	{
@@ -201,8 +204,9 @@
 		"duration": 111.647
 	},
 	{
-		"name": "2-18 It's Quiet Uptown",
-		"file": "assets/audio/hamilton/2-18 It's Quiet Uptown.mp3",
+		"name": "2-18 Its Quiet Uptown",
+		"file": "assets/audio/hamilton/2-18 Its Quiet Uptown.mp3",
+		"displayName": "It's Quiet Uptown",
 		"duration": 270.263
 	},
 	{

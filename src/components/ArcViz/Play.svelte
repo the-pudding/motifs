@@ -13,7 +13,6 @@
 		regions,
 		tracks,
 		chartWidth,
-		padding,
 		color,
 		chartId,
 		motifId,
@@ -126,7 +125,7 @@
 		}
 	};
 
-	const next = (e) => {
+	export const next = (e) => {
 		e.stopPropagation();
 
 		if (audio.motifData.motifI < regions.length - 1) {
@@ -136,7 +135,7 @@
 		}
 	};
 
-	const prev = (e) => {
+	export const prev = (e) => {
 		e.stopPropagation();
 
 		if (audio.motifData.motifI > 0) {
