@@ -378,7 +378,8 @@
 		opacity: 1;
 	}
 
-	.faded {
+	circle.faded,
+	path.faded {
 		opacity: 0.1;
 	}
 

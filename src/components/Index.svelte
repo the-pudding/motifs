@@ -9,6 +9,7 @@
 	import Explore from "$components/Explore/Explore.svelte";
 	import Image from "$components/Image.svelte";
 	import Summary from "$components/Summary.svelte";
+	import SectionHeader from "$components/SectionHeader.svelte";
 	import Footer from "$components/Footer.svelte";
 	import Carousel from "$components/Carousel.svelte";
 	import { onMount, mount, onDestroy } from "svelte";
@@ -24,7 +25,8 @@
 		Carousel,
 		Explore,
 		Image,
-		Summary
+		Summary,
+		SectionHeader
 	};
 
 	const audio = audioApi();
@@ -183,6 +185,8 @@
 	:global(h2) {
 		font-weight: bold;
 		font-size: var(--32px);
+		text-align: center;
+		margin-bottom: 3rem;
 	}
 
 	:global(h3) {

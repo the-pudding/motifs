@@ -3,7 +3,7 @@
 	import { audioApi } from "$runes/audio.svelte.js";
 	import { unlimited } from "$runes/misc.svelte.js";
 
-	let { id, src, text } = $props();
+	let { id, src, text, onClick } = $props();
 
 	const audio = audioApi();
 	let smooth;
@@ -16,10 +16,18 @@
 	let percentDone = $derived.by(() => {
 		const active = audio.src === `assets/audio/${src}`;
 		const time = active ? audio.smoothTime || audio.currentTime : 0;
-		return audio.duration ? (time / audio.duration) * 100 : 0;
+
+		if (id.startsWith("playable"))
+			return audio.duration ? (time / audio.duration) * 100 : 0;
+		else
+			return audio.motifData
+				? ((time - audio.motifData.start) /
+						(audio.motifData.end - audio.motifData.start)) *
+						100
+				: 0;
 	});
 
-	const onClick = async (e) => {
+	const defaultClick = async (e) => {
 		e.stopPropagation();
 		if (!src) return;
 
@@ -38,13 +46,13 @@
 	};
 </script>
 
-<button onclick={onClick}>
+<button onclick={onClick || defaultClick}>
 	<span>{text}</span>
 	<div
 		class="play-pause"
 		style:background-image={`url(assets/svg/${isPlaying ? "pause" : "play"}-circle.svg)`}
 	></div>
-	<div class="progress" style:width={`${percentDone}%`}></div>
+	<div class="progress" style:width={`${Math.min(100, percentDone)}%`}></div>
 </button>
 
 <style>
