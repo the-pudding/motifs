@@ -148,7 +148,13 @@
 </script>
 
 <figure {id} class="arc-viz" use:inView onexit={onExit}>
-	{#if title}<h3>{title}</h3>{/if}
+	{#if title.split(":").length === 2}
+		<h4>{title.split(":")[1].trim()}</h4>
+	{:else}
+		<h4>All motifs</h4>
+	{/if}
+	<h3>{title.split(":")[0]}</h3>
+
 	<Chart {id} {musical} {song} {character} {animate} {motifs} {tracks} />
 
 	{#if note && id !== "explore" && id !== "lesmis"}
@@ -199,7 +205,6 @@
 	}
 
 	h3 {
-		text-transform: uppercase;
 		font-weight: bold;
 		margin: 0;
 	}

@@ -1,4 +1,5 @@
 <script>
+	import PlayableText from "$components/PlayableText.svelte";
 	import playSvg from "$svg/play.svg";
 	import pauseSvg from "$svg/pause.svg";
 	import prevSvg from "$svg/prev.svg";
@@ -179,6 +180,29 @@
 		class:faded={audio.figureId === chartId && !mePlaying}
 	>
 		<div
+			class="text-wrapper"
+			class:centered={motifLabelCentered}
+			class:left={!motifLabelCentered && actOfFirstOccurence === 2}
+			class:right={!motifLabelCentered && actOfFirstOccurence === 1}
+			style:transform={!motifLabelCentered
+				? "translate(0, -50%)"
+				: motifLabelOverflowing.left
+					? "translate(-15%, calc(-100% - 6px))"
+					: motifLabelOverflowing.right
+						? "translate(-85%, calc(-100% - 6px))"
+						: "translate(-50%, calc(-100% - 6px))"}
+			bind:clientWidth={motifLabelWidth}
+		>
+			<PlayableText
+				text={`${
+					chartId === "lesmis" && motifId === "the-people-b"
+						? "the people"
+						: _.startCase(motifId).toLowerCase()
+				} ${emoji}`}
+			/>
+		</div>
+
+		<!-- <button
 			class="motif-name"
 			class:centered={motifLabelCentered}
 			class:left={!motifLabelCentered && actOfFirstOccurence === 2}
@@ -196,8 +220,9 @@
 				? "the people"
 				: _.startCase(motifId).toLowerCase()}
 			{emoji}
-		</div>
-		<div class="controls" style={`--color: ${color}`}>
+		</button> -->
+
+		<!-- <div class="controls" style={`--color: ${color}`}>
 			<button
 				type="button"
 				class="advance"
@@ -263,7 +288,7 @@
 			>
 				{@html nextSvg}
 			</button>
-		</div>
+		</div> -->
 	</div>
 {/if}
 
@@ -298,7 +323,11 @@
 		opacity: 1;
 	}
 
-	.motif-name {
+	.text-wrapper {
+		position: absolute;
+	}
+
+	/* .motif-name {
 		position: absolute;
 		white-space: nowrap;
 		font-family: var(--mono);
@@ -307,19 +336,19 @@
 		text-transform: uppercase;
 		background: var(--color-gray-900);
 		padding: 2px 6px;
-	}
+	} */
 
-	.motif-name.left {
+	.text-wrapper.left {
 		top: 50%;
 		right: 75%;
 	}
 
-	.motif-name.right {
+	.text-wrapper.right {
 		top: 50%;
 		left: 75%;
 	}
 
-	.motif-name.centered {
+	.text-wrapper.centered {
 		top: 0;
 		left: 50%;
 	}
@@ -363,7 +392,7 @@
 	}
 
 	.pp-progress {
-		stroke: var(--color);
+		stroke: var(--color-playbill-yellow);
 		transform: rotate(-90deg);
 		transform-origin: 50% 50%;
 		animation: none;
@@ -394,7 +423,7 @@
 	}
 
 	:global(.pp-face svg path, .pp-face svg rect:not(.bg)) {
-		fill: var(--color);
+		fill: var(--color-playbill-yellow);
 		stroke: none;
 	}
 

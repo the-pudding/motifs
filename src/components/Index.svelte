@@ -187,9 +187,16 @@
 
 	:global(h3) {
 		font-weight: bold;
-		font-size: var(--24px);
+		font-size: var(--28px);
 		max-width: 700px;
 		margin: 2rem auto;
+	}
+
+	:global(h4) {
+		font-size: var(--14px);
+		font-family: var(--mono);
+		margin: 0;
+		text-transform: uppercase;
 	}
 
 	:global(hr) {
@@ -211,8 +218,8 @@
 		margin-top: 1.5rem;
 	}
 
-	:global(span.green) {
-		color: var(--color-wicked-green);
+	:global(span.highlight) {
+		color: var(--color-playbill-yellow);
 		text-transform: uppercase;
 	}
 

@@ -104,6 +104,7 @@
 			class:selected
 			role="button"
 			tabindex="0"
+			onclick={() => (selectedMotif = motif.name)}
 			onkeydown={(e) => {
 				if (e.key === "Enter" || e.key === " ") {
 					e.preventDefault();

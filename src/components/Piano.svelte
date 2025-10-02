@@ -106,6 +106,8 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		max-width: 600px;
+		margin: 2rem auto;
 	}
 
 	.buttons {

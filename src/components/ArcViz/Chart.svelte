@@ -202,6 +202,7 @@
 
 <div
 	class="chart-container"
+	class:useYAxis
 	style:height={`${svgHeight}px`}
 	bind:clientWidth={svgWidth}
 >
@@ -262,29 +263,20 @@
 							{@const active =
 								audio.figureId &&
 								audio.figureId === id &&
-								audio.motifData.motifId === motifId &&
-								audio.motifData.motifI === i}
+								audio.motifData.motifId === motifId}
 							{@const faded =
 								(audio.figureId != null &&
 									audio.figureId === id &&
 									audio.motifData.motifId !== _.kebabCase(name)) ||
 								(id === "explore" &&
 									!filteredMotifNamesByCharacter.includes(name))}
-							{@const partiallyFaded =
-								character &&
-								character !== "All Characters" &&
-								id === "explore" &&
-								!faded
-									? !motifs
-											.find((m) => m.name === name)
-											?.regions[i].character?.includes(character)
-									: false}
 							<circle
+								class:active
 								class:faded
-								r={active ? 8 : 4}
+								r={active && audio.motifData.motifI === i ? 8 : 4}
 								cx={p.x}
 								cy={p.y}
-								fill={motifColors[name]}
+								fill={"var(--color-playbill-yellow)"}
 							/>
 
 							{#if i < points.length - 1}
@@ -293,18 +285,20 @@
 										bind:this={pathEls[pathI]}
 										style={`--i:${i}; animation-delay:${Math.random() * stagger}s; animation-duration:${perPathDuration}s;`}
 										class:draw={animate}
+										class:active
 										class:faded
 										d={arcPath(points[i], points[i + 1], i)}
 										fill="none"
-										stroke={motifColors[name]}
+										stroke={"var(--color-playbill-yellow)"}
 										stroke-width="1"
 									/>
 								{:else}
 									<path
+										class:active
 										class:faded
 										d={arcPath(points[i], points[i + 1], i)}
 										fill="none"
-										stroke={motifColors[name]}
+										stroke={"var(--color-playbill-yellow)"}
 										stroke-width="1"
 									/>
 								{/if}
@@ -370,6 +364,18 @@
 		transition:
 			r 0.2s ease-in-out,
 			opacity 0.2s ease-in-out;
+	}
+
+	circle,
+	path {
+		opacity: 0.7;
+	}
+
+	.useYAxis circle,
+	.useYAxis path,
+	circle.active,
+	path.active {
+		opacity: 1;
 	}
 
 	.faded {
