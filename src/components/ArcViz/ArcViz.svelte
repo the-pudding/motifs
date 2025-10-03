@@ -8,17 +8,12 @@
 	import wickedTracks from "$data/tracks/wicked-tracks.json";
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
-	import copy from "$data/copy.json";
 	import sortMotifRegions from "$utils/sortMotifRegions.js";
 	import inView from "$actions/inView.js";
 
 	let { id, title, musical = $bindable(), song, character, animate } = $props();
 
 	const audio = audioApi();
-
-	let note = $derived(
-		copy.descriptions[musical]?.[audio?.motifData?.motifId] || null
-	);
 
 	const dataMap = $derived({
 		unlimited: {
@@ -157,15 +152,6 @@
 
 	<Chart {id} {musical} {song} {character} {animate} {motifs} {tracks} />
 
-	{#if note && id !== "explore" && id !== "lesmis"}
-		<div class="border" class:visible={audio.figureId === id}>
-			<div class="note">
-				<span class="listening">Listening notes:</span>
-				{@html note}
-			</div>
-		</div>
-	{/if}
-
 	<figcaption class="sr-only">
 		A chart with time on the x-axis depicting the occurence of {motifs.length ===
 		1
@@ -207,40 +193,6 @@
 	h3 {
 		font-weight: bold;
 		margin: 0;
-	}
-
-	.border {
-		padding: 4px;
-		width: fit-content;
-		max-width: 600px;
-		margin: 0 auto;
-		margin-top: 1rem;
-		background: var(--color-white);
-		z-index: 1000;
-		opacity: 0;
-		transition: opacity 0.3s ease;
-	}
-
-	.border.visible {
-		opacity: 1;
-	}
-
-	.note {
-		background: var(--color-playbill-yellow);
-		color: var(--color-bg);
-		padding: 1rem;
-		font-size: var(--14px);
-		border: 1px solid var(--color-bg);
-	}
-
-	span.listening {
-		font-family: var(--mono);
-		font-weight: bold;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		font-size: var(--12px);
-		display: block;
-		text-decoration: underline;
 	}
 
 	@media (max-width: 400px) {

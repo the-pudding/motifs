@@ -3,6 +3,7 @@
 	import { scaleLinear } from "d3-scale";
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
+	import copy from "$data/copy.json";
 	import useWindowDimensions from "$runes/useWindowDimensions.svelte.js";
 
 	let dimensions = new useWindowDimensions();
@@ -168,6 +169,22 @@
 			return acc;
 		}, {})
 	);
+	let note = $derived(
+		copy.descriptions[musical]?.[audio?.motifData?.motifId] || null
+	);
+	let currentlyPlayingMotifI = $derived.by(() => {
+		if (
+			!audio.motifData ||
+			audio.figureId !== id ||
+			!motifs.find((m) => _.kebabCase(m.name) === audio.motifData.motifId)
+		)
+			return null;
+
+		const motifIndex = motifs.findIndex(
+			(m) => _.kebabCase(m.name) === audio.motifData.motifId
+		);
+		return motifIndex;
+	});
 
 	const arcPath = (p1, p2, i) => {
 		const dx = Math.max(0, p2.x - p1.x);
@@ -199,6 +216,19 @@
 		}
 	});
 </script>
+
+{#if note && id !== "explore" && id !== "lesmis"}
+	<div
+		class="border"
+		class:visible={audio.figureId === id}
+		class:top={currentlyPlayingMotifI === 0 || currentlyPlayingMotifI === 1}
+	>
+		<div class="note">
+			<span class="listening">Listening notes:</span>
+			{@html note}
+		</div>
+	</div>
+{/if}
 
 <div
 	class="chart-container"
@@ -379,7 +409,9 @@
 	}
 
 	circle.faded,
-	path.faded {
+	path.faded,
+	text.faded,
+	line.faded {
 		opacity: 0.1;
 	}
 
@@ -399,5 +431,62 @@
 		animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
 		animation-direction: alternate;
 		will-change: stroke-dashoffset;
+	}
+
+	.border {
+		position: absolute;
+		bottom: 20px;
+		left: 50%;
+		transform: translate(-50%, 0);
+		padding: 4px;
+		width: fit-content;
+		max-width: 600px;
+		margin: 0 auto;
+		margin-top: 1rem;
+		background: rgba(255, 255, 255, 0.9);
+		z-index: 1000;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.border.visible {
+		opacity: 1;
+	}
+
+	.border.top {
+		bottom: auto;
+		top: 20px;
+	}
+
+	.note {
+		background: rgba(253, 227, 0, 0.9);
+		color: var(--color-bg);
+		padding: 1rem;
+		font-size: var(--14px);
+		border: 1px solid var(--color-bg);
+	}
+
+	span.listening {
+		font-family: var(--mono);
+		font-weight: bold;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-size: var(--12px);
+		display: block;
+		text-decoration: underline;
+	}
+
+	@media (max-width: 600px) {
+		.border {
+			width: 80%;
+			max-width: none;
+		}
+	}
+
+	@media (max-height: 800px) {
+		.border {
+			position: fixed;
+			bottom: 50px;
+		}
 	}
 </style>

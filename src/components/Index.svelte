@@ -218,13 +218,13 @@
 	}
 
 	:global(p.callout) {
-		font-weight: bold;
 		margin-top: 1.5rem;
 	}
 
 	:global(span.highlight) {
 		color: var(--color-playbill-yellow);
 		text-transform: uppercase;
+		font-weight: bold;
 	}
 
 	:global(span.note) {
