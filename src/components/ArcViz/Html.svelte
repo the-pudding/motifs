@@ -50,6 +50,7 @@
 	style:height={`${chartHeight}px`}
 	style:transform={`translate(${padding.left}px, ${padding.top}px)`}
 	onkeydown={onKeyDown}
+	tabindex="0"
 	role="application"
 	aria-label="keyboard arrow key controls"
 >
