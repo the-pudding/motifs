@@ -528,6 +528,7 @@
 	@media (max-height: 800px) {
 		.border {
 			position: fixed;
+			top: auto;
 			bottom: 50px;
 		}
 	}

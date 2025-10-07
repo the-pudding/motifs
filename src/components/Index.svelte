@@ -103,9 +103,9 @@
 
 <style>
 	article {
+		position: absolute;
 		padding: 2rem;
 		padding-top: 12rem;
-		position: absolute;
 		z-index: 2;
 		width: 100%;
 		height: 100%;
@@ -124,12 +124,7 @@
 	.curtain {
 		width: 100%;
 		height: 100svh;
-		overflow: hidden;
 		position: relative;
-	}
-
-	.curtain.open {
-		overflow: auto;
 	}
 
 	.curtain-wrapper {

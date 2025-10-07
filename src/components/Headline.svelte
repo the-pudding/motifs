@@ -69,4 +69,10 @@
 			margin: 1rem 0 0 0;
 		}
 	}
+
+	@media (max-width: 400px) {
+		.playbill {
+			padding: 1rem 0.5rem;
+		}
+	}
 </style>

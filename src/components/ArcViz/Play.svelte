@@ -232,10 +232,6 @@
 	}
 
 	@media (max-width: 400px) {
-		.text-wrapper {
-			font-size: var(--12px);
-		}
-
 		.text-wrapper.left {
 			right: 70%;
 		}
@@ -245,7 +241,7 @@
 		}
 
 		.song-name {
-			font-size: var(--12px);
+			font-size: var(--14px);
 		}
 	}
 </style>

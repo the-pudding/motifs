@@ -2,8 +2,6 @@
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
 	import copy from "$data/copy.json";
-	import useWindowDimensions from "$runes/useWindowDimensions.svelte.js";
-	let dimensions = new useWindowDimensions();
 
 	let {
 		selectedMotif = $bindable(),
@@ -68,13 +66,6 @@
 				top: scrollTarget,
 				behavior: "smooth"
 			});
-		}
-
-		if (dimensions.width <= 600) {
-			const exploreSection = document.querySelector("figure#explore");
-			if (exploreSection) {
-				exploreSection.scrollIntoView();
-			}
 		}
 	};
 

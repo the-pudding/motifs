@@ -13,7 +13,7 @@
 
 		let percent;
 
-		if (id.startsWith("playable")) {
+		if (id.startsWith("playable") || id.includes("piano-")) {
 			percent = audio.duration ? (time / audio.duration) * 100 : 0;
 		} else {
 			percent = audio.motifData

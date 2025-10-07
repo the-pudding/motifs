@@ -2,7 +2,7 @@
 	import PlayableText from "$components/PlayableText.svelte";
 	import pianoSvg from "$svg/piano.svg";
 	import { audioApi } from "$runes/audio.svelte.js";
-	import { onMount, onDestroy } from "svelte";
+	import { onMount } from "svelte";
 
 	const audio = audioApi();
 
@@ -14,26 +14,6 @@
 	const ts = {
 		"unlimited-piano": [2.042, 2.834, 3.622, 3.893],
 		"rainbow-piano": [0.784, 2.042, 3.376, 4.326]
-	};
-
-	const clear = () => {
-		if (audio.trackName === null && shown.size > 0) {
-			shown.clear();
-			circleGroups.forEach((circle) => {
-				circle.style.opacity = 0;
-			});
-			return;
-		}
-
-		if (
-			audio.trackName === "unlimited-piano" ||
-			audio.trackName === "rainbow-piano"
-		) {
-			shown.clear();
-			circleGroups.forEach((circle) => {
-				circle.style.opacity = 0;
-			});
-		}
 	};
 
 	const timeChange = () => {
@@ -68,7 +48,6 @@
 		circleGroups = g;
 	});
 
-	$effect(() => clear(audio.trackName));
 	$effect(() => timeChange(audio.smoothTime));
 </script>
 

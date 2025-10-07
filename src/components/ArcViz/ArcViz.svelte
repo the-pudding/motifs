@@ -203,7 +203,8 @@
 			padding: 1rem 0;
 		}
 
-		figure#explore h3 {
+		figure#explore h3,
+		figure#explore h4 {
 			padding: 0 1rem;
 		}
 	}
