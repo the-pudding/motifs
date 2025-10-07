@@ -25,28 +25,24 @@ export function audioApi() {
 	};
 
 	const tick = () => {
-		if (el) smoothTime = el.currentTime || 0;
+		if (el) {
+			smoothTime = el.currentTime ? Math.max(smoothTime, el.currentTime) : 0;
+			// smoothTime = el.currentTime || 0;
+		}
 		rafId = requestAnimationFrame(tick);
 	};
 
 	const startTicker = () => {
+		if (typeof window === "undefined") return;
 		if (rafId == null) rafId = requestAnimationFrame(tick);
 	};
 
 	const stopTicker = () => {
+		if (typeof window === "undefined") return;
 		if (rafId != null) {
 			cancelAnimationFrame(rafId);
 			rafId = null;
 		}
-	};
-
-	const subscribeSmooth = () => {
-		smoothRefCount++;
-		if (smoothRefCount === 1) startTicker();
-		return () => {
-			smoothRefCount = Math.max(0, smoothRefCount - 1);
-			if (smoothRefCount === 0) stopTicker();
-		};
 	};
 
 	const attach = () => {
@@ -66,6 +62,8 @@ export function audioApi() {
 		detach();
 		el = node || null;
 		attach();
+
+		if (typeof window !== "undefined" && !rafId) startTicker();
 	};
 
 	const load = (newSrc, { figure, motif } = {}) => {
@@ -75,17 +73,25 @@ export function audioApi() {
 		trackName = newSrc
 			?.split("/")
 			.pop()
-			// .replace(/_/g, " ")
 			.replace(/^\d+-\d+ /, "")
 			.replace(/\.mp3$/, "");
 		figureId = figure ?? null;
 		motifData = motif ?? null;
-		el.src = newSrc;
-		el.load();
 
-		el.addEventListener("canplaythrough", () => {
-			ready = true;
-		});
+		// ✅ Reset smoothTime whenever a new source is loaded
+		smoothTime = motif?.start || 0;
+
+		// ✅ remove explicit .load() to prevent Safari double request
+		el.src = newSrc;
+		el.preload = "auto";
+
+		el.addEventListener(
+			"canplaythrough",
+			() => {
+				ready = true;
+			},
+			{ once: true }
+		);
 	};
 
 	const play = () => {
@@ -150,13 +156,13 @@ export function audioApi() {
 	const destroy = () => {
 		detach();
 		el = null;
+		stopTicker();
 	};
 
 	audioManager = {
 		setup,
 		destroy,
 		load,
-		subscribeSmooth,
 		play,
 		pause,
 		pauseAndClear,

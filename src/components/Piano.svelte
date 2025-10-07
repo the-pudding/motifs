@@ -5,11 +5,6 @@
 	import { onMount, onDestroy } from "svelte";
 
 	const audio = audioApi();
-	let smooth;
-	onMount(() => {
-		smooth = audio.subscribeSmooth();
-	});
-	onDestroy(() => smooth?.());
 
 	let { figcaption } = $props();
 

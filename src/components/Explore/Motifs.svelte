@@ -1,10 +1,8 @@
 <script>
 	import _ from "lodash";
-	import { onMount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 	import copy from "$data/copy.json";
 	import useWindowDimensions from "$runes/useWindowDimensions.svelte.js";
-	import Explore from "./Explore.svelte";
 	let dimensions = new useWindowDimensions();
 
 	let {
@@ -15,11 +13,6 @@
 		character
 	} = $props();
 	const audio = audioApi();
-	let smooth;
-	onMount(() => {
-		smooth = audio.subscribeSmooth();
-	});
-	onDestroy(() => smooth?.());
 
 	let percentsDone = $derived.by(() => {
 		if (!selectedMotif) return [];

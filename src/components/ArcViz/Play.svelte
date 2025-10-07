@@ -1,7 +1,6 @@
 <script>
 	import PlayableText from "$components/PlayableText.svelte";
 	import _ from "lodash";
-	import { onMount, onDestroy } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 
 	let {
@@ -16,7 +15,6 @@
 		actOfFirstOccurence
 	} = $props();
 
-	let smooth;
 	const audio = audioApi();
 
 	let unlimitedPlayClicked = $state(false);
@@ -131,11 +129,6 @@
 		const trackData = tracks.find((t) => t.name.includes(trackName));
 		return trackData?.displayName || trackName;
 	};
-
-	onMount(() => {
-		smooth = audio.subscribeSmooth();
-	});
-	onDestroy(() => smooth?.());
 </script>
 
 <div
