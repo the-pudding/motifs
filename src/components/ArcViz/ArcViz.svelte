@@ -90,14 +90,13 @@
 			tracks: hamiltonTracks
 		},
 		nonstop: {
-			motifs: hamiltonMotifs
-				.filter((d) =>
-					d.regions.some((r) => r["track-name"] === "1-23 Non-Stop")
-				)
-				.map((d) => ({
-					...d,
-					regions: d.regions.filter((r) => r["track-name"].startsWith("1"))
-				})),
+			motifs: hamiltonMotifs.filter((d) =>
+				d.regions.some((r) => r["track-name"] === "1-23 Non-Stop")
+			),
+			// .map((d) => ({
+			// 	...d,
+			// 	regions: d.regions.filter((r) => r["track-name"].startsWith("1"))
+			// })),
 			tracks: hamiltonTracks
 		},
 		"one-day-more": {

@@ -138,6 +138,27 @@
 			: () => height
 	);
 
+	const technique4SongX = $derived(
+		id === "one-day-more" || id === "nonstop"
+			? xScale(
+					getFullTimestamp(
+						tracks.find((d) =>
+							d.name
+								.replaceAll("-", "")
+								.toLowerCase()
+								.includes(id.replaceAll("-", " "))
+						).name,
+						0
+					)
+				)
+			: null
+	);
+	const technique4SongWidth = $derived(
+		id === "one-day-more" || id === "nonstop"
+			? xScale(getFullTimestamp(midpoint, 0)) - technique4SongX
+			: null
+	);
+
 	let motifPoints = $derived(
 		motifs.reduce((acc, motif, motifI) => {
 			const pts = motif.regions
@@ -285,6 +306,23 @@
 					{timeFormatter(totalMusicalDuration)}
 				</text>
 
+				{#if id === "one-day-more" || id === "nonstop"}
+					<rect
+						x={technique4SongX}
+						y={0}
+						width={technique4SongWidth}
+						{height}
+						fill="var(--color-gray-100)"
+						opacity={0.4}
+						class:faded={audio.figureId && audio.figureId === id}
+					/>
+					<text
+						class="one-day-nonstop-label"
+						x={technique4SongX + technique4SongWidth / 2}
+						y={-10}>{id === "one-day-more" ? "One Day More" : "Non-Stop"}</text
+					>
+				{/if}
+
 				{#if pointsReady}
 					{#each Object.entries(motifPoints) as [name, points]}
 						{#each points as p, i (`${_.kebabCase(name)}-${i}`)}
@@ -382,6 +420,10 @@
 		alignment-baseline: before-edge;
 	}
 
+	text.one-day-nonstop-label {
+		text-anchor: middle;
+	}
+
 	:global(#headline text, #headline line) {
 		display: none;
 	}
@@ -435,7 +477,7 @@
 
 	.border {
 		position: absolute;
-		bottom: 20px;
+		bottom: 75px;
 		left: 50%;
 		transform: translate(-50%, 0);
 		padding: 4px;
