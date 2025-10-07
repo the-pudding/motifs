@@ -411,13 +411,13 @@
 	}
 
 	text.act-label {
-		alignment-baseline: before-edge;
+		dominant-baseline: text-before-edge;
 		text-anchor: start;
 	}
 
 	text.time-label {
 		text-anchor: start;
-		alignment-baseline: before-edge;
+		dominant-baseline: text-before-edge;
 	}
 
 	text.one-day-nonstop-label {
