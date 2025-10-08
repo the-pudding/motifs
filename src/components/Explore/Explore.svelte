@@ -197,10 +197,13 @@
 	/>
 
 	<Motifs bind:selectedMotif {filteredMotifs} {tracks} {musical} {character} />
+
+	<div class="fade-bottom" />
 </div>
 
 <style>
 	.container {
+		position: relative;
 		max-width: 1000px;
 		margin: 0 auto;
 	}
@@ -232,6 +235,19 @@
 		font-size: var(--14px);
 	}
 
+	.fade-bottom {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 50px;
+		background: linear-gradient(
+			180deg,
+			rgba(55, 55, 55, 0) 0%,
+			rgba(55, 55, 55, 0.8) 50%,
+			rgba(55, 55, 55, 1) 90%
+		);
+	}
+
 	@media (max-width: 600px) {
 		.filters {
 			flex-wrap: wrap;
@@ -240,6 +256,10 @@
 
 		.select-wrapper {
 			max-width: calc((100% - 1.5rem) / 3);
+		}
+
+		.fade-bottom {
+			height: 30px;
 		}
 	}
 

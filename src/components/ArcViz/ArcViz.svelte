@@ -206,6 +206,8 @@
 		position: absolute;
 		right: 2rem;
 		top: 2rem;
+		height: 100px;
+		transform: rotate(2deg);
 	}
 
 	@media (max-width: 400px) {
