@@ -61,21 +61,23 @@
 	};
 </script>
 
-<Note
-	{note}
-	visible={audio.figureId === id}
-	top={currentlyPlayingMotifI < motifs.length / 2 + 1}
-	next={(e) => {
-		const playEl = playEls[audio.motifData.motifId];
-		if (!playEl) return;
-		playEl.next(e);
-	}}
-	previous={(e) => {
-		const playEl = playEls[audio.motifData.motifId];
-		if (!playEl) return;
-		playEl.prev(e);
-	}}
-/>
+{#if note && id !== "explore" && id !== "lesmis"}
+	<Note
+		{note}
+		visible={audio.figureId === id}
+		top={currentlyPlayingMotifI < motifs.length / 2 + 1}
+		next={(e) => {
+			const playEl = playEls[audio.motifData.motifId];
+			if (!playEl) return;
+			playEl.next(e);
+		}}
+		previous={(e) => {
+			const playEl = playEls[audio.motifData.motifId];
+			if (!playEl) return;
+			playEl.prev(e);
+		}}
+	/>
+{/if}
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->

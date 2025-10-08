@@ -165,6 +165,14 @@
 					? `motifs from ${title.split(":")[1].trim().toLowerCase()}`
 					: title.split(":")[1].trim().toLowerCase()} in {musical}.
 	</figcaption>
+
+	{#if id === "explore"}
+		<img
+			class="playbill"
+			src={`/assets/img/${musical}.png`}
+			alt={`${musical} playbill program`}
+		/>
+	{/if}
 </figure>
 
 <style>
@@ -194,9 +202,20 @@
 		margin: 0;
 	}
 
+	img.playbill {
+		position: absolute;
+		right: 2rem;
+		top: 2rem;
+	}
+
 	@media (max-width: 400px) {
 		figure {
 			padding: 1rem;
+		}
+
+		img.playbill {
+			top: 1rem;
+			right: 1rem;
 		}
 
 		figure#explore {
