@@ -3,17 +3,8 @@
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
 
-	let {
-		top,
-		left,
-		regions,
-		tracks,
-		chartWidth,
-		chartId,
-		motifId,
-		emoji,
-		actOfFirstOccurence
-	} = $props();
+	let { top, left, regions, tracks, chartWidth, chartId, motifId, emoji } =
+		$props();
 
 	const audio = audioApi();
 
@@ -30,9 +21,6 @@
 		mePlaying ? audio.src.replace("assets/audio/", "") : regions[0]?.src
 	);
 	let loading = $derived(mePlaying && !audio.ready);
-	let motifLabelCentered = $derived(
-		mePlaying || chartId === "unlimited" || chartId === "lesmis"
-	);
 	let songLabelOverflowing = $derived(
 		mePlaying
 			? {
@@ -48,14 +36,10 @@
 				? chartWidth - songLabelWidth
 				: +left.replace("px", "")
 	);
-	let motifLabelOverflowing = $derived(
-		mePlaying
-			? {
-					left: +left.replace("px", "") - motifLabelWidth / 2 < 0,
-					right: +left.replace("px", "") + motifLabelWidth / 2 > chartWidth
-				}
-			: { left: false, right: false }
-	);
+	let motifLabelOverflowing = $derived({
+		left: +left.replace("px", "") - motifLabelWidth / 2 < 0,
+		right: +left.replace("px", "") + motifLabelWidth / 2 > chartWidth
+	});
 
 	const playRecursive = (diff) => {
 		let playTrack = async (change) => {
@@ -151,20 +135,16 @@
 		style:left
 		class:active={mePlaying}
 		class:loading
-		class:faded={audio.figureId === chartId && !mePlaying}
+		class:faded={(audio.figureId && audio.figureId !== chartId) ||
+			(audio.figureId === chartId && !mePlaying)}
 	>
 		<div
 			class="text-wrapper"
-			class:centered={motifLabelCentered}
-			class:left={!motifLabelCentered && actOfFirstOccurence === 2}
-			class:right={!motifLabelCentered && actOfFirstOccurence === 1}
-			style:transform={!motifLabelCentered
-				? "translate(0, -75%)"
-				: motifLabelOverflowing.left
-					? "translate(-15%, calc(-100% - 6px))"
-					: motifLabelOverflowing.right
-						? "translate(-85%, calc(-100% - 6px))"
-						: "translate(-50%, calc(-100% - 6px))"}
+			style:transform={motifLabelOverflowing.left
+				? "translate(-15%, calc(-100% - 6px))"
+				: motifLabelOverflowing.right
+					? "translate(-85%, calc(-100% - 6px))"
+					: "translate(-50%, calc(-100% - 6px))"}
 			bind:clientWidth={motifLabelWidth}
 		>
 			<PlayableText
@@ -192,7 +172,7 @@
 	}
 
 	.play-container.active {
-		z-index: 100000;
+		z-index: 1000;
 	}
 
 	.play-container.faded {
@@ -214,32 +194,11 @@
 
 	.text-wrapper {
 		position: absolute;
-	}
-
-	.text-wrapper.left {
-		top: 50%;
-		right: 75%;
-	}
-
-	.text-wrapper.right {
-		top: 50%;
-		left: 75%;
-	}
-
-	.text-wrapper.centered {
 		top: 0;
 		left: 50%;
 	}
 
 	@media (max-width: 400px) {
-		.text-wrapper.left {
-			right: 70%;
-		}
-
-		.text-wrapper.right {
-			left: 70%;
-		}
-
 		.song-name {
 			font-size: var(--14px);
 		}

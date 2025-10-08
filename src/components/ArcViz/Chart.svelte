@@ -1,10 +1,8 @@
 <script>
-	import Note from "$components/ArcViz/Note.svelte";
 	import Html from "$components/ArcViz/Html.svelte";
 	import { scaleLinear } from "d3-scale";
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
-	import copy from "$data/copy.json";
 	import useWindowDimensions from "$runes/useWindowDimensions.svelte.js";
 
 	let dimensions = new useWindowDimensions();
@@ -18,6 +16,7 @@
 		tracks = [],
 		alternate = false,
 		animate = false,
+		playEls = $bindable(),
 		useYAxis = id !== "unlimited" &&
 			id !== "headline" &&
 			id !== "lesmis" &&
@@ -223,14 +222,6 @@
 	});
 </script>
 
-<!-- {#if note && id !== "explore" && id !== "lesmis"} -->
-<!-- <Note
-		{note}
-		visible={audio.figureId === id}
-		top={currentlyPlayingMotifI === 0 || currentlyPlayingMotifI === 1}
-	/> -->
-<!-- {/if} -->
-
 <div
 	class="chart-container"
 	class:useYAxis
@@ -255,17 +246,17 @@
 					stroke="var(--color-gray-400)"
 					stroke-width="1"
 					stroke-dasharray="4"
-					class:faded={audio.figureId && audio.figureId === id}
+					class:faded={audio.figureId}
 				/>
 				<text
 					class="act-label"
-					class:faded={audio.figureId && audio.figureId === id}
+					class:faded={audio.figureId}
 					x={xScale(getFullTimestamp(midpoint, 0)) + 10}
 					y={yScale(0) + 10}>Act 2 {"->"}</text
 				>
 				<text
 					class="act-label anchor-end"
-					class:faded={audio.figureId && audio.figureId === id}
+					class:faded={audio.figureId}
 					x={xScale(getFullTimestamp(midpoint, 0)) - 10}
 					y={yScale(0) + 10}
 					>{"<-"} Act 1
@@ -273,13 +264,13 @@
 
 				<text
 					class="time-label"
-					class:faded={audio.figureId && audio.figureId === id}
+					class:faded={audio.figureId}
 					x={xScale(0)}
 					y={yScale(0) + 10}>0h0m</text
 				>
 				<text
 					class="time-label anchor-end"
-					class:faded={audio.figureId && audio.figureId === id}
+					class:faded={audio.figureId}
 					x={xScale(totalMusicalDuration)}
 					y={yScale(0) + 10}
 				>
@@ -294,7 +285,7 @@
 						{height}
 						fill="var(--color-gray-100)"
 						opacity={0.4}
-						class:faded={audio.figureId && audio.figureId === id}
+						class:faded={audio.figureId}
 					/>
 					<text
 						class="one-day-nonstop-label"
@@ -313,6 +304,7 @@
 								audio.figureId === id &&
 								audio.motifData.motifId === motifId}
 							{@const faded =
+								(audio.figureId != null && audio.figureId !== id) ||
 								(audio.figureId != null &&
 									audio.figureId === id &&
 									audio.motifData.motifId !== _.kebabCase(name)) ||
@@ -368,6 +360,7 @@
 				{motifColors}
 				{motifs}
 				{tracks}
+				bind:playEls
 			/>
 		{/if}
 	{/if}

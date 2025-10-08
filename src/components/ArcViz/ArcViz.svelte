@@ -1,5 +1,6 @@
 <script>
 	import Chart from "$components/ArcViz/Chart.svelte";
+	import Note from "$components/ArcViz/Note.svelte";
 	import lesMisMotifs from "$data/motifs/lesmis-motifs.json";
 	import wickedMotifs from "$data/motifs/wicked-motifs.json";
 	import hamiltonMotifs from "$data/motifs/hamilton-motifs.json";
@@ -7,6 +8,7 @@
 	import lesMisTracks from "$data/tracks/lesmis-tracks.json";
 	import wickedTracks from "$data/tracks/wicked-tracks.json";
 	import _ from "lodash";
+	import copy from "$data/copy.json";
 	import { fly } from "svelte/transition";
 	import { cubicOut, cubicIn } from "svelte/easing";
 	import { audioApi } from "$runes/audio.svelte.js";
@@ -16,6 +18,8 @@
 	let { id, title, musical = $bindable(), song, character, animate } = $props();
 
 	const audio = audioApi();
+
+	let playEls = $state({});
 
 	const dataMap = $derived({
 		unlimited: {
@@ -95,20 +99,12 @@
 			motifs: hamiltonMotifs.filter((d) =>
 				d.regions.some((r) => r["track-name"] === "1-23 Non-Stop")
 			),
-			// .map((d) => ({
-			// 	...d,
-			// 	regions: d.regions.filter((r) => r["track-name"].startsWith("1"))
-			// })),
 			tracks: hamiltonTracks
 		},
 		"one-day-more": {
 			motifs: lesMisMotifs.filter((d) =>
 				d.regions.some((r) => r["track-name"] === "1-23 One Day More")
 			),
-			// .map((d) => ({
-			// 	...d,
-			// 	regions: d.regions.filter((r) => r["track-name"].startsWith("1"))
-			// })),
 			tracks: lesMisTracks
 		},
 		explore: {
@@ -126,7 +122,6 @@
 						: lesMisTracks
 		}
 	});
-
 	const motifs = $derived(
 		_.orderBy(
 			sortMotifRegions(dataMap[id].motifs).filter((d) => d.regions.length > 1),
@@ -135,23 +130,105 @@
 		)
 	);
 	const tracks = $derived(dataMap[id].tracks);
+	let notes = $derived(
+		motifs.map((m) => ({
+			motifId: _.kebabCase(m.name),
+			note: copy.descriptions[musical]?.[_.kebabCase(m.name)] || null
+		}))
+	);
+	const longestIndex = $derived(
+		notes.findIndex(
+			(d) => d.note.length === _.maxBy(notes, (d) => d.note.length).note.length
+		)
+	);
 
 	const onExit = () => {
 		if (audio.figureId === id) {
 			audio.pauseAndClear();
 		}
 	};
+	const onKeyDown = (e) => {
+		if (audio.figureId === id && id !== "explore") {
+			const playEl = playEls[audio.motifData.motifId];
+			if (!playEl) return;
+
+			if (e.key === "ArrowLeft") {
+				playEl.prev(e);
+			} else if (e.key === "ArrowRight") {
+				playEl.next(e);
+			}
+		}
+	};
 </script>
 
-<figure {id} class="arc-viz" use:inView onexit={onExit}>
-	{#if title.split(":").length === 2}
-		<h4>{title.split(":")[1].trim()}</h4>
-	{:else}
-		<h4>All motifs</h4>
-	{/if}
-	<h3>{title.split(":")[0]}</h3>
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+<figure
+	{id}
+	class="arc-viz"
+	use:inView
+	onexit={onExit}
+	onkeydown={onKeyDown}
+	tabindex="0"
+	role="application"
+	aria-label="keyboard arrow key controls"
+>
+	<div class="sticky">
+		<div class="titles">
+			{#if title.split(":").length === 2}
+				<h4>{title.split(":")[1].trim()}</h4>
+			{:else}
+				<h4>All motifs</h4>
+			{/if}
+			<h3>{title.split(":")[0]}</h3>
+		</div>
 
-	<Chart {id} {musical} {song} {character} {animate} {motifs} {tracks} />
+		{#if id !== "explore" && id !== "lesmis"}
+			<div class="note-wrapper">
+				{#each notes as { note, motifId }, i}
+					<Note
+						{note}
+						visible={audio.figureId === id &&
+							audio.motifData?.motifId === motifId}
+						longest={i === longestIndex}
+						next={(e) => {
+							const playEl = playEls[audio.motifData.motifId];
+							if (!playEl) return;
+							playEl.next(e);
+						}}
+						previous={(e) => {
+							const playEl = playEls[audio.motifData.motifId];
+							if (!playEl) return;
+							playEl.prev(e);
+						}}
+					/>
+				{/each}
+			</div>
+		{/if}
+	</div>
+
+	<Chart
+		{id}
+		{musical}
+		{song}
+		{character}
+		{animate}
+		{motifs}
+		{tracks}
+		bind:playEls
+	/>
+
+	{#if id === "explore"}
+		{#key musical}
+			<img
+				class="playbill"
+				src={`/assets/img/${musical}.png`}
+				alt={`${musical} playbill program`}
+				in:fly={{ x: 200, duration: 500, delay: 550, easing: cubicOut }}
+				out:fly={{ x: 200, duration: 500, easing: cubicIn }}
+			/>
+		{/key}
+	{/if}
 
 	<figcaption class="sr-only">
 		A chart with time on the x-axis depicting the occurence of {motifs.length ===
@@ -167,18 +244,6 @@
 					? `motifs from ${title.split(":")[1].trim().toLowerCase()}`
 					: title.split(":")[1].trim().toLowerCase()} in {musical}.
 	</figcaption>
-
-	{#if id === "explore"}
-		{#key musical}
-			<img
-				class="playbill"
-				src={`/assets/img/${musical}.png`}
-				alt={`${musical} playbill program`}
-				in:fly={{ x: 200, duration: 500, delay: 550, easing: cubicOut }}
-				out:fly={{ x: 200, duration: 500, easing: cubicIn }}
-			/>
-		{/key}
-	{/if}
 </figure>
 
 <style>
@@ -188,7 +253,6 @@
 		max-width: 1000px;
 		margin: 3rem auto;
 		padding: 2rem;
-		overflow: hidden;
 		border: 4px solid var(--color-fg);
 	}
 
@@ -208,6 +272,19 @@
 		margin: 0;
 	}
 
+	.titles {
+		flex-shrink: 0;
+	}
+
+	.sticky {
+		display: flex;
+		gap: 1rem;
+		justify-content: space-between;
+		position: sticky;
+		top: 1rem;
+		z-index: 1001;
+	}
+
 	img.playbill {
 		position: absolute;
 		right: 2rem;
@@ -216,11 +293,32 @@
 		transform: rotate(2deg);
 	}
 
-	@media (max-width: 400px) {
+	.note-wrapper {
+		position: relative;
+		display: flex;
+		align-items: end;
+		justify-content: end;
+		transition: none;
+		max-width: 66%;
+		flex: 1;
+	}
+
+	@media (max-width: 600px) {
 		figure {
 			padding: 1rem;
 		}
 
+		.note-wrapper {
+			max-width: none;
+			width: 100%;
+		}
+
+		.sticky {
+			flex-direction: column;
+		}
+	}
+
+	@media (max-width: 400px) {
 		img.playbill {
 			top: 1rem;
 			right: 1rem;

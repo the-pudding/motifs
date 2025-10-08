@@ -14,7 +14,7 @@
 
 <style>
 	.img-wrapper {
-		max-width: 700px;
+		max-width: 450px;
 		margin: 3rem auto;
 		display: flex;
 		flex-direction: column;
@@ -23,7 +23,7 @@
 
 	img,
 	.caption {
-		width: 500px;
+		width: 450px;
 	}
 
 	.border {

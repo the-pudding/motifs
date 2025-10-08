@@ -104,11 +104,6 @@
 	@media (max-width: 600px) {
 		button {
 			padding: 0.125rem 0.35rem 0.125rem 0.5rem;
-		}
-	}
-
-	@media (max-width: 400px) {
-		button {
 			font-size: var(--14px);
 		}
 	}
