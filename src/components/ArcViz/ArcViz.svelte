@@ -7,6 +7,8 @@
 	import lesMisTracks from "$data/tracks/lesmis-tracks.json";
 	import wickedTracks from "$data/tracks/wicked-tracks.json";
 	import _ from "lodash";
+	import { fly } from "svelte/transition";
+	import { cubicOut, cubicIn } from "svelte/easing";
 	import { audioApi } from "$runes/audio.svelte.js";
 	import sortMotifRegions from "$utils/sortMotifRegions.js";
 	import inView from "$actions/inView.js";
@@ -167,11 +169,15 @@
 	</figcaption>
 
 	{#if id === "explore"}
-		<img
-			class="playbill"
-			src={`/assets/img/${musical}.png`}
-			alt={`${musical} playbill program`}
-		/>
+		{#key musical}
+			<img
+				class="playbill"
+				src={`/assets/img/${musical}.png`}
+				alt={`${musical} playbill program`}
+				in:fly={{ x: 200, duration: 500, delay: 550, easing: cubicOut }}
+				out:fly={{ x: 200, duration: 500, easing: cubicIn }}
+			/>
+		{/key}
 	{/if}
 </figure>
 
