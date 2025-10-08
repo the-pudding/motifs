@@ -179,6 +179,9 @@
 			points.every((p) => p.x != null && p.y != null)
 		)
 	);
+	let fadeChartScaffolding = $derived(
+		audio.figureId && !audio.figureId.startsWith("playable-")
+	);
 
 	let pathEls = $state([]);
 	let pathOffset = $derived(
@@ -246,17 +249,17 @@
 					stroke="var(--color-gray-400)"
 					stroke-width="1"
 					stroke-dasharray="4"
-					class:faded={audio.figureId}
+					class:faded={fadeChartScaffolding}
 				/>
 				<text
 					class="act-label"
-					class:faded={audio.figureId}
+					class:faded={fadeChartScaffolding}
 					x={xScale(getFullTimestamp(midpoint, 0)) + 10}
 					y={yScale(0) + 10}>Act 2 {"->"}</text
 				>
 				<text
 					class="act-label anchor-end"
-					class:faded={audio.figureId}
+					class:faded={fadeChartScaffolding}
 					x={xScale(getFullTimestamp(midpoint, 0)) - 10}
 					y={yScale(0) + 10}
 					>{"<-"} Act 1
@@ -264,13 +267,13 @@
 
 				<text
 					class="time-label"
-					class:faded={audio.figureId}
+					class:faded={fadeChartScaffolding}
 					x={xScale(0)}
 					y={yScale(0) + 10}>0h0m</text
 				>
 				<text
 					class="time-label anchor-end"
-					class:faded={audio.figureId}
+					class:faded={fadeChartScaffolding}
 					x={xScale(totalMusicalDuration)}
 					y={yScale(0) + 10}
 				>
@@ -285,7 +288,7 @@
 						{height}
 						fill="var(--color-gray-100)"
 						opacity={0.4}
-						class:faded={audio.figureId}
+						class:faded={fadeChartScaffolding}
 					/>
 					<text
 						class="one-day-nonstop-label"
@@ -304,7 +307,9 @@
 								audio.figureId === id &&
 								audio.motifData.motifId === motifId}
 							{@const faded =
-								(audio.figureId != null && audio.figureId !== id) ||
+								(audio.figureId != null &&
+									audio.figureId !== id &&
+									!audio.figureId.startsWith("playable-")) ||
 								(audio.figureId != null &&
 									audio.figureId === id &&
 									audio.motifData.motifId !== _.kebabCase(name)) ||

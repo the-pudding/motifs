@@ -135,7 +135,9 @@
 		style:left
 		class:active={mePlaying}
 		class:loading
-		class:faded={(audio.figureId && audio.figureId !== chartId) ||
+		class:faded={(audio.figureId &&
+			audio.figureId !== chartId &&
+			!audio.figureId.startsWith("playable-")) ||
 			(audio.figureId === chartId && !mePlaying)}
 	>
 		<div

@@ -25,9 +25,9 @@
 	const lesMisPlayable = $derived(
 		isMobile
 			? ["on my own"]
-			: dimensions.width < 960
+			: dimensions.width < 950
 				? ["god on high", "on my own"]
-				: ["god on high", "on my own", "police", "the people b"]
+				: ["god on high", "on my own", "the people b"]
 	);
 </script>
 
