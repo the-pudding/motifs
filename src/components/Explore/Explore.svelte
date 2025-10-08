@@ -102,7 +102,11 @@
 		const container = document.body;
 
 		const handler = (e) => {
-			if (e.target && e.target.className.includes("goto-")) {
+			if (
+				e.target &&
+				e.target.className &&
+				e.target.className.includes("goto-")
+			) {
 				e.stopPropagation();
 
 				if (

@@ -80,7 +80,6 @@
 	}
 
 	button.next {
-		font-family: var(--mono);
 		background: var(--color-gray-50);
 		border: 1px solid var(--color-gray-300);
 		text-transform: uppercase;
