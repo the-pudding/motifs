@@ -202,7 +202,7 @@
 		transition: all calc(var(--1s) * 0.25) ease-in-out;
 	}
 
-	:global(button[class^="goto-"]) {
+	:global(.description button[class^="goto-"]) {
 		background: var(--color-gray-100);
 		color: var(--color-bg);
 		text-transform: uppercase;
@@ -222,7 +222,7 @@
 	}
 
 	button.instance:hover:not(:disabled),
-	:global(button[class^="goto-"]:hover) {
+	:global(.description button[class^="goto-"]:hover) {
 		background: var(--color-gray-300);
 		transform: translateY(-1px);
 		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;

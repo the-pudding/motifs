@@ -1,8 +1,10 @@
 <script>
+	import Note from "$components/ArcViz/Note.svelte";
 	import Play from "$components/ArcViz/Play.svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 	import _ from "lodash";
 	import useWindowDimensions from "$runes/useWindowDimensions.svelte.js";
+	import copy from "$data/copy.json";
 
 	let dimensions = new useWindowDimensions();
 
@@ -28,6 +30,22 @@
 			? ["on my own"]
 			: ["god on high", "on my own", "police", "the people b"]
 	);
+	let note = $derived(
+		copy.descriptions[musical]?.[audio?.motifData?.motifId] || null
+	);
+	let currentlyPlayingMotifI = $derived.by(() => {
+		if (
+			!audio.motifData ||
+			audio.figureId !== id ||
+			!motifs.find((m) => _.kebabCase(m.name) === audio.motifData.motifId)
+		)
+			return null;
+
+		const motifIndex = motifs.findIndex(
+			(m) => _.kebabCase(m.name) === audio.motifData.motifId
+		);
+		return motifIndex;
+	});
 
 	const onKeyDown = (e) => {
 		if (audio.figureId === id && id !== "explore") {
@@ -43,7 +61,24 @@
 	};
 </script>
 
+<Note
+	{note}
+	visible={audio.figureId === id}
+	top={currentlyPlayingMotifI < motifs.length / 2 + 1}
+	next={(e) => {
+		const playEl = playEls[audio.motifData.motifId];
+		if (!playEl) return;
+		playEl.next(e);
+	}}
+	previous={(e) => {
+		const playEl = playEls[audio.motifData.motifId];
+		if (!playEl) return;
+		playEl.prev(e);
+	}}
+/>
+
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
 	class="html-layer"
 	style:width={`${chartWidth}px`}
