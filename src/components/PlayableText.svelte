@@ -1,4 +1,5 @@
 <script>
+	import { onMount } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 	import { unlimited } from "$runes/misc.svelte.js";
 
@@ -6,8 +7,15 @@
 
 	const audio = audioApi();
 
+	let prefersReducedMotion = $state(false);
+
 	let isPlaying = $derived(audio.src === `assets/audio/${src}`);
 	let percentDone = $derived.by(() => {
+		if (prefersReducedMotion) {
+			if (audio.src === `assets/audio/${src}`) return 100;
+			else return 0;
+		}
+
 		const active = audio.src === `assets/audio/${src}`;
 		const time = active ? audio.smoothTime || audio.currentTime : 0;
 
@@ -42,6 +50,12 @@
 			}
 		}
 	};
+
+	onMount(() => {
+		prefersReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)"
+		).matches;
+	});
 </script>
 
 <button onclick={onClick || defaultClick}>

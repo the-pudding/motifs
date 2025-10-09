@@ -1,4 +1,5 @@
 <script>
+	import { onMount } from "svelte";
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
 	import copy from "$data/copy.json";
@@ -12,6 +13,8 @@
 	} = $props();
 	const audio = audioApi();
 
+	let prefersReducedMotion = $state(false);
+
 	let percentsDone = $derived.by(() => {
 		if (!selectedMotif) return [];
 		const motif = filteredMotifs.find((m) => m.name === selectedMotif);
@@ -19,6 +22,10 @@
 		return motif.regions.map((region, i) => {
 			const src = `assets/audio/${musical}/${region["track-name"]}.mp3`;
 			const active = audio.src === src;
+
+			if (active && prefersReducedMotion) return 100;
+			if (prefersReducedMotion) return 0;
+
 			const time = active ? audio.smoothTime || audio.currentTime : 0;
 			const duration = audio.motifData
 				? audio.motifData.end - audio.motifData.start
@@ -75,6 +82,12 @@
 	};
 
 	$effect(() => scrollToMotif(selectedMotif));
+
+	onMount(() => {
+		prefersReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)"
+		).matches;
+	});
 </script>
 
 <div class="motifs">

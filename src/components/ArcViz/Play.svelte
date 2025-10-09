@@ -169,8 +169,8 @@
 		pointer-events: none;
 		transform: translate(-50%, calc(-100% - 1rem));
 		transition:
-			opacity 0.2s ease-in-out,
-			transform 0.2s ease-in-out;
+			opacity calc(var(--1s) * 0.2) ease-in-out,
+			transform calc(var(--1s) * 0.2) ease-in-out;
 	}
 
 	.play-container.active {
@@ -186,7 +186,7 @@
 		width: fit-content;
 		white-space: nowrap;
 		opacity: 0;
-		transition: opacity 0.2s ease-in-out;
+		transition: opacity calc(var(--1s) * 0.2) ease-in-out;
 		font-weight: bold;
 	}
 

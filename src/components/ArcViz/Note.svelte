@@ -34,6 +34,7 @@
 		background: rgba(255, 255, 255, 0.9);
 		pointer-events: none;
 		opacity: 0;
+		transition: opacity calc(var(--1s) * 0.2) ease-in-out;
 	}
 
 	.border.visible {

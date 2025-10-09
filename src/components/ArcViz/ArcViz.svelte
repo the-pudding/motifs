@@ -14,12 +14,14 @@
 	import { audioApi } from "$runes/audio.svelte.js";
 	import sortMotifRegions from "$utils/sortMotifRegions.js";
 	import inView from "$actions/inView.js";
+	import { onMount } from "svelte";
 
 	let { id, title, musical = $bindable(), song, character, animate } = $props();
 
 	const audio = audioApi();
 
 	let playEls = $state({});
+	let prefersReducedMotion = $state(false);
 
 	const dataMap = $derived({
 		unlimited: {
@@ -159,6 +161,12 @@
 			}
 		}
 	};
+
+	onMount(() => {
+		prefersReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)"
+		).matches;
+	});
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -224,8 +232,17 @@
 				class="playbill"
 				src={`/assets/img/${musical}.png`}
 				alt={`${musical} playbill program`}
-				in:fly={{ x: 200, duration: 500, delay: 550, easing: cubicOut }}
-				out:fly={{ x: 200, duration: 500, easing: cubicIn }}
+				in:fly={{
+					x: 200,
+					duration: prefersReducedMotion ? 0 : 500,
+					delay: prefersReducedMotion ? 0 : 550,
+					easing: cubicOut
+				}}
+				out:fly={{
+					x: 200,
+					duration: prefersReducedMotion ? 0 : 500,
+					easing: cubicIn
+				}}
 			/>
 		{/key}
 	{/if}
@@ -290,7 +307,12 @@
 		right: 2rem;
 		top: 2rem;
 		height: 100px;
+		z-index: 1002;
 		transform: rotate(2deg);
+	}
+
+	img.playbill:hover {
+		transform: rotate(-1deg);
 	}
 
 	.note-wrapper {
@@ -298,7 +320,6 @@
 		display: flex;
 		align-items: end;
 		justify-content: end;
-		transition: none;
 		max-width: 66%;
 		flex: 1;
 	}

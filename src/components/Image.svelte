@@ -1,10 +1,24 @@
 <script>
+	import { onMount } from "svelte";
+
 	let { src, alt, caption } = $props();
+
+	let prefersReducedMotion = $state(false);
+
+	onMount(() => {
+		prefersReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)"
+		).matches;
+	});
 </script>
 
 <div class="img-wrapper">
 	<div class="border">
-		<img src={`assets/img/${src}`} {alt} loading="lazy" />
+		{#if src.includes("gif") && prefersReducedMotion}
+			<img src={`assets/img/married-life-still.png`} {alt} loading="lazy" />
+		{:else}
+			<img src={`assets/img/${src}`} {alt} loading="lazy" />
+		{/if}
 	</div>
 
 	{#if caption}

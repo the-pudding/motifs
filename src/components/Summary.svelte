@@ -54,7 +54,7 @@
 		font-weight: bold;
 		font-size: var(--12px);
 		margin-bottom: 1rem;
-		transition: transform 0.2s ease !important;
+		transition: transform calc(var(--1s) * 0.2) ease !important;
 	}
 
 	summary:hover {

@@ -413,8 +413,8 @@
 
 	circle {
 		transition:
-			r 0.2s ease-in-out,
-			opacity 0.2s ease-in-out;
+			r calc(var(--1s) * 0.2) ease-in-out,
+			opacity calc(var(--1s) * 0.2) ease-in-out;
 	}
 
 	circle,
