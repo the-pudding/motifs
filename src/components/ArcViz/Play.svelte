@@ -25,7 +25,7 @@
 		mePlaying
 			? {
 					left: +left.replace("px", "") - songLabelWidth / 2 < 0,
-					right: +left.replace("px", "") + songLabelWidth > chartWidth
+					right: +left.replace("px", "") + songLabelWidth / 2 >= chartWidth
 				}
 			: { left: false, right: false }
 	);
@@ -115,18 +115,20 @@
 	};
 </script>
 
-<div
-	class="song-name"
-	class:visible={mePlaying}
-	style:left={`${songLeft}px`}
-	style:bottom={`${0}px`}
-	style:transform={songLeft === 0 || songLeft === chartWidth - songLabelWidth
-		? "translate(0, calc(100% + 8px))"
-		: "translate(-50%, calc(100% + 8px))"}
-	bind:clientWidth={songLabelWidth}
->
-	{getDisplaySongName(audio.trackName)}
-</div>
+{#if mePlaying}
+	<div
+		class="song-name"
+		class:visible={true}
+		style:left={`${songLeft}px`}
+		style:bottom={`${0}px`}
+		style:transform={songLeft === 0 || songLeft === chartWidth - songLabelWidth
+			? "translate(0, calc(100% + 8px))"
+			: "translate(-50%, calc(100% + 8px))"}
+		bind:clientWidth={songLabelWidth}
+	>
+		{getDisplaySongName(audio.trackName)}
+	</div>
+{/if}
 
 {#if chartId !== "explore"}
 	<div
@@ -143,9 +145,9 @@
 		<div
 			class="text-wrapper"
 			style:transform={motifLabelOverflowing.left
-				? "translate(-15%, calc(-100% - 6px))"
+				? "translate(-10%, calc(-100% - 6px))"
 				: motifLabelOverflowing.right
-					? "translate(-85%, calc(-100% - 6px))"
+					? "translate(-90%, calc(-100% - 6px))"
 					: "translate(-50%, calc(-100% - 6px))"}
 			bind:clientWidth={motifLabelWidth}
 		>

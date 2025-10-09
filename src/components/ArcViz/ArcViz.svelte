@@ -230,7 +230,7 @@
 		{#key musical}
 			<img
 				class="playbill"
-				src={`/assets/img/${musical}.png`}
+				src={`assets/img/${musical}.png`}
 				alt={`${musical} playbill program`}
 				in:fly={{
 					x: 200,
