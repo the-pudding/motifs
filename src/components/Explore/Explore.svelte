@@ -15,8 +15,8 @@
 
 	let musicalOptions = [
 		{ label: "Hamilton", value: "hamilton" },
-		{ label: "Wicked", value: "wicked" },
-		{ label: "Les Misérables", value: "lesmis" }
+		{ label: "Les Misérables", value: "lesmis" },
+		{ label: "Wicked", value: "wicked" }
 	];
 
 	let musical = $state("hamilton");
