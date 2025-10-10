@@ -96,7 +96,7 @@
 		useYAxis
 			? Math.max(300, Math.min(motifs.length * 80, 650))
 			: isMobile
-				? 180
+				? 160
 				: 200
 	);
 	let width = $derived(svgWidth - padding.left - padding.right);

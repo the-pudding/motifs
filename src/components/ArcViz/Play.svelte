@@ -121,6 +121,7 @@
 		class:visible={true}
 		style:left={`${songLeft}px`}
 		style:bottom={`${0}px`}
+		style:max-width={`${chartWidth}px`}
 		style:transform={songLeft === 0 || songLeft === chartWidth - songLabelWidth
 			? "translate(0, calc(100% + 8px))"
 			: "translate(-50%, calc(100% + 8px))"}
@@ -175,10 +176,6 @@
 			transform calc(var(--1s) * 0.2) ease-in-out;
 	}
 
-	.play-container.active {
-		z-index: 1000;
-	}
-
 	.play-container.faded {
 		opacity: 0.1;
 	}
@@ -187,6 +184,8 @@
 		position: absolute;
 		width: fit-content;
 		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 		opacity: 0;
 		transition: opacity calc(var(--1s) * 0.2) ease-in-out;
 		font-weight: bold;

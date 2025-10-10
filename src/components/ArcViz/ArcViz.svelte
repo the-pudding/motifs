@@ -181,7 +181,7 @@
 	role="application"
 	aria-label="keyboard arrow key controls"
 >
-	<div class="sticky">
+	<div class="header" class:sticky={audio.figureId === id}>
 		<div class="titles">
 			{#if title.split(":").length === 2}
 				<h4>{title.split(":")[1].trim()}</h4>
@@ -293,13 +293,17 @@
 		flex-shrink: 0;
 	}
 
-	.sticky {
+	.header {
 		display: flex;
 		gap: 1rem;
 		justify-content: space-between;
+		z-index: 2;
+		pointer-events: none;
+	}
+
+	.sticky {
 		position: sticky;
 		top: 1rem;
-		z-index: 1001;
 	}
 
 	img.playbill {
@@ -307,7 +311,6 @@
 		right: 2rem;
 		top: 2rem;
 		height: 100px;
-		z-index: 1002;
 		transform: rotate(2deg);
 	}
 
@@ -320,7 +323,7 @@
 		display: flex;
 		align-items: end;
 		justify-content: end;
-		max-width: 66%;
+		max-width: 500px;
 		flex: 1;
 	}
 
@@ -334,7 +337,7 @@
 			width: 100%;
 		}
 
-		.sticky {
+		.header {
 			flex-direction: column;
 		}
 	}

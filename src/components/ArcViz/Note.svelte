@@ -1,7 +1,9 @@
 <script>
 	let { note, visible, longest, next, previous } = $props();
 
-	let noteStripped = $derived(note?.replace(/<[^>]*>/g, ""));
+	let noteStripped = $derived(
+		note?.replace(/<[^/][^>]*>/g, "<strong>").replace(/<\/[^>]+>/g, "</strong>")
+	);
 
 	const onClickNext = (e) => {
 		e.stopPropagation();

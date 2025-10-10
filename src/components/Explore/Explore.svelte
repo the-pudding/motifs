@@ -10,8 +10,11 @@
 	import sortMotifRegions from "$utils/sortMotifRegions.js";
 	import _ from "lodash";
 	import { onMount } from "svelte";
+	import { audioApi } from "$runes/audio.svelte.js";
 
 	let { favorites } = $props();
+
+	const audio = audioApi();
 
 	let musicalOptions = [
 		{ label: "Hamilton", value: "hamilton" },
@@ -109,16 +112,7 @@
 			) {
 				e.stopPropagation();
 
-				if (
-					e.target.parentElement &&
-					e.target.parentElement.classList.contains("note")
-				) {
-					const exploreSection = document.getElementById("explore");
-					if (exploreSection) {
-						exploreSection.scrollIntoView({ behavior: "smooth" });
-					}
-				}
-
+				audio.pauseAndClear();
 				musical = e.target.dataset.musical;
 				song = "All Songs";
 				character = "All Characters";
