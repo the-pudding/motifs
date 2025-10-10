@@ -198,6 +198,15 @@
 		text-transform: uppercase;
 	}
 
+	:global(section#methods h2) {
+		text-align: start;
+		margin-bottom: 0;
+	}
+
+	:global(section#methods p) {
+		font-size: var(--14px);
+	}
+
 	:global(hr) {
 		border: 0.5px solid var(--color-gray-600);
 		max-width: min(500px, 70%);
