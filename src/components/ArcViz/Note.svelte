@@ -2,7 +2,9 @@
 	let { note, visible, longest, next, previous } = $props();
 
 	let noteStripped = $derived(
-		note?.replace(/<[^/][^>]*>/g, "<strong>").replace(/<\/[^>]+>/g, "</strong>")
+		note
+			?.replace(/<button[^>]*>/g, "<strong>")
+			.replace(/<\/button>/g, "</strong>")
 	);
 
 	const onClickNext = (e) => {

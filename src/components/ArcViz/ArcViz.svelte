@@ -124,13 +124,7 @@
 						: lesMisTracks
 		}
 	});
-	const motifs = $derived(
-		_.orderBy(
-			sortMotifRegions(dataMap[id].motifs).filter((d) => d.regions.length > 1),
-			[(d) => d.regions[0]["track-name"], (d) => +d.regions[0].start],
-			["asc", "asc"]
-		)
-	);
+	const motifs = $derived(sortMotifRegions(dataMap[id].motifs));
 	const tracks = $derived(dataMap[id].tracks);
 	let notes = $derived(
 		motifs.map((m) => ({

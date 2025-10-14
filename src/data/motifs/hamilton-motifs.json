@@ -127,7 +127,7 @@
 				"id": "region-7t8i2rns4gs",
 				"track-name": "1-05 The Schuyler Sisters",
 				"start": 114.838509,
-				"end": 124.370451,
+				"end": 125.370451,
 				"character": ["eliza schuyler", "angelica schuyler", "peggy schuyler"]
 			},
 			{
@@ -158,8 +158,8 @@
 			{
 				"id": "region-98jbhde512",
 				"track-name": "1-23 Non-Stop",
-				"start": 337.7975239999999,
-				"end": 340.26860699999986,
+				"start": 337.3975239999999,
+				"end": 340.06860699999986,
 				"character": ["eliza schuyler"]
 			},
 			{
@@ -262,7 +262,7 @@
 			{
 				"id": "region-ek2oj47vki8",
 				"track-name": "1-23 Non-Stop",
-				"start": 369.680448,
+				"start": 368.380448,
 				"end": 382.613579,
 				"character": ["alexander hamilton"]
 			},
@@ -318,8 +318,8 @@
 			{
 				"id": "region-4otsqbvkqho",
 				"track-name": "1-08 Right Hand Man",
-				"start": 273.758317,
-				"end": 276.275659,
+				"start": 272.558317,
+				"end": 275.275659,
 				"character": ["alexander hamilton"]
 			},
 			{
@@ -549,7 +549,7 @@
 			{
 				"id": "region-ilf5n1t2ass",
 				"track-name": "2-16 Blow Us All Away",
-				"start": 171.09784599999998,
+				"start": 170.09784599999998,
 				"end": 173.73340599999997,
 				"character": ["ensemble"]
 			},
@@ -589,7 +589,7 @@
 			{
 				"id": "region-fqfafpqha9o",
 				"track-name": "2-16 Blow Us All Away",
-				"start": 140.97566100000003,
+				"start": 140.37566100000003,
 				"end": 151.80524,
 				"character": ["phillip hamilton"]
 			}
@@ -667,7 +667,7 @@
 			{
 				"id": "region-7ab4rtm2lis",
 				"track-name": "1-23 Non-Stop",
-				"start": 374.28847800000017,
+				"start": 373.88847800000017,
 				"end": 376.48819600000024,
 				"character": ["alexander hamilton", "ensemble"]
 			}
@@ -736,8 +736,8 @@
 			{
 				"id": "region-usves8ia6uc",
 				"track-name": "2-03 Take a Break",
-				"start": 190.80036999999996,
-				"end": 192.01946400000003,
+				"start": 189.80036999999996,
+				"end": 191.51946400000003,
 				"character": ["eliza schuyler"]
 			},
 			{
@@ -756,7 +756,7 @@
 			{
 				"id": "region-7g39ogb68qg",
 				"track-name": "2-14 The Reynolds Pamphlet",
-				"start": 57.566477000000006,
+				"start": 57.266477000000006,
 				"end": 58.630695,
 				"character": ["alexander hamilton"]
 			},
@@ -776,7 +776,7 @@
 			{
 				"id": "region-k4009a0esoo",
 				"track-name": "2-03 Take a Break",
-				"start": 191.859392,
+				"start": 191.259392,
 				"end": 193.869172,
 				"character": ["angelica schuyler"]
 			},
@@ -815,8 +815,8 @@
 			{
 				"id": "region-q1qo3q94qas",
 				"track-name": "2-03 Take a Break",
-				"start": 194.893283,
-				"end": 197.530602,
+				"start": 194.03283,
+				"end": 197.030602,
 				"character": ["alexander hamilton"]
 			},
 			{
@@ -829,7 +829,7 @@
 				"id": "region-a4are7t1adg",
 				"track-name": "1-05 The Schuyler Sisters",
 				"start": 26.608577,
-				"end": 27.95928599999999,
+				"end": 28.25928599999999,
 				"character": ["ensemble"]
 			}
 		]
@@ -911,7 +911,7 @@
 			{
 				"id": "region-0nj9alg03m",
 				"track-name": "1-23 Non-Stop",
-				"start": 192.79094899999996,
+				"start": 191.79094899999996,
 				"end": 194.72781999999995,
 				"character": ["ensemble"]
 			},
@@ -1092,7 +1092,7 @@
 			{
 				"id": "region-ou0jafgakug",
 				"track-name": "1-02 Aaron Burr, Sir",
-				"start": 13.921711,
+				"start": 13.521711,
 				"end": 23.708555,
 				"character": ["aaron burr", "alexander hamilton"]
 			},

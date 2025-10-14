@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 const sortMotifRegions = (motifs) => {
 	const parseTrackName = (trackName) => {
 		const match = trackName.match(/^(\d+)-(\d+)/);
@@ -8,7 +10,7 @@ const sortMotifRegions = (motifs) => {
 		};
 	};
 
-	return motifs
+	const regionsSortedAndFiltered = motifs
 		.map((motif) => {
 			// 1) Keep only one region per track-name: the one with the lowest start
 			const byTrack = new Map();
@@ -42,6 +44,14 @@ const sortMotifRegions = (motifs) => {
 			return { ...motif, regions: sortedRegions };
 		})
 		.filter((motif) => motif.regions.length > 1);
+
+	const motifsOrdered = _.orderBy(
+		regionsSortedAndFiltered,
+		[(d) => d.regions[0]["track-name"], (d) => +d.regions[0].start],
+		["asc", "asc"]
+	);
+
+	return motifsOrdered;
 };
 
 export default sortMotifRegions;

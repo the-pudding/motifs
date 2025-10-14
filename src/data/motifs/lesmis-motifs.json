@@ -340,7 +340,7 @@
 			{
 				"id": "region-nf7d46hs3n4",
 				"track-name": "1-01 Prologue",
-				"start": 430.4539730000001,
+				"start": 430.0539730000001,
 				"end": 470.1497770092167,
 				"character": ["bishop"]
 			},
@@ -372,7 +372,7 @@
 			{
 				"id": "region-3kcmd3lj7u8",
 				"track-name": "1-01 Prologue",
-				"start": 515.602654,
+				"start": 514.602654,
 				"end": 532.050254,
 				"character": ["ensemble"]
 			},
@@ -567,7 +567,7 @@
 			{
 				"id": "region-7oe3di6lsu",
 				"track-name": "1-05 Lovely Ladies",
-				"start": 3.450352,
+				"start": 3.150352,
 				"end": 17.809070000000006,
 				"character": ["ensemble"]
 			},
@@ -845,7 +845,7 @@
 			{
 				"id": "region-cmb1kv3cg2s",
 				"track-name": "1-04 I Dreamed A Dream",
-				"start": 60.372331,
+				"start": 59.872331,
 				"end": 89.12490937603165,
 				"character": ["fantine"]
 			},
@@ -1791,7 +1791,7 @@
 			{
 				"id": "region-ffhuup9bl6",
 				"track-name": "1-08 Who Am I__The Trial",
-				"start": 129.45835999999997,
+				"start": 128.85835999999997,
 				"end": 169.844106,
 				"character": ["jean valjean"]
 			},
