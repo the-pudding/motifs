@@ -25,6 +25,7 @@
 	let musical = $state("hamilton");
 	let song = $state("All Songs");
 	let character = $state("All Characters");
+	let sortBy = $state("time");
 
 	let allMotifs = $derived(
 		musical === "hamilton"
@@ -43,7 +44,15 @@
 			)
 		)
 	);
-	let selectedMotif = $state(filteredMotifs[0].name);
+	let filteredAndSortedMotifs = $derived.by(() => {
+		if (sortBy === "time") {
+			return filteredMotifs;
+		} else if (sortBy === "number") {
+			return _.orderBy(filteredMotifs, (m) => m.regions.length, "desc");
+		}
+	});
+
+	let selectedMotif = $state(filteredAndSortedMotifs[0].name);
 	let tracks = $derived(
 		musical === "hamilton"
 			? hamiltonTracks
@@ -79,21 +88,21 @@
 	const reset = () => {
 		character = "All Characters";
 		song = "All Songs";
-		selectedMotif = filteredMotifs[0]?.name;
+		selectedMotif = filteredAndSortedMotifs[0]?.name;
 	};
 
 	const musicalChange = () => {
 		song = "All Songs";
 		character = "All Characters";
-		selectedMotif = filteredMotifs[0]?.name;
+		selectedMotif = filteredAndSortedMotifs[0]?.name;
 	};
 
 	const songChange = () => {
-		selectedMotif = filteredMotifs[0]?.name;
+		selectedMotif = filteredAndSortedMotifs[0]?.name;
 	};
 
 	const characterChange = () => {
-		selectedMotif = filteredMotifs[0]?.name;
+		selectedMotif = filteredAndSortedMotifs[0]?.name;
 	};
 
 	const displaySong = (option) => {
@@ -194,7 +203,14 @@
 		{favorites}
 	/>
 
-	<Motifs bind:selectedMotif {filteredMotifs} {tracks} {musical} {character} />
+	<Motifs
+		bind:selectedMotif
+		bind:sortBy
+		{filteredAndSortedMotifs}
+		{tracks}
+		{musical}
+		{character}
+	/>
 
 	<div class="fade-bottom" />
 </div>

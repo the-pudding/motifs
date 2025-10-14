@@ -1,10 +1,14 @@
 <script>
-	export let label;
-	export let style = "inner";
-	export let options = ["on", "off"];
-	export let value;
+	let {
+		label,
+		style = "inner",
+		options = ["on", "off"],
+		value = $bindable(),
+		selectedMotif = $bindable(),
+		motifs
+	} = $props();
 
-	$: checked = value === options[0].value;
+	let checked = $derived(value === options[0].value);
 
 	const id = `toggle-${Math.floor(Math.random() * 1000000)}`;
 
@@ -13,6 +17,8 @@
 		const state = target.getAttribute("aria-checked");
 		checked = state === "true" ? false : true;
 		value = checked ? options[0].value : options[1].value;
+
+		selectedMotif = motifs[0]?.name;
 	};
 </script>
 
@@ -22,7 +28,7 @@
 		role="switch"
 		aria-checked={checked}
 		aria-labelledby={id}
-		on:click={handleClick}
+		onclick={handleClick}
 	>
 		{#if style === "inner"}
 			<span>{options[0].text}</span>
@@ -48,7 +54,7 @@
 
 	.toggle--inner button {
 		padding: 0.5em;
-		background-color: var(--color-white);
+		background-color: var(--color-gray-300);
 		border: 2px solid var(--color-gray-900);
 	}
 

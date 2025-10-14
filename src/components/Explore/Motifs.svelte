@@ -1,4 +1,5 @@
 <script>
+	import Toggle from "$components/helpers/migrate/Toggle.svelte";
 	import { onMount } from "svelte";
 	import _ from "lodash";
 	import { audioApi } from "$runes/audio.svelte.js";
@@ -6,7 +7,8 @@
 
 	let {
 		selectedMotif = $bindable(),
-		filteredMotifs,
+		filteredAndSortedMotifs,
+		sortBy = $bindable(),
 		tracks,
 		musical,
 		character
@@ -17,7 +19,7 @@
 
 	let percentsDone = $derived.by(() => {
 		if (!selectedMotif) return [];
-		const motif = filteredMotifs.find((m) => m.name === selectedMotif);
+		const motif = filteredAndSortedMotifs.find((m) => m.name === selectedMotif);
 		if (!motif) return [];
 		return motif.regions.map((region, i) => {
 			const src = `assets/audio/${musical}/${region["track-name"]}.mp3`;
@@ -91,7 +93,20 @@
 </script>
 
 <div class="motifs">
-	{#each filteredMotifs as motif (motif.name)}
+	<div class="toggle">
+		<Toggle
+			label="Sort by"
+			options={[
+				{ value: "number", text: "most common" },
+				{ value: "time", text: "first appearance" }
+			]}
+			bind:value={sortBy}
+			bind:selectedMotif
+			motifs={filteredAndSortedMotifs}
+		/>
+	</div>
+
+	{#each filteredAndSortedMotifs as motif (motif.name)}
 		{@const selected = selectedMotif && selectedMotif === motif.name}
 		{@const description =
 			copy.descriptions?.[musical]?.[_.kebabCase(motif.name)] || ""}
@@ -251,6 +266,16 @@
 		border-radius: 0.25rem;
 		position: absolute;
 		left: 0;
+	}
+
+	.toggle {
+		position: sticky;
+		top: 0;
+		background: var(--color-gray-800);
+		z-index: 1000;
+		padding-bottom: 0.5rem;
+		font-family: var(--mono);
+		font-size: var(--12px);
 	}
 
 	@media (max-width: 600px) {
