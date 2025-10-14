@@ -1314,5 +1314,25 @@
 				"end": 169.230453
 			}
 		]
+	},
+	{
+		"name": "summer in the city",
+		"emoji": "😎",
+		"regions": [
+			{
+				"id": "region-9me5rf0kbrs",
+				"track-name": "1-05 The Schuyler Sisters",
+				"start": 77,
+				"end": 82,
+				"character": ["aaron burr"]
+			},
+			{
+				"id": "region-9me5rf0kbrs",
+				"track-name": "2-04 Say No To This",
+				"start": 3,
+				"end": 12,
+				"character": ["aaron burr"]
+			}
+		]
 	}
 ]
