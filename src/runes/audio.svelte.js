@@ -99,7 +99,8 @@ export function audioApi() {
 			const onTimeUpdate = () => {
 				if (
 					motifData &&
-					(el.currentTime >= motifData.end || el.currentTime >= duration)
+					(el.currentTime >= motifData.end ||
+						(duration > 0 && el.currentTime >= duration))
 				) {
 					el.pause();
 					el.removeEventListener("timeupdate", onTimeUpdate);
