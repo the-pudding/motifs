@@ -96,25 +96,27 @@ export function audioApi() {
 
 	const play = () => {
 		return new Promise((resolve, reject) => {
+			const onTimeUpdate = () => {
+				if (
+					motifData &&
+					(el.currentTime >= motifData.end || el.currentTime >= duration)
+				) {
+					el.pause();
+					el.removeEventListener("timeupdate", onTimeUpdate);
+					resolve();
+				}
+			};
+			const onEnded = () => {
+				el.removeEventListener("ended", onEnded);
+				clear();
+				resolve();
+			};
+
 			if (motifData) {
 				el.currentTime = motifData.start;
 				currentTime = el.currentTime || 0;
-
-				const onTimeUpdate = () => {
-					if (motifData && el.currentTime >= motifData.end) {
-						el.pause();
-						el.removeEventListener("timeupdate", onTimeUpdate);
-						resolve();
-					}
-				};
-
 				el.addEventListener("timeupdate", onTimeUpdate);
 			} else {
-				const onEnded = () => {
-					el.removeEventListener("ended", onEnded);
-					clear();
-					resolve();
-				};
 				el.addEventListener("ended", onEnded);
 			}
 
