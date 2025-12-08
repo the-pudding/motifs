@@ -140,7 +140,8 @@
 		class:loading
 		class:faded={(audio.figureId &&
 			audio.figureId !== chartId &&
-			!audio.figureId.startsWith("playable-")) ||
+			!audio.figureId.startsWith("playable-") &&
+			!audio.figureId.startsWith("piano-")) ||
 			(audio.figureId === chartId && !mePlaying)}
 	>
 		<div

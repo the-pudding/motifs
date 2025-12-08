@@ -180,7 +180,9 @@
 		)
 	);
 	let fadeChartScaffolding = $derived(
-		audio.figureId && !audio.figureId.startsWith("playable-")
+		audio.figureId &&
+			!audio.figureId.startsWith("playable-") &&
+			!audio.figureId.startsWith("piano-")
 	);
 
 	let pathEls = $state([]);
@@ -309,7 +311,8 @@
 							{@const faded =
 								(audio.figureId != null &&
 									audio.figureId !== id &&
-									!audio.figureId.startsWith("playable-")) ||
+									!audio.figureId.startsWith("playable-") &&
+									!audio.figureId.startsWith("piano-")) ||
 								(audio.figureId != null &&
 									audio.figureId === id &&
 									audio.motifData.motifId !== _.kebabCase(name)) ||
