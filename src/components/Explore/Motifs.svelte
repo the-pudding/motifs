@@ -15,6 +15,8 @@
 	} = $props();
 	const audio = audioApi();
 
+	$inspect(filteredAndSortedMotifs);
+
 	let prefersReducedMotion = $state(false);
 
 	let percentsDone = $derived.by(() => {

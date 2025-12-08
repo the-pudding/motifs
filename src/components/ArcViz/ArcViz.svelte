@@ -177,10 +177,12 @@
 >
 	<div class="header" class:sticky={audio.figureId === id}>
 		<div class="titles">
-			{#if title.split(":").length === 2}
+			{#if title.includes("All motifs")}
+				<h4>All motifs ({motifs.length})</h4>
+			{:else if title.split(":").length === 2}
 				<h4>{title.split(":")[1].trim()}</h4>
 			{:else}
-				<h4>All motifs</h4>
+				<h4>All motifs ({motifs.length})</h4>
 			{/if}
 			<h3>{title.split(":")[0]}</h3>
 		</div>
