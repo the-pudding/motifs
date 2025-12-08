@@ -5,6 +5,8 @@ export function audioApi() {
 
 	let el = $state(null); // single <audio> element
 	let ready = $state(false); // whether the element exists and is ready to play fully
+	let readyPromise = $state(Promise.resolve());
+	let resolveReady = () => {};
 	let src = $state(null); // audio file source
 	let trackName = $state(null); // track name
 	let currentTime = $state(0); // playback time in seconds
@@ -68,6 +70,7 @@ export function audioApi() {
 
 	const load = (newSrc, { figure, motif } = {}) => {
 		ready = false;
+		readyPromise = new Promise((resolve) => (resolveReady = resolve));
 
 		src = newSrc;
 		trackName = newSrc
@@ -89,12 +92,15 @@ export function audioApi() {
 			"canplaythrough",
 			() => {
 				ready = true;
+				resolveReady();
 			},
 			{ once: true }
 		);
 	};
 
-	const play = () => {
+	const play = async () => {
+		await readyPromise;
+
 		return new Promise((resolve, reject) => {
 			const onTimeUpdate = () => {
 				if (
