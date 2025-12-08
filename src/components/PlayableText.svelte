@@ -117,7 +117,7 @@
 
 	@media (max-width: 600px) {
 		button {
-			padding: 0.125rem 0.35rem 0.125rem 0.5rem;
+			padding: 0.25rem 0.35rem 0.25rem 0.5rem;
 			font-size: var(--14px);
 		}
 	}
