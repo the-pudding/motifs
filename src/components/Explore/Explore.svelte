@@ -117,6 +117,7 @@
 			if (
 				e.target &&
 				e.target.className &&
+				typeof e.target.className === "string" &&
 				e.target.className.includes("goto-")
 			) {
 				e.stopPropagation();
@@ -227,7 +228,7 @@
 	.main {
 		max-height: 100svh;
 		display: flex;
-    flex-direction: column;
+		flex-direction: column;
 	}
 
 	.filters {
