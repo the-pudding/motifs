@@ -276,6 +276,7 @@
 	:global(figure#explore) {
 		margin-bottom: 0;
 		border: none;
+		width: 100%;
 	}
 
 	h3 {

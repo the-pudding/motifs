@@ -194,23 +194,25 @@
 		<button class="reset" onclick={reset}>Reset</button>
 	</div>
 
-	<ArcViz
-		id="explore"
-		bind:musical
-		{song}
-		{character}
-		title={`${musicalOptions.find((d) => d.value === musical).label}`}
-		{favorites}
-	/>
+	<div class="main">
+		<ArcViz
+			id="explore"
+			bind:musical
+			{song}
+			{character}
+			title={`${musicalOptions.find((d) => d.value === musical).label}`}
+			{favorites}
+		/>
 
-	<Motifs
-		bind:selectedMotif
-		bind:sortBy
-		{filteredAndSortedMotifs}
-		{tracks}
-		{musical}
-		{character}
-	/>
+		<Motifs
+			bind:selectedMotif
+			bind:sortBy
+			{filteredAndSortedMotifs}
+			{tracks}
+			{musical}
+			{character}
+		/>
+	</div>
 
 	<div class="fade-bottom" />
 </div>
@@ -220,6 +222,12 @@
 		position: relative;
 		max-width: 1000px;
 		margin: 0 auto;
+	}
+
+	.main {
+		max-height: 100svh;
+		display: flex;
+    flex-direction: column;
 	}
 
 	.filters {

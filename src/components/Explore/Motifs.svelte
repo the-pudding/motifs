@@ -165,10 +165,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.2rem;
-		max-height: 400px;
 		overflow-y: scroll;
 		padding: 0 2rem 2rem 2rem;
-		margin-bottom: 4rem;
 		background: var(--color-gray-800);
 	}
 
