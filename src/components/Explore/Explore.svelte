@@ -247,6 +247,7 @@
 		flex-direction: column;
 		gap: 0.25rem;
 		max-width: calc((100% - 6rem) / 3);
+		overflow: hidden;
 	}
 
 	label {
@@ -284,9 +285,7 @@
 		.fade-bottom {
 			height: 30px;
 		}
-	}
 
-	@media (max-width: 400px) {
 		label,
 		.select-wrapper,
 		button.reset {
