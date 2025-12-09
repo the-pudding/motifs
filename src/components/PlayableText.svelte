@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
 	import { audioApi } from "$runes/audio.svelte.js";
 	import { unlimited } from "$runes/misc.svelte.js";
+	import inView from "$actions/inView.js";
 
 	let { id, src, text, onClick } = $props();
 
@@ -51,6 +52,12 @@
 		}
 	};
 
+	const onExit = () => {
+		if (audio.figureId === id) {
+			audio.pauseAndClear();
+		}
+	};
+
 	onMount(() => {
 		prefersReducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)"
@@ -58,7 +65,7 @@
 	});
 </script>
 
-<button onclick={onClick || defaultClick}>
+<button onclick={onClick || defaultClick} use:inView onexit={onExit}>
 	<span>{text}</span>
 	<div
 		class="play-pause"
