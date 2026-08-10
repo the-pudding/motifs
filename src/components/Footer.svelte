@@ -20,7 +20,7 @@
 		{ name: "Our Resources", url: "https://pudding.cool/resources/" },
 		{ name: "Pitch a Story", url: "https://pudding.cool/pitch/" },
 		{ name: "Brand Partnerships", url: "https://polygraph.cool" },
-		{ name: "Privacy Policy", url: "https://pudding.cool/pitch/" }
+		{ name: "Privacy Policy", url: "https://pudding.cool/privacy/" }
 	];
 
 	const follow = [
@@ -28,9 +28,11 @@
 			name: "Instagram",
 			url: "https://www.instagram.com/the.pudding"
 		},
-		{ name: "Twitter/X", url: "https://twitter.com/puddingviz/" },
-		{ name: "TikTok", url: "https://www.tiktok.com/@the_pudding" },
+		{ name: "Email", url: "https://pudding.cool/subscribe" },
+		{ name: "Bluesky", url: "https://bsky.app/profile/pudding.cool" },
 		{ name: "YouTube", url: "https://www.youtube.com/@thepudding" },
+		{ name: "Twitter/X", url: "https://twitter.com/puddingviz/" },
+		{ name: "Threads", url: "https://www.threads.com/@the.pudding" },
 		{ name: "RSS", url: "https://pudding.cool/feed/index.xml" }
 	];
 
@@ -168,7 +170,7 @@
 		max-width: calc(var(--width-column-wide, 1280px) - var(--margin, 16px) * 2);
 		padding: 16px;
 		margin: 32px auto 100px auto;
-		font-family: var(--sans);
+		font-family: var(--font-sans);
 	}
 
 	.top {
@@ -337,7 +339,8 @@
 
 	.wordmark {
 		transform: rotate(var(--left-tilt, -2deg));
-		max-width: 360px;
+		max-width: 320px;
+		margin-left: -5%;
 		transition: transform calc(var(--1s) * 0.25);
 	}
 
